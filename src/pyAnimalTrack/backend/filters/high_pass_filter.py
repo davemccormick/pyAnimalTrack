@@ -9,7 +9,7 @@ class HPF(object):
         print "Building DR"
 
     def testMethod(self, begin):
-        """This function translates foo into bar
+        """This function translates foo into bar, minor tweak
 
         :param foo: A string to be converted
         :returns: A bar formatted string
