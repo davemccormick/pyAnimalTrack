@@ -8,6 +8,7 @@ Subpackages
 
     pyAnimalTrack.backend.deadreckoning
     pyAnimalTrack.backend.filters
+    pyAnimalTrack.backend.utilities
 
 Module contents
 ---------------

@@ -1,0 +1,22 @@
+pyAnimalTrack.backend.utilities package
+=======================================
+
+Submodules
+----------
+
+pyAnimalTrack.backend.utilities.accuracy module
+-----------------------------------------------
+
+.. automodule:: pyAnimalTrack.backend.utilities.accuracy
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: pyAnimalTrack.backend.utilities
+    :members:
+    :undoc-members:
+    :show-inheritance:
