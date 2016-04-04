@@ -8,7 +8,7 @@ class LPF(BaseFilter):
     def __init__(self, signal):
         """ Constructor
         
-            :param data: Initial input data
+            :param data: Initial input data.
             :returns: void
         """
         super(LPF, self).__init__()

@@ -3,7 +3,7 @@ from __future__ import print_function, division
 import numpy as np
 
 class BaseFilter(object):
-    """ Class for FIR Filter algorithm
+    """ Class for FIR Filter algorithm..
     """
 
     def filter(self, samplingRate, cutoffFrequency, filterLength):
@@ -12,6 +12,7 @@ class BaseFilter(object):
         :param samplingRate: Rate at which the signal should be sampled in Hz
         :param cutoffFrequency: Frequency at which we should begin filtering
         :param filterLength: Length of the filter.
+
         :returns: A sinc filter
         """
 
