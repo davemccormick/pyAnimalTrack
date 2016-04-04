@@ -1,7 +1,7 @@
-pyAnimalTrack
-=============
+src
+===
 
 .. toctree::
    :maxdepth: 4
 
-   pyAnimalTrack
+   src

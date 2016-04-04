@@ -1,0 +1,17 @@
+src package
+===========
+
+Subpackages
+-----------
+
+.. toctree::
+
+    src.pyAnimalTrack
+
+Module contents
+---------------
+
+.. automodule:: src
+    :members:
+    :undoc-members:
+    :show-inheritance:

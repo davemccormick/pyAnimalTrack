@@ -1,0 +1,18 @@
+src.pyAnimalTrack.backend package
+=================================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    src.pyAnimalTrack.backend.deadreckoning
+    src.pyAnimalTrack.backend.filters
+
+Module contents
+---------------
+
+.. automodule:: src.pyAnimalTrack.backend
+    :members:
+    :undoc-members:
+    :show-inheritance:

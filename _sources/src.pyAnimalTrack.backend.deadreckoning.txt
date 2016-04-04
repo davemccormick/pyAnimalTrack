@@ -1,0 +1,22 @@
+src.pyAnimalTrack.backend.deadreckoning package
+===============================================
+
+Submodules
+----------
+
+src.pyAnimalTrack.backend.deadreckoning.dead_reckoning module
+-------------------------------------------------------------
+
+.. automodule:: src.pyAnimalTrack.backend.deadreckoning.dead_reckoning
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.pyAnimalTrack.backend.deadreckoning
+    :members:
+    :undoc-members:
+    :show-inheritance:

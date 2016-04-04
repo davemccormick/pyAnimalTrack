@@ -1,0 +1,38 @@
+src.pyAnimalTrack.backend.filters package
+=========================================
+
+Submodules
+----------
+
+src.pyAnimalTrack.backend.filters.base_filter module
+----------------------------------------------------
+
+.. automodule:: src.pyAnimalTrack.backend.filters.base_filter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.pyAnimalTrack.backend.filters.high_pass_filter module
+---------------------------------------------------------
+
+.. automodule:: src.pyAnimalTrack.backend.filters.high_pass_filter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.pyAnimalTrack.backend.filters.low_pass_filter module
+--------------------------------------------------------
+
+.. automodule:: src.pyAnimalTrack.backend.filters.low_pass_filter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.pyAnimalTrack.backend.filters
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,22 @@
+src.pyAnimalTrack.ui package
+============================
+
+Submodules
+----------
+
+src.pyAnimalTrack.ui.exampleUIForDocs module
+--------------------------------------------
+
+.. automodule:: src.pyAnimalTrack.ui.exampleUIForDocs
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.pyAnimalTrack.ui
+    :members:
+    :undoc-members:
+    :show-inheritance:
