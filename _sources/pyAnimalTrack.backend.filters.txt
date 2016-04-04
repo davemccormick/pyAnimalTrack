@@ -4,6 +4,14 @@ pyAnimalTrack.backend.filters package
 Submodules
 ----------
 
+pyAnimalTrack.backend.filters.base_filter module
+------------------------------------------------
+
+.. automodule:: pyAnimalTrack.backend.filters.base_filter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pyAnimalTrack.backend.filters.high_pass_filter module
 -----------------------------------------------------
 
