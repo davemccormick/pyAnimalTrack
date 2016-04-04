@@ -1,18 +1,37 @@
-class HPF(object):
-    """ Class for High pass Filter algorithm
+from base_filter import BaseFilter
+import numpy as np
+
+class HPF(BaseFilter):
+    """ Class for Low Pass Filter algorithm
     """
 
-    def __init__(self, data):
+    def __init__(self, signal):
         """ Constructor
-            :param: Data
+        
+            :param data: Initial input data
+            :returns: void
         """
-        print "Building DR"
+        super(HPF,self).__init__()
 
-    def testMethod(self, begin):
-        """This function translates foo into bar, minor tweak
+        self.signal = signal
+        return
 
-        :param foo: A string to be converted
-        :returns: A bar formatted string
+
+    def high_pass_filter(self, samplingRate, cutoffFrequency, filterLength):
+        """Applies filter to signal.
+
+        :param samplingRate: Rate at which the signal should be sampled in Hz
+        :param cutoffFrequency: Frequency at which we should begin filtering
+        :param filterLength: Length of the filter.
+
+        :returns: A low pass filtered signal as NP array.
         """
+        h = self.filter(samplingRate, cutoffFrequency, filterLength)
 
-        return True
+        # Use spectral inverse to turn this into high pass filter.
+        h = -h
+        h[(filterLength - 1) / 2] += 1
+
+        s = np.convolve(self.signal, h, mode='same')
+
+        return s
