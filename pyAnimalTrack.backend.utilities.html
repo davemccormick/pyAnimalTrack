@@ -73,6 +73,70 @@
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="pyAnimalTrack.backend.utilities.accuracy.Accuracy.improve_accuracy">
+<code class="descname">improve_accuracy</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/accuracy.html#Accuracy.improve_accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.accuracy.Accuracy.improve_accuracy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an estimate of the Z axis value using the X,Y axis values.
+This also improves the accuracy of the data. The Z-axis estimate gives a value for Z that makes
+the vector norm 1boldg (i.e. all three axes are perfectly orthogonal and X and Y are 
+assumed to be correct). This estimate for Z can then be used to evaluate error that may 
+correspond to pitch angle, or may be a constant error.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; low pass filtered X axis accelerometer data</li>
+<li><strong>y</strong> &#8211; low pass filtered Y axis accelerometer data</li>
+<li><strong>z</strong> &#8211; low pass filtered Z axis accelerometer data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A dictionary of accuracy dictionaries with keys: innput_accuracy and improved_accuracy.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyanimaltrack-backend-utilities-calculate-features-module">
+<h2>pyAnimalTrack.backend.utilities.calculate_features module<a class="headerlink" href="#pyanimaltrack-backend-utilities-calculate-features-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyAnimalTrack.backend.utilities.calibrate_axis">
+<span id="pyanimaltrack-backend-utilities-calibrate-axis-module"></span><h2>pyAnimalTrack.backend.utilities.calibrate_axis module<a class="headerlink" href="#module-pyAnimalTrack.backend.utilities.calibrate_axis" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyAnimalTrack.backend.utilities.calibrate_axis.CalibrateAxis">
+<em class="property">class </em><code class="descclassname">pyAnimalTrack.backend.utilities.calibrate_axis.</code><code class="descname">CalibrateAxis</code><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/calibrate_axis.html#CalibrateAxis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.calibrate_axis.CalibrateAxis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Utility Class for calibrating an axis.</p>
+<dl class="method">
+<dt id="pyAnimalTrack.backend.utilities.calibrate_axis.CalibrateAxis.calibrate">
+<code class="descname">calibrate</code><span class="sig-paren">(</span><em>x</em>, <em>min_</em>, <em>max_</em>, <em>scale=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/calibrate_axis.html#CalibrateAxis.calibrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.calibrate_axis.CalibrateAxis.calibrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calibrate the axes of magnetometers/accelerometers and
+correct hard-iron distortion. Taken from animalTrackR.
+TODO: speak to robin to understand what this is doing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; The data from an axis</li>
+<li><strong>min</strong> &#8211; Minimum value of x</li>
+<li><strong>max</strong> &#8211; Maximum value of x</li>
+<li><strong>scale</strong> &#8211; Multiplier for the axis.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A scaled set of axis data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -92,6 +156,8 @@
 <li><a class="reference internal" href="#">pyAnimalTrack.backend.utilities package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pyAnimalTrack.backend.utilities.accuracy">pyAnimalTrack.backend.utilities.accuracy module</a></li>
+<li><a class="reference internal" href="#pyanimaltrack-backend-utilities-calculate-features-module">pyAnimalTrack.backend.utilities.calculate_features module</a></li>
+<li><a class="reference internal" href="#module-pyAnimalTrack.backend.utilities.calibrate_axis">pyAnimalTrack.backend.utilities.calibrate_axis module</a></li>
 <li><a class="reference internal" href="#module-pyAnimalTrack.backend.utilities">Module contents</a></li>
 </ul>
 </li>

@@ -44,10 +44,6 @@
 <div class="viewcode-block" id="Accuracy"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.accuracy.Accuracy">[docs]</a><span class="k">class</span> <span class="nc">Accuracy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Utility Class for checking accuracy.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-    	<span class="bp">self</span><span class="o">.</span><span class="n">accuracy_dict</span> <span class="o">=</span> <span class="p">{}</span>
-    	
 
 <div class="viewcode-block" id="Accuracy.check_accuracy"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.accuracy.Accuracy.check_accuracy">[docs]</a>    <span class="k">def</span> <span class="nf">check_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;This function checks the accuracy of an accelerometer.</span>
@@ -58,10 +54,54 @@
 
 <span class="sd">        :returns: A dictionary with keys: acc, std and var.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;var&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">])</span> 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">accuracy_dict</span></div></div>
+
+        <span class="n">accuracy_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+        <span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;var&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">])</span>
+        <span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">])</span> 
+
+        <span class="k">return</span> <span class="n">accuracy_dict</span></div>
+
+
+<div class="viewcode-block" id="Accuracy.improve_accuracy"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.accuracy.Accuracy.improve_accuracy">[docs]</a>    <span class="k">def</span> <span class="nf">improve_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create an estimate of the Z axis value using the X,Y axis values.</span>
+<span class="sd">            This also improves the accuracy of the data. The Z-axis estimate gives a value for Z that makes</span>
+<span class="sd">            the vector norm 1boldg (i.e. all three axes are perfectly orthogonal and X and Y are </span>
+<span class="sd">            assumed to be correct). This estimate for Z can then be used to evaluate error that may </span>
+<span class="sd">            correspond to pitch angle, or may be a constant error.</span>
+
+<span class="sd">            :param x: low pass filtered X axis accelerometer data</span>
+<span class="sd">            :param y: low pass filtered Y axis accelerometer data</span>
+<span class="sd">            :param z: low pass filtered Z axis accelerometer data</span>
+
+<span class="sd">            :returns: A dictionary of accuracy dictionaries with keys: innput_accuracy and improved_accuracy.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">x3</span> <span class="o">=</span> <span class="n">x</span>
+
+        <span class="n">y1</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">y2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">/</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">y3</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+
+        <span class="n">z1</span> <span class="o">=</span> <span class="n">y2</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">z2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+        <span class="n">z3</span> <span class="o">=</span> <span class="n">y2</span> <span class="o">*</span> <span class="n">x1</span>
+
+        <span class="n">z_estimate</span> <span class="o">=</span> <span class="n">z3</span>
+        <span class="n">z_residual</span> <span class="o">=</span> <span class="n">z3</span> <span class="o">-</span> <span class="n">z</span>
+        <span class="n">accuracy_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">accuracy_improve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z3</span><span class="p">)</span>
+
+        <span class="n">accuracies_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">accuracies_dict</span><span class="p">[</span><span class="s1">&#39;input_accuracy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accuracy_input</span>
+        <span class="n">accuracies_dict</span><span class="p">[</span><span class="s1">&#39;improved_accuracy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accuracy_improve</span>
+
+        <span class="k">return</span> <span class="n">accuracies_dict</span></div></div>
+
+
 </pre></div>
 
           </div>
