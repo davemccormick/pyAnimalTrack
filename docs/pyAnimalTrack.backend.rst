@@ -7,7 +7,9 @@ Subpackages
 .. toctree::
 
     pyAnimalTrack.backend.deadreckoning
+    pyAnimalTrack.backend.filehandlers
     pyAnimalTrack.backend.filters
+    pyAnimalTrack.backend.utilities
 
 Module contents
 ---------------
