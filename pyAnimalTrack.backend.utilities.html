@@ -102,8 +102,201 @@ correspond to pitch angle, or may be a constant error.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="pyanimaltrack-backend-utilities-calculate-features-module">
-<h2>pyAnimalTrack.backend.utilities.calculate_features module<a class="headerlink" href="#pyanimaltrack-backend-utilities-calculate-features-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pyAnimalTrack.backend.utilities.calculate_features">
+<span id="pyanimaltrack-backend-utilities-calculate-features-module"></span><h2>pyAnimalTrack.backend.utilities.calculate_features module<a class="headerlink" href="#module-pyAnimalTrack.backend.utilities.calculate_features" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures">
+<em class="property">class </em><code class="descclassname">pyAnimalTrack.backend.utilities.calculate_features.</code><code class="descname">CalculateFeatures</code><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/calculate_features.html#CalculateFeatures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Utility Class for calculating specific features of the  accelerometer data.
+All methods are static, so no instantiation is required.</p>
+<dl class="staticmethod">
+<dt id="pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_energy">
+<em class="property">static </em><code class="descname">calculate_energy</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/calculate_features.html#CalculateFeatures.calculate_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Energy of the combined axes.
+Mathematical Notation: (Xi^2+Yi^2+Zi^2)^2</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; raw X axis accelerometer data</li>
+<li><strong>y</strong> &#8211; raw Y axis accelerometer data</li>
+<li><strong>z</strong> &#8211; raw Z axis accelerometer data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An Numpy array representing the energy of the input data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_entropy">
+<em class="property">static </em><code class="descname">calculate_entropy</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/calculate_features.html#CalculateFeatures.calculate_entropy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_entropy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Entropy of the combined axes.
+Mathematical Notation: (1+(Xi+Yi+Zi))2*ln(1+(Xi+Yi+Zi))2</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; raw X axis accelerometer data</li>
+<li><strong>y</strong> &#8211; raw Y axis accelerometer data</li>
+<li><strong>z</strong> &#8211; raw Z axis accelerometer data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An Numpy array representing the entropy of the input data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_inclination">
+<em class="property">static </em><code class="descname">calculate_inclination</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/calculate_features.html#CalculateFeatures.calculate_inclination"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_inclination" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the inclination in degrees of the combined axes.
+Mathematical Notation: tan^-1((sqrt(Xi^2+Yi^2))/Zi)*180/pi</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; raw X axis accelerometer data</li>
+<li><strong>y</strong> &#8211; raw Y axis accelerometer data</li>
+<li><strong>z</strong> &#8211; raw Z axis accelerometer data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An Numpy array representing the inclination of the input data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_movement_variation">
+<em class="property">static </em><code class="descname">calculate_movement_variation</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/calculate_features.html#CalculateFeatures.calculate_movement_variation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_movement_variation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the movement_variation.
+Mathematical Notation: abs(Xi+1-Xi)+abs(Yi+1-Yi)+abs(Zi+1-Zi)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; raw X axis accelerometer data</li>
+<li><strong>y</strong> &#8211; raw Y axis accelerometer data</li>
+<li><strong>z</strong> &#8211; raw Z axis accelerometer data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An Numpy array representing the movement variation of the input data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_pitch">
+<em class="property">static </em><code class="descname">calculate_pitch</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/calculate_features.html#CalculateFeatures.calculate_pitch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_pitch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the pitch in degrees of the combined axes.
+Mathematical Notation: tan^-1(-Xi/(sqrt(Yi+Zi)))*180/pi</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; raw X axis accelerometer data</li>
+<li><strong>y</strong> &#8211; raw Y axis accelerometer data</li>
+<li><strong>z</strong> &#8211; raw Z axis accelerometer data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An Numpy array representing the pitch of the input data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_roll">
+<em class="property">static </em><code class="descname">calculate_roll</code><span class="sig-paren">(</span><em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/calculate_features.html#CalculateFeatures.calculate_roll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_roll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the roll in degrees of the combined axes.
+Mathematical Notation: atan2(Yi,Zi)*180/pi</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>y</strong> &#8211; raw Y axis accelerometer data</li>
+<li><strong>z</strong> &#8211; raw Z axis accelerometer data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An Numpy array representing the roll of the input data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_sma">
+<em class="property">static </em><code class="descname">calculate_sma</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/calculate_features.html#CalculateFeatures.calculate_sma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_sma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Signal Magnitude Area (SMA).
+This can be used to distuingish between periods of activity vs rest.
+Mathematical Notation: abs(Xi)+abs(Yi)+abs(Zi)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; raw X axis accelerometer data</li>
+<li><strong>y</strong> &#8211; raw Y axis accelerometer data</li>
+<li><strong>z</strong> &#8211; raw Z axis accelerometer data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An Numpy array representing the SMA of the input data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_svm">
+<em class="property">static </em><code class="descname">calculate_svm</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/calculate_features.html#CalculateFeatures.calculate_svm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_svm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Signal Vector Magnitude (SVM).
+This indicates degree of movement intensity.
+Mathematical Notation: sqrt(Xi^2+Yi^2+Zi^2)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; raw X axis accelerometer data</li>
+<li><strong>y</strong> &#8211; raw Y axis accelerometer data</li>
+<li><strong>z</strong> &#8211; raw Z axis accelerometer data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An Numpy array representing the SVM of the input data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-pyAnimalTrack.backend.utilities.calibrate_axis">
 <span id="pyanimaltrack-backend-utilities-calibrate-axis-module"></span><h2>pyAnimalTrack.backend.utilities.calibrate_axis module<a class="headerlink" href="#module-pyAnimalTrack.backend.utilities.calibrate_axis" title="Permalink to this headline">¶</a></h2>
@@ -156,7 +349,7 @@ TODO: speak to robin to understand what this is doing.</p>
 <li><a class="reference internal" href="#">pyAnimalTrack.backend.utilities package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pyAnimalTrack.backend.utilities.accuracy">pyAnimalTrack.backend.utilities.accuracy module</a></li>
-<li><a class="reference internal" href="#pyanimaltrack-backend-utilities-calculate-features-module">pyAnimalTrack.backend.utilities.calculate_features module</a></li>
+<li><a class="reference internal" href="#module-pyAnimalTrack.backend.utilities.calculate_features">pyAnimalTrack.backend.utilities.calculate_features module</a></li>
 <li><a class="reference internal" href="#module-pyAnimalTrack.backend.utilities.calibrate_axis">pyAnimalTrack.backend.utilities.calibrate_axis module</a></li>
 <li><a class="reference internal" href="#module-pyAnimalTrack.backend.utilities">Module contents</a></li>
 </ul>

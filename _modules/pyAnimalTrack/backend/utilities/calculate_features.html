@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pyAnimalTrack.backend.utilities.calculate_features &mdash; pyAnimalTrack  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="pyAnimalTrack  documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pyAnimalTrack.backend.utilities.calculate_features</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="CalculateFeatures"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures">[docs]</a><span class="k">class</span> <span class="nc">CalculateFeatures</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Utility Class for calculating specific features of the  accelerometer data.</span>
+<span class="sd">        All methods are static, so no instantiation is required.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_sma"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_sma">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_sma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate the Signal Magnitude Area (SMA).</span>
+<span class="sd">            This can be used to distuingish between periods of activity vs rest.</span>
+<span class="sd">            Mathematical Notation: abs(Xi)+abs(Yi)+abs(Zi)</span>
+
+<span class="sd">            :param x: raw X axis accelerometer data</span>
+<span class="sd">            :param y: raw Y axis accelerometer data</span>
+<span class="sd">            :param z: raw Z axis accelerometer data</span>
+
+<span class="sd">            :returns: An Numpy array representing the SMA of the input data. </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">z</span><span class="p">))</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_svm"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_svm">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_svm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate the Signal Vector Magnitude (SVM).</span>
+<span class="sd">            This indicates degree of movement intensity.</span>
+<span class="sd">            Mathematical Notation: sqrt(Xi^2+Yi^2+Zi^2)</span>
+
+<span class="sd">            :param x: raw X axis accelerometer data</span>
+<span class="sd">            :param y: raw Y axis accelerometer data</span>
+<span class="sd">            :param z: raw Z axis accelerometer data</span>
+
+<span class="sd">            :returns: An Numpy array representing the SVM of the input data. </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">z</span><span class="p">))</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_movement_variation"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_movement_variation">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_movement_variation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate the movement_variation.</span>
+<span class="sd">            Mathematical Notation: abs(Xi+1-Xi)+abs(Yi+1-Yi)+abs(Zi+1-Zi)</span>
+
+<span class="sd">            :param x: raw X axis accelerometer data</span>
+<span class="sd">            :param y: raw Y axis accelerometer data</span>
+<span class="sd">            :param z: raw Z axis accelerometer data</span>
+
+<span class="sd">            :returns: An Numpy array representing the movement variation of the input data. </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">x</span><span class="p">)))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">y</span><span class="p">)))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">z</span><span class="p">))))</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_energy"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_energy">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate the Energy of the combined axes.</span>
+<span class="sd">            Mathematical Notation: (Xi^2+Yi^2+Zi^2)^2</span>
+
+<span class="sd">            :param x: raw X axis accelerometer data</span>
+<span class="sd">            :param y: raw Y axis accelerometer data</span>
+<span class="sd">            :param z: raw Z axis accelerometer data</span>
+
+<span class="sd">            :returns: An Numpy array representing the energy of the input data. </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_entropy"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_entropy">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_entropy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate the Entropy of the combined axes.</span>
+<span class="sd">            Mathematical Notation: (1+(Xi+Yi+Zi))2*ln(1+(Xi+Yi+Zi))2</span>
+
+<span class="sd">            :param x: raw X axis accelerometer data</span>
+<span class="sd">            :param y: raw Y axis accelerometer data</span>
+<span class="sd">            :param z: raw Z axis accelerometer data</span>
+
+<span class="sd">            :returns: An Numpy array representing the entropy of the input data. </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="p">)))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="p">))))</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_pitch"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_pitch">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_pitch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate the pitch in degrees of the combined axes.</span>
+<span class="sd">            Mathematical Notation: tan^-1(-Xi/(sqrt(Yi+Zi)))*180/pi</span>
+
+<span class="sd">            :param x: raw X axis accelerometer data</span>
+<span class="sd">            :param y: raw Y axis accelerometer data</span>
+<span class="sd">            :param z: raw Z axis accelerometer data</span>
+
+<span class="sd">            :returns: An Numpy array representing the pitch of the input data. </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">x</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="n">z</span><span class="p">))</span><span class="o">**</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span></div>
+
+    
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_roll"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_roll">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate the roll in degrees of the combined axes.</span>
+<span class="sd">            Mathematical Notation: atan2(Yi,Zi)*180/pi</span>
+
+<span class="sd">            :param y: raw Y axis accelerometer data</span>
+<span class="sd">            :param z: raw Z axis accelerometer data</span>
+
+<span class="sd">            :returns: An Numpy array representing the roll of the input data. </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span></div>
+
+    
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_inclination"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_inclination">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_inclination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate the inclination in degrees of the combined axes.</span>
+<span class="sd">            Mathematical Notation: tan^-1((sqrt(Xi^2+Yi^2))/Zi)*180/pi</span>
+
+<span class="sd">            :param x: raw X axis accelerometer data</span>
+<span class="sd">            :param y: raw Y axis accelerometer data</span>
+<span class="sd">            :param z: raw Z axis accelerometer data</span>
+
+<span class="sd">            :returns: An Numpy array representing the inclination of the input data. </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">/</span> <span class="n">z</span><span class="p">)</span> <span class="o">**</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span></div></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, David McCormick.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
