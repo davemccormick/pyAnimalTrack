@@ -7,7 +7,7 @@ class pyAnimalTrackUI(object):
             :param data: Initial input data
             :returns: void
         """
-        print "Building DR"
+        print("Building DR")
 
     def testMethod(self, begin):
         """ testMethod
