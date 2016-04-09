@@ -10,7 +10,7 @@ class CalculateFeatures(object):
     def calculate_sma(self, x, y, z):
         """ Calculate the Signal Magnitude Area (SMA).
             This can be used to distuingish between periods of activity vs rest.
-            Mathematical Notation: |Xi|+|Yi|+|Zi|
+            Mathematical Notation: abs(Xi)+abs(Yi)+abs(Zi)
 
             :param x: raw X axis accelerometer data
             :param y: raw Y axis accelerometer data
@@ -27,7 +27,7 @@ class CalculateFeatures(object):
     def calculate_svm(self, x, y, z):
         """ Calculate the Signal Vector Magnitude (SVM).
             This indicates degree of movement intensity.
-            Mathematical Notation: √Xi^2+Yi^2+Zi^2
+            Mathematical Notation: sqrt(Xi^2+Yi^2+Zi^2)
 
             :param x: raw X axis accelerometer data
             :param y: raw Y axis accelerometer data
@@ -43,7 +43,7 @@ class CalculateFeatures(object):
     @staticmethod
     def calculate_movement_variation(self, x, y, z):
         """ Calculate the movement_variation.
-            Mathematical Notation: |Xi+1-Xi|+|Yi+1-Yi|+|Zi+1-Zi|
+            Mathematical Notation: abs(Xi+1-Xi)+abs(Yi+1-Yi)+abs(Zi+1-Zi)
 
             :param x: raw X axis accelerometer data
             :param y: raw Y axis accelerometer data
@@ -53,7 +53,7 @@ class CalculateFeatures(object):
 
         """
 
-        return np.add(np.absolute(np.add(x, np.subtract(1-x)) + np.absolute(np.add(y, np.subtract(1-y)) + np.absolute(np.add(z, np.subtract(1-z)))
+        return np.add(np.absolute(np.add(x, np.subtract(1-x))) + np.absolute(np.add(y, np.subtract(1-y))) + np.absolute(np.add(z, np.subtract(1-z))))
 
 
     @staticmethod
@@ -91,7 +91,7 @@ class CalculateFeatures(object):
     @staticmethod
     def calculate_pitch(self, x, y, z):
         """ Calculate the pitch in degrees of the combined axes.
-            Mathematical Notation: tan^-1(-Xi/(√Yi+Zi))*180/π
+            Mathematical Notation: tan^-1(-Xi/(sqrt(Yi+Zi)))*180/pi
 
             :param x: raw X axis accelerometer data
             :param y: raw Y axis accelerometer data
@@ -107,7 +107,7 @@ class CalculateFeatures(object):
     @staticmethod
     def calculate_roll(self, y, z):
         """ Calculate the roll in degrees of the combined axes.
-            Mathematical Notation: atan2(Yi,Zi)*180/π
+            Mathematical Notation: atan2(Yi,Zi)*180/pi
 
             :param y: raw Y axis accelerometer data
             :param z: raw Z axis accelerometer data
@@ -122,7 +122,7 @@ class CalculateFeatures(object):
     @staticmethod
     def calculate_inclination(self, x, y, z):
         """ Calculate the inclination in degrees of the combined axes.
-            Mathematical Notation: tan^-1((√Xi^2+Yi^2)/Zi)*180/π
+            Mathematical Notation: tan^-1((sqrt(Xi^2+Yi^2))/Zi)*180/pi
 
             :param x: raw X axis accelerometer data
             :param y: raw Y axis accelerometer data
@@ -132,5 +132,5 @@ class CalculateFeatures(object):
 
         """
 
-        return (np.tan(np.divide((np.sqrt(np.square(x)+np.square(y)) / z) ** 1) * 180 / np.pi)
+        return (np.tan(np.divide((np.sqrt(np.square(x)+np.square(y)) / z) ** 1) * 180 / np.pi))
 
