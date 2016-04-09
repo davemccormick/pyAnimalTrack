@@ -333,6 +333,56 @@ TODO: speak to robin to understand what this is doing.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-pyAnimalTrack.backend.utilities.time_window">
+<span id="pyanimaltrack-backend-utilities-time-window-module"></span><h2>pyAnimalTrack.backend.utilities.time_window module<a class="headerlink" href="#module-pyAnimalTrack.backend.utilities.time_window" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyAnimalTrack.backend.utilities.time_window.TimeWindow">
+<em class="property">class </em><code class="descclassname">pyAnimalTrack.backend.utilities.time_window.</code><code class="descname">TimeWindow</code><span class="sig-paren">(</span><em>data</em>, <em>isSeconds=False</em>, <em>sampleRate=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/time_window.html#TimeWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.time_window.TimeWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Object to handle creating a time window, from a timeseries.</p>
+<dl class="method">
+<dt id="pyAnimalTrack.backend.utilities.time_window.TimeWindow.extract">
+<code class="descname">extract</code><span class="sig-paren">(</span><em>start=0</em>, <em>end=0</em>, <em>step=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/time_window.html#TimeWindow.extract"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.time_window.TimeWindow.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a time window from the data. If both start and end are 0, assume
+all elements are wanted, and step is the only param that will be applied.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>start</strong> &#8211; The start of the slice required.</li>
+<li><strong>end</strong> &#8211; The end of the slice required.</li>
+<li><strong>step</strong> &#8211; Steps between elements in array to return. Defaults to 1 (all data).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An Numpy array of length &#8220;length&#8221;, beginning at index &#8220;offset&#8221;.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.backend.utilities.time_window.TimeWindow.split">
+<code class="descname">split</code><span class="sig-paren">(</span><em>nWindows</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/time_window.html#TimeWindow.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.time_window.TimeWindow.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split the data into nWindows of equal size. If data isnt equally divisible, the final
+window will include a shorter duration.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nWindows</strong> &#8211; Amount of sub arrays to return.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of arrays.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-pyAnimalTrack.backend.utilities">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyAnimalTrack.backend.utilities" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -351,6 +401,7 @@ TODO: speak to robin to understand what this is doing.</p>
 <li><a class="reference internal" href="#module-pyAnimalTrack.backend.utilities.accuracy">pyAnimalTrack.backend.utilities.accuracy module</a></li>
 <li><a class="reference internal" href="#module-pyAnimalTrack.backend.utilities.calculate_features">pyAnimalTrack.backend.utilities.calculate_features module</a></li>
 <li><a class="reference internal" href="#module-pyAnimalTrack.backend.utilities.calibrate_axis">pyAnimalTrack.backend.utilities.calibrate_axis module</a></li>
+<li><a class="reference internal" href="#module-pyAnimalTrack.backend.utilities.time_window">pyAnimalTrack.backend.utilities.time_window module</a></li>
 <li><a class="reference internal" href="#module-pyAnimalTrack.backend.utilities">Module contents</a></li>
 </ul>
 </li>
