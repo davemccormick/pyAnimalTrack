@@ -35,7 +35,9 @@ class SensorCSV(InputData):
 
     def getColumn(self, columnName):
         """ Gets a column of data.
+
             :param columnName: The name of the column to retreive.
+            
             :returns: A numpy array of data for processing.
         """
 
