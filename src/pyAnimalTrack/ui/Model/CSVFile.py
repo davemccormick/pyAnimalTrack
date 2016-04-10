@@ -1,50 +1,20 @@
 from PyQt5.QtCore import QAbstractTableModel, QVariant
 from PyQt5.Qt import Qt
 
+from src.pyAnimalTrack.backend.filehandlers.input_data import InputData
+
 
 class CSVFile(QAbstractTableModel):
 
-    def __init__(self):
+    def __init__(self, input_data):
         """ Constructor
 
         :returns: void
         """
         super(CSVFile, self).__init__()
 
-        self.__rowTitles = [
-            'Milliseconds',
-            'Ax',
-            'Ay',
-            'Az',
-            'Mx',
-            'My',
-            'Mz',
-            'Gx',
-            'Gy',
-            'Gz',
-            'Temperature',
-            'Adjusted Milliseconds'
-        ]
-        self.rows = []
-
-    def load_file(self, filename, separator=','):
-        """  Load a CSV file into this object, with a given separator
-
-        :param filename:
-        :param separator:
-        :returns: void
-        """
-
-        with open(filename) as file:
-            for line in file.readlines():
-                values = line.strip().split(separator)
-                # TODO: Loop to object, append built object
-                valueObject = {}
-
-                for i in range(len(self.__rowTitles)):
-                    valueObject[self.__rowTitles[i].replace(' ', '_')] = values[i]
-
-                self.rows.append(valueObject)
+        self.__dataFile = input_data
+        self.__dataSet = self.__dataFile.getData()
 
     def rowCount(self, QModelIndex_parent=None, *args, **kwargs):
         """ Gets the number of data rows. Used by PyQt.
@@ -54,7 +24,7 @@ class CSVFile(QAbstractTableModel):
         :param kwargs: -
         :return: The number of data rows
         """
-        return len(self.rows)
+        return len(self.__dataSet.index)
 
     def columnCount(self, QModelIndex_parent=None, *args, **kwargs):
         """ Gets the number of columns used in the dataset Used by PyQt.
@@ -64,7 +34,7 @@ class CSVFile(QAbstractTableModel):
         :param kwargs: -
         :return: The number of columns for the dataset
         """
-        return len(self.__rowTitles)
+        return len(self.__dataSet.columns)
 
     def headerData(self, index, Qt_Orientation, role=None):
         """ Gets a header for a row/column of data. Used by PyQt.
@@ -76,7 +46,7 @@ class CSVFile(QAbstractTableModel):
         """
         if role == Qt.DisplayRole:
             if Qt_Orientation == Qt.Horizontal:
-                return self.__rowTitles[index]
+                return self.__dataFile.getReadableColumns()[index]
             else:
                 return index + 1
         else:
@@ -91,6 +61,9 @@ class CSVFile(QAbstractTableModel):
         """
 
         if role == Qt.DisplayRole:
-            return self.rows[QModelIndex.row()][self.__rowTitles[QModelIndex.column()].replace(' ', '_')]
+            return str(self.__dataSet.iloc[QModelIndex.row()][QModelIndex.column()])
         else:
             return QVariant()
+
+    def get_dataset(self):
+        return self.__dataSet

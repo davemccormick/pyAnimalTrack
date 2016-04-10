@@ -1,4 +1,4 @@
-from base_filter import BaseFilter
+from src.pyAnimalTrack.backend.filters.base_filter import BaseFilter
 import numpy as np
 
 class LPF(BaseFilter):
@@ -17,7 +17,7 @@ class LPF(BaseFilter):
         return
 
 
-    def low_pass_filter(self, samplingRate, cutoffFrequency, filterLength):
+    def filter(self, samplingRate, cutoffFrequency, filterLength):
         """Applies filter to signal.
 
         :param samplingRate: Rate at which the signal should be sampled in Hz
@@ -26,7 +26,7 @@ class LPF(BaseFilter):
 
         :returns: A low pass filtered signal as NP array.
         """
-        h = self.filter(samplingRate, cutoffFrequency, filterLength)
+        h = super().filter(samplingRate, cutoffFrequency, filterLength)
         s = np.convolve(self.signal, h, mode='same')
 
         return s

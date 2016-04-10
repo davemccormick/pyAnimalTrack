@@ -133,6 +133,9 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="text">
+           <string>2</string>
+          </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
           </property>
@@ -160,6 +163,9 @@
         </item>
         <item>
          <widget class="QLineEdit" name="lineEdit_3">
+          <property name="text">
+           <string>59</string>
+          </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
           </property>
@@ -252,22 +258,5 @@
   </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>featuresButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>321</x>
-     <y>568</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>879</x>
-     <y>347</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
