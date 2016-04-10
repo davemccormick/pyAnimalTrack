@@ -3,7 +3,7 @@ from src.pyAnimalTrack.backend.filehandlers.input_data import InputData
 
 class FilteredSensorData(InputData):
 
-    def __init__(self, filter_class, df, sample_rates, cutoff_frequencies, filter_lengths):
+    def __init__(self, filter_class, df, filter_parameters):
         """ Constructor
 
             :param filter_class: The filter to use
@@ -27,7 +27,11 @@ class FilteredSensorData(InputData):
 
             # Create a new column of data
             new_values = filter_class(getattr(self.__df, curr_name).values)\
-                .filter(sample_rates[curr_name], cutoff_frequencies[curr_name], filter_lengths[curr_name])
+                .filter(
+                filter_parameters[curr_name]['SampleRate'],
+                filter_parameters[curr_name]['CutoffFrequency'],
+                filter_parameters[curr_name]['FilterLength']
+            )
 
             # Replace each value in the column
             for row in range(len(self.__df.index)):
