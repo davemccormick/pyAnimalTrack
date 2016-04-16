@@ -149,9 +149,47 @@
 <span id="pyanimaltrack-backend-deadreckoning-dead-reckoning-module"></span><h2>pyAnimalTrack.backend.deadreckoning.dead_reckoning module<a class="headerlink" href="#module-pyAnimalTrack.backend.deadreckoning.dead_reckoning" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning">
-<em class="property">class </em><code class="descclassname">pyAnimalTrack.backend.deadreckoning.dead_reckoning.</code><code class="descname">DeadReckoning</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/deadreckoning/dead_reckoning.html#DeadReckoning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pyAnimalTrack.backend.deadreckoning.dead_reckoning.</code><code class="descname">DeadReckoning</code><span class="sig-paren">(</span><em>speed</em>, <em>heading</em>, <em>angle=&lt;Angle.degree: 1&gt;</em>, <em>returnToStart=True</em>, <em>depth=None</em>, <em>pitch=None</em>, <em>endcoords=None</em>, <em>speedhorizontal=&lt;SpeedHorizontal.corrected: 1&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/deadreckoning/dead_reckoning.html#DeadReckoning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Class for Dead Reckoning algorithm</p>
+<dl class="method">
+<dt id="pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.calculateSpeed">
+<code class="descname">calculateSpeed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/deadreckoning/dead_reckoning.html#DeadReckoning.calculateSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.calculateSpeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate Horizontal Speed Values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.compute">
+<code class="descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/deadreckoning/dead_reckoning.html#DeadReckoning.compute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience wrapper to run dead reckoning in required order.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Data dictionary.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.courseMadeGood">
+<code class="descname">courseMadeGood</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/deadreckoning/dead_reckoning.html#DeadReckoning.courseMadeGood"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.courseMadeGood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine course made good. Must be called after courseSteered is calculated.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.courseSteered">
+<code class="descname">courseSteered</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/deadreckoning/dead_reckoning.html#DeadReckoning.courseSteered"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.courseSteered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine course steered via dead reckoning.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.validateInputs">
+<code class="descname">validateInputs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/deadreckoning/dead_reckoning.html#DeadReckoning.validateInputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.validateInputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial input validation. Uses instance variables.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>

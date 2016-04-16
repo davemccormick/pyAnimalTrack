@@ -123,15 +123,172 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pyAnimalTrack.backend.deadreckoning.dead_reckoning</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="DeadReckoning"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.deadreckoning.html#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning">[docs]</a><span></span><span class="k">class</span> <span class="nc">DeadReckoning</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span></span><span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.utilities.enums</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.utilities.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+
+<div class="viewcode-block" id="DeadReckoning"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.deadreckoning.html#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning">[docs]</a><span class="k">class</span> <span class="nc">DeadReckoning</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Class for Dead Reckoning algorithm</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span>
+                       <span class="n">heading</span><span class="p">,</span>
+                       <span class="n">angle</span><span class="o">=</span><span class="n">Angle</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> 
+                       <span class="n">returnToStart</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+                       <span class="n">depth</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+                       <span class="n">pitch</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+                       <span class="n">endcoords</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+                       <span class="n">speedhorizontal</span> <span class="o">=</span> <span class="n">SpeedHorizontal</span><span class="o">.</span><span class="n">corrected</span><span class="p">):</span>
+
         <span class="sd">&quot;&quot;&quot; Constructor</span>
-<span class="sd">            :param: Data</span>
+<span class="sd">            :param speed: Speed</span>
+<span class="sd">            :param heading: Data</span>
+<span class="sd">            :param angle: Data</span>
+<span class="sd">            :param returnToStart: Data</span>
+<span class="sd">            :param depth: Data</span>
+<span class="sd">            :param pitch: Data</span>
+<span class="sd">            :param endcoords: Data</span>
+<span class="sd">            :param speedhorizontal: Data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">print</span> <span class="s2">&quot;Building DR&quot;</span></div>
+
+        <span class="c1">#Input data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">speed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heading</span> <span class="o">=</span> <span class="n">heading</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">angle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">returnToStart</span> <span class="o">=</span> <span class="n">returnToStart</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">depth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pitch</span> <span class="o">=</span> <span class="n">pitch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endcoords</span> <span class="o">=</span> <span class="n">endcoords</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speedhorizontal</span> <span class="o">=</span> <span class="n">speedhorizontal</span>
+
+        <span class="c1"># Other instance variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataLength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cdrx</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cdry</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endx</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endy</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">returnToStart</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">endx</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">endy</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># State</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">courseSteeredCalculated</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="k">return</span>
+
+
+<div class="viewcode-block" id="DeadReckoning.compute"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.deadreckoning.html#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.compute">[docs]</a>    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Convenience wrapper to run dead reckoning in required order.</span>
+
+<span class="sd">            :returns: Data dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">validateInputs</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calculateSpeed</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">courseSteered</span><span class="p">()</span>
+        <span class="n">ddict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">courseMadeGood</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">ddict</span></div>
+
+
+<div class="viewcode-block" id="DeadReckoning.validateInputs"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.deadreckoning.html#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.validateInputs">[docs]</a>    <span class="k">def</span> <span class="nf">validateInputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Initial input validation. Uses instance variables.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">!=</span> <span class="n">Angle</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">!=</span> <span class="n">Angle</span><span class="o">.</span><span class="n">radian</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">AngleException</span><span class="p">(</span><span class="s2">&quot;Heading parameter must be either degree or radian&quot;</span><span class="p">)</span> 
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speedhorizontal</span> <span class="o">!=</span> <span class="n">SpeedHorizontal</span><span class="o">.</span><span class="n">corrected</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speedhorizontal</span> <span class="o">!=</span> <span class="n">SpeedHorizontal</span><span class="o">.</span><span class="n">pitch</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speedhorizontal</span> <span class="o">!=</span> <span class="n">SpeedHorizontal</span><span class="o">.</span><span class="n">depth</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">SpeedHorizontalException</span><span class="p">(</span><span class="s2">&quot;SpeedHorizontal must be either corrected, pitch or depth.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heading</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">LengthException</span><span class="p">(</span><span class="s2">&quot;Data length mismatch between speed and heading&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="DeadReckoning.calculateSpeed"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.deadreckoning.html#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.calculateSpeed">[docs]</a>    <span class="k">def</span> <span class="nf">calculateSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate Horizontal Speed Values.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speedhorizontal</span> <span class="o">==</span> <span class="n">SpeedHorizontal</span><span class="o">.</span><span class="n">pitch</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pitch</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pitch</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span>
+            <span class="k">print</span> <span class="s2">&quot;Horizontal speed is calculated as cos(pitch)*speed&quot;</span>
+
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="DeadReckoning.courseSteered"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.deadreckoning.html#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.courseSteered">[docs]</a>    <span class="k">def</span> <span class="nf">courseSteered</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Determine course steered via dead reckoning.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">==</span> <span class="n">Angle</span><span class="o">.</span><span class="n">degree</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">drx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">heading</span><span class="o">/</span><span class="p">(</span><span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heading</span><span class="o">/</span><span class="p">(</span><span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">==</span> <span class="n">Angle</span><span class="o">.</span><span class="n">radian</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">drx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">heading</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heading</span><span class="p">)</span>
+
+        <span class="c1"># Start from 0</span>
+        <span class="n">drx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">dry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cdrx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">drx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cdry</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">dry</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">courseSteeredCalculated</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="DeadReckoning.courseMadeGood"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.deadreckoning.html#pyAnimalTrack.backend.deadreckoning.dead_reckoning.DeadReckoning.courseMadeGood">[docs]</a>    <span class="k">def</span> <span class="nf">courseMadeGood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Determine course made good. Must be called after courseSteered is calculated.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">courseSteeredCalculated</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CourseSteeredNotCalculatedException</span><span class="p">(</span><span class="s2">&quot;Course Steered not yet calculated.&quot;</span><span class="p">)</span>
+
+
+        <span class="n">drdict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">driftx</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cdrx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">endx</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataLength</span>
+        <span class="n">drifty</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cdry</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">endy</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataLength</span>
+        <span class="n">errorDistance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="bp">self</span><span class="o">.</span><span class="n">cdrx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">endx</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">cdry</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">endy</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">drift</span> <span class="o">=</span> <span class="n">errorDistance</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataLength</span>
+        <span class="n">set_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdry</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdrx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">set_</span> <span class="o">=</span> <span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">set_</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)))</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+        <span class="c1"># Initial values for CMG</span>
+        <span class="n">xcmg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdrx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ycmg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">tty</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataLength</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">xcmg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdrx</span> <span class="o">-</span> <span class="p">(</span><span class="n">driftx</span> <span class="o">*</span> <span class="n">tty</span><span class="p">)</span>
+        <span class="n">xcmy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdry</span> <span class="o">-</span> <span class="p">(</span><span class="n">drifty</span> <span class="o">*</span> <span class="n">tty</span><span class="p">)</span>
+        <span class="n">xcmg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">ycmg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">smg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">xcmg</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ycmg</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">smg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">smg</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1">#Persist to dict and return.</span>
+        <span class="n">drdict</span><span class="p">[</span><span class="s1">&#39;CourseSteeredX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdrx</span>
+        <span class="n">drdict</span><span class="p">[</span><span class="s1">&#39;CourseSteeredY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdry</span>
+        <span class="n">drdict</span><span class="p">[</span><span class="s1">&#39;CourseMadeGoodX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xcmg</span>
+        <span class="n">drdict</span><span class="p">[</span><span class="s1">&#39;CourseMadeGoodY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ycmg</span>
+        <span class="n">drdict</span><span class="p">[</span><span class="s1">&#39;SpeedH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span>
+        <span class="n">drdict</span><span class="p">[</span><span class="s1">&#39;SpeedMadeGood&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">smg</span>
+        <span class="n">drdict</span><span class="p">[</span><span class="s1">&#39;CourseMadeGoodX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xcmg</span>
+        <span class="n">drdict</span><span class="p">[</span><span class="s1">&#39;Drift&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">drift</span>
+        <span class="n">drdict</span><span class="p">[</span><span class="s1">&#39;ErrorDistance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">errorDistance</span>
+        <span class="n">drdict</span><span class="p">[</span><span class="s1">&#39;Set_&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">set_</span>
+
+        <span class="k">return</span> <span class="n">drdict</span></div></div>
+
 
 </pre></div>
 
