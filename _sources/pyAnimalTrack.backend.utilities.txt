@@ -28,6 +28,22 @@ pyAnimalTrack.backend.utilities.calibrate_axis module
     :undoc-members:
     :show-inheritance:
 
+pyAnimalTrack.backend.utilities.enums module
+--------------------------------------------
+
+.. automodule:: pyAnimalTrack.backend.utilities.enums
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pyAnimalTrack.backend.utilities.exceptions module
+-------------------------------------------------
+
+.. automodule:: pyAnimalTrack.backend.utilities.exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pyAnimalTrack.backend.utilities.time_window module
 --------------------------------------------------
 
