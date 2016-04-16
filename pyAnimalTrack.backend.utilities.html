@@ -440,6 +440,7 @@ TODO: speak to robin to understand what this is doing.</p>
 <dt id="pyAnimalTrack.backend.utilities.enums.Angle">
 <em class="property">class </em><code class="descclassname">pyAnimalTrack.backend.utilities.enums.</code><code class="descname">Angle</code><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/enums.html#Angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.enums.Angle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">enum.Enum</span></code></p>
+<p>Angle Enum. Degree = 1, Radian = 2.</p>
 <dl class="attribute">
 <dt id="pyAnimalTrack.backend.utilities.enums.Angle.degree">
 <code class="descname">degree</code><em class="property"> = &lt;Angle.degree: 1&gt;</em><a class="headerlink" href="#pyAnimalTrack.backend.utilities.enums.Angle.degree" title="Permalink to this definition">¶</a></dt>
@@ -456,6 +457,7 @@ TODO: speak to robin to understand what this is doing.</p>
 <dt id="pyAnimalTrack.backend.utilities.enums.SpeedHorizontal">
 <em class="property">class </em><code class="descclassname">pyAnimalTrack.backend.utilities.enums.</code><code class="descname">SpeedHorizontal</code><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/enums.html#SpeedHorizontal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.enums.SpeedHorizontal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">enum.Enum</span></code></p>
+<p>SpeedHorizonal Enum. Correct = 1, Pitch = 2, Depth = 3.</p>
 <dl class="attribute">
 <dt id="pyAnimalTrack.backend.utilities.enums.SpeedHorizontal.corrected">
 <code class="descname">corrected</code><em class="property"> = &lt;SpeedHorizontal.corrected: 1&gt;</em><a class="headerlink" href="#pyAnimalTrack.backend.utilities.enums.SpeedHorizontal.corrected" title="Permalink to this definition">¶</a></dt>
@@ -480,24 +482,28 @@ TODO: speak to robin to understand what this is doing.</p>
 <dt id="pyAnimalTrack.backend.utilities.exceptions.AngleException">
 <em class="property">exception </em><code class="descclassname">pyAnimalTrack.backend.utilities.exceptions.</code><code class="descname">AngleException</code><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/exceptions.html#AngleException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.exceptions.AngleException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>Raised if Angle does not equal Angle enum value.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="pyAnimalTrack.backend.utilities.exceptions.CourseSteeredNotCalculatedException">
 <em class="property">exception </em><code class="descclassname">pyAnimalTrack.backend.utilities.exceptions.</code><code class="descname">CourseSteeredNotCalculatedException</code><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/exceptions.html#CourseSteeredNotCalculatedException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.exceptions.CourseSteeredNotCalculatedException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>Raised if CourseNotSteered has not been run prior to CourseMadeGood.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="pyAnimalTrack.backend.utilities.exceptions.LengthException">
 <em class="property">exception </em><code class="descclassname">pyAnimalTrack.backend.utilities.exceptions.</code><code class="descname">LengthException</code><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/exceptions.html#LengthException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.exceptions.LengthException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>Raised if uneven length between speed and heading data.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="pyAnimalTrack.backend.utilities.exceptions.SpeedHorizontalException">
 <em class="property">exception </em><code class="descclassname">pyAnimalTrack.backend.utilities.exceptions.</code><code class="descname">SpeedHorizontalException</code><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/exceptions.html#SpeedHorizontalException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.exceptions.SpeedHorizontalException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>Raised if SpeedHorizontal does not equal SpeedHorizontal enum value.</p>
 </dd></dl>
 
 </div>
