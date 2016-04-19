@@ -1,3 +1,5 @@
+import os
+
 import PyQt5.uic
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QMainWindow
@@ -5,15 +7,15 @@ from PyQt5.QtWidgets import QMainWindow
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 
-from src.pyAnimalTrack.backend.filehandlers import sensor_csv, filtered_sensor_data
-from src.pyAnimalTrack.backend.filters.low_pass_filter import LPF
-from src.pyAnimalTrack.backend.filters.high_pass_filter import HPF
+from pyAnimalTrack.backend.filehandlers import sensor_csv, filtered_sensor_data
+from pyAnimalTrack.backend.filters.low_pass_filter import LPF
+from pyAnimalTrack.backend.filters.high_pass_filter import HPF
 
-from src.pyAnimalTrack.ui.Controller.LoadCSVDialog import LoadCSVDialog
-from src.pyAnimalTrack.ui.Controller.FeaturesWindow import FeaturesWindow
-from src.pyAnimalTrack.ui.Model.CSVFile import CSVFile
+from pyAnimalTrack.ui.Controller.LoadCSVDialog import LoadCSVDialog
+from pyAnimalTrack.ui.Controller.FeaturesWindow import FeaturesWindow
+from pyAnimalTrack.ui.Model.CSVFile import CSVFile
 
-uiDataImportWindow = PyQt5.uic.loadUiType('./pyAnimalTrack/ui/View/DataImportWindow.ui')[0]
+uiDataImportWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/DataImportWindow.ui'))[0]
 
 # TODO: Second table of filtered data? Or show the graph there instead?
 

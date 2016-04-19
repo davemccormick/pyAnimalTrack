@@ -1,13 +1,21 @@
 pyAnimalTrack.ui package
 ========================
 
+Subpackages
+-----------
+
+.. toctree::
+
+    pyAnimalTrack.ui.Controller
+    pyAnimalTrack.ui.Model
+
 Submodules
 ----------
 
-pyAnimalTrack.ui.exampleUIForDocs module
-----------------------------------------
+pyAnimalTrack.ui.UIMain module
+------------------------------
 
-.. automodule:: pyAnimalTrack.ui.exampleUIForDocs
+.. automodule:: pyAnimalTrack.ui.UIMain
     :members:
     :undoc-members:
     :show-inheritance:

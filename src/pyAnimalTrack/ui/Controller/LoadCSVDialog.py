@@ -1,10 +1,12 @@
+import os
+
 import PyQt5.uic
 
 from PyQt5.QtWidgets import QDialog, QFileDialog
 from PyQt5.QtCore import pyqtSlot
 
 # TODO: Load path from config
-uiLoadCSVDialog = PyQt5.uic.loadUiType('./pyAnimalTrack/ui/View/LoadCSVDialog.ui')[0]
+uiLoadCSVDialog = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/LoadCSVDialog.ui'))[0]
 
 
 class LoadCSVDialog(QDialog, uiLoadCSVDialog):

@@ -1,4 +1,4 @@
-from src.pyAnimalTrack.backend.filehandlers.input_data import InputData
+from pyAnimalTrack.backend.filehandlers.input_data import InputData
 
 
 class FilteredSensorData(InputData):

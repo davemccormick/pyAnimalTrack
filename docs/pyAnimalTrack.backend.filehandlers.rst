@@ -4,6 +4,14 @@ pyAnimalTrack.backend.filehandlers package
 Submodules
 ----------
 
+pyAnimalTrack.backend.filehandlers.filtered_sensor_data module
+--------------------------------------------------------------
+
+.. automodule:: pyAnimalTrack.backend.filehandlers.filtered_sensor_data
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pyAnimalTrack.backend.filehandlers.input_data module
 ----------------------------------------------------
 

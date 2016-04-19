@@ -1,4 +1,4 @@
-from src.pyAnimalTrack.backend.filters.base_filter import BaseFilter
+from pyAnimalTrack.backend.filters.base_filter import BaseFilter
 import numpy as np
 
 class HPF(BaseFilter):

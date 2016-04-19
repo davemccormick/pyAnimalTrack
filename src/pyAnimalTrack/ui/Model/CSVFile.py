@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QAbstractTableModel, QVariant
 from PyQt5.Qt import Qt
 
-from src.pyAnimalTrack.backend.filehandlers.input_data import InputData
+from pyAnimalTrack.backend.filehandlers.input_data import InputData
 
 
 class CSVFile(QAbstractTableModel):

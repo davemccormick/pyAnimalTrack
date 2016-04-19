@@ -1,3 +1,5 @@
+import os
+
 import PyQt5.uic
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 
@@ -6,9 +8,9 @@ from PyQt5.QtWidgets import QMainWindow
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 
-from src.pyAnimalTrack.backend.filters.low_pass_filter import LPF
+from pyAnimalTrack.backend.filters.low_pass_filter import LPF
 
-uiFeaturesWindow = PyQt5.uic.loadUiType('./pyAnimalTrack/ui/View/FeaturesWindow.ui')[0]
+uiFeaturesWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/FeaturesWindow.ui'))[0]
 
 
 class FeaturesWindow(QMainWindow, uiFeaturesWindow):

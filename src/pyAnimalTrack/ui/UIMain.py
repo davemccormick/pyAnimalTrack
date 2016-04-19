@@ -1,4 +1,4 @@
-import src.pyAnimalTrack.ui.Controller.DataImportWindow
+import pyAnimalTrack.ui.Controller.DataImportWindow
 
 
 class UIMain(object):
@@ -16,5 +16,5 @@ class UIMain(object):
             Gets program flow control, creates the main window
             :returns:
         """
-        self.window = src.pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow()
+        self.window = pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow()
         self.window.show()

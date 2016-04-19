@@ -6,5 +6,5 @@ class DeadReckoning(object):
         """ Constructor
             :param: Data
         """
-        print "Building DR"
+        print("Building DR")
 
