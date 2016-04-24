@@ -13,11 +13,12 @@ from pyAnimalTrack.backend.filters.high_pass_filter import HPF
 
 from pyAnimalTrack.ui.Controller.LoadCSVDialog import LoadCSVDialog
 from pyAnimalTrack.ui.Controller.FeaturesWindow import FeaturesWindow
-from pyAnimalTrack.ui.Model.CSVFile import CSVFile
+from pyAnimalTrack.ui.Model.TableModel import TableModel
 
 uiDataImportWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/DataImportWindow.ui'))[0]
 
 # TODO: Second table of filtered data? Or show the graph there instead?
+
 
 class DataImportWindow(QMainWindow, uiDataImportWindow):
 
@@ -105,6 +106,8 @@ class DataImportWindow(QMainWindow, uiDataImportWindow):
             :returns: True if a file has been loaded, false otherwise
         """
 
+        # TODO: Don't clear the existing path on cancel
+
         file_loader_dialog = LoadCSVDialog()
         dialog_result = file_loader_dialog.loadCSV(self)
 
@@ -113,7 +116,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow):
 
             # Load the CSV data object into the table
             self.rawDataFile = sensor_csv.SensorCSV(dialog_result[1])
-            self.tableDataFile = CSVFile(self.rawDataFile)
+            self.tableDataFile = TableModel(self.rawDataFile)
             self.rawTableView.setModel(self.tableDataFile)
 
             # Load filter controlling dropdown
@@ -143,10 +146,10 @@ class DataImportWindow(QMainWindow, uiDataImportWindow):
 
             :returns: void
         """
-        self.lowPassData = CSVFile(filtered_sensor_data
-                                    .FilteredSensorData(LPF, self.tableDataFile.get_dataset(), self.filterParameters))
-        self.highPassData = CSVFile(filtered_sensor_data
-                                    .FilteredSensorData(HPF, self.tableDataFile.get_dataset(), self.filterParameters))
+        self.lowPassData = TableModel(filtered_sensor_data
+                                      .FilteredSensorData(LPF, self.tableDataFile.get_dataset(), self.filterParameters))
+        self.highPassData = TableModel(filtered_sensor_data
+                                       .FilteredSensorData(HPF, self.tableDataFile.get_dataset(), self.filterParameters))
 
         self.redraw_graph()
 

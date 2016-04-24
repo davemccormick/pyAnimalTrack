@@ -4,14 +4,14 @@ from PyQt5.Qt import Qt
 from pyAnimalTrack.backend.filehandlers.input_data import InputData
 
 
-class CSVFile(QAbstractTableModel):
+class TableModel(QAbstractTableModel):
 
     def __init__(self, input_data):
         """ Constructor
 
         :returns: void
         """
-        super(CSVFile, self).__init__()
+        super(TableModel, self).__init__()
 
         self.__dataFile = input_data
         self.__dataSet = self.__dataFile.getData()

@@ -7,7 +7,7 @@ class CalculateFeatures(object):
     """
 
     @staticmethod
-    def calculate_sma(self, x, y, z):
+    def calculate_sma(x, y, z):
         """ Calculate the Signal Magnitude Area (SMA).
             This can be used to distuingish between periods of activity vs rest.
             Mathematical Notation: abs(Xi)+abs(Yi)+abs(Zi)
@@ -24,7 +24,7 @@ class CalculateFeatures(object):
 
 
     @staticmethod
-    def calculate_svm(self, x, y, z):
+    def calculate_svm(x, y, z):
         """ Calculate the Signal Vector Magnitude (SVM).
             This indicates degree of movement intensity.
             Mathematical Notation: sqrt(Xi^2+Yi^2+Zi^2)
@@ -41,7 +41,7 @@ class CalculateFeatures(object):
 
 
     @staticmethod
-    def calculate_movement_variation(self, x, y, z):
+    def calculate_movement_variation(x, y, z):
         """ Calculate the movement_variation.
             Mathematical Notation: abs(Xi+1-Xi)+abs(Yi+1-Yi)+abs(Zi+1-Zi)
 
@@ -57,7 +57,7 @@ class CalculateFeatures(object):
 
 
     @staticmethod
-    def calculate_energy(self, x, y, z):
+    def calculate_energy(x, y, z):
         """ Calculate the Energy of the combined axes.
             Mathematical Notation: (Xi^2+Yi^2+Zi^2)^2
 
@@ -73,7 +73,7 @@ class CalculateFeatures(object):
 
 
     @staticmethod
-    def calculate_entropy(self, x, y, z):
+    def calculate_entropy(x, y, z):
         """ Calculate the Entropy of the combined axes.
             Mathematical Notation: (1+(Xi+Yi+Zi))2*ln(1+(Xi+Yi+Zi))2
 
@@ -89,7 +89,7 @@ class CalculateFeatures(object):
 
 
     @staticmethod
-    def calculate_pitch(self, x, y, z):
+    def calculate_pitch(x, y, z):
         """ Calculate the pitch in degrees of the combined axes.
             Mathematical Notation: tan^-1(-Xi/(sqrt(Yi+Zi)))*180/pi
 
@@ -105,7 +105,7 @@ class CalculateFeatures(object):
 
     
     @staticmethod
-    def calculate_roll(self, y, z):
+    def calculate_roll(y, z):
         """ Calculate the roll in degrees of the combined axes.
             Mathematical Notation: atan2(Yi,Zi)*180/pi
 
@@ -120,7 +120,7 @@ class CalculateFeatures(object):
 
     
     @staticmethod
-    def calculate_inclination(self, x, y, z):
+    def calculate_inclination(x, y, z):
         """ Calculate the inclination in degrees of the combined axes.
             Mathematical Notation: tan^-1((sqrt(Xi^2+Yi^2))/Zi)*180/pi
 
