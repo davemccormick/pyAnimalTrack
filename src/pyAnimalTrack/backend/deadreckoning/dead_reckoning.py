@@ -1,6 +1,8 @@
 from pyAnimalTrack.backend.utilities.enums import *
 from pyAnimalTrack.backend.utilities.exceptions import *
 
+import numpy as np
+
 class DeadReckoning(object):
     """ Class for Dead Reckoning algorithm
     """
@@ -102,13 +104,13 @@ class DeadReckoning(object):
         """
 
         if self.angle == Angle.degree:
-            self.drx = self.speed*np.sin(heading/(180/np.pi))
-            self.dry = self.speed*cos(self.heading/(180/np.pi))
+            drx = self.speed*np.sin(self.heading/(180/np.pi))
+            dry = self.speed*np.cos(self.heading/(180/np.pi))
 
 
         if self.angle == Angle.radian:
-            self.drx = self.speed*np.sin(heading)
-            self.dry = self.speed*np.cos(self.heading)
+            drx = self.speed*np.sin(heading)
+            dry = self.speed*np.cos(self.heading)
 
         # Start from 0
         drx[0] = 0
