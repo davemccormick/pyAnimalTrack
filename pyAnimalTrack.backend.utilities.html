@@ -193,7 +193,7 @@ correspond to pitch angle, or may be a constant error.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A dictionary of accuracy dictionaries with keys: innput_accuracy and improved_accuracy.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A dictionary of accuracy dictionaries with keys: input_accuracy and improved_accuracy.</p>
 </td>
 </tr>
 </tbody>
@@ -258,6 +258,32 @@ Mathematical Notation: (1+(Xi+Yi+Zi))2*ln(1+(Xi+Yi+Zi))2</p>
 </dd></dl>
 
 <dl class="staticmethod">
+<dt id="pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_heading">
+<em class="property">static </em><code class="descname">calculate_heading</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>pitch</em>, <em>roll</em>, <em>declination=0</em>, <em>angle=&lt;Angle.degree: 1&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/calculate_features.html#CalculateFeatures.calculate_heading"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_heading" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate tilt compentated heading.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; LPF X axis magnetometer data</li>
+<li><strong>y</strong> &#8211; LPF Y axis magnetometer data</li>
+<li><strong>z</strong> &#8211; LPF Z axis magnetometer data</li>
+<li><strong>pitch</strong> &#8211; pre calculated pitch data</li>
+<li><strong>roll</strong> &#8211; pre calculated roll data</li>
+<li><strong>declination</strong> &#8211; delclination</li>
+<li><strong>angle</strong> &#8211; Angle type, degree or radians</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A dictionary of numpy arrays representing heading.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
 <dt id="pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_inclination">
 <em class="property">static </em><code class="descname">calculate_inclination</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/utilities/calculate_features.html#CalculateFeatures.calculate_inclination"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_inclination" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the inclination in degrees of the combined axes.
@@ -313,9 +339,9 @@ Mathematical Notation: tan^-1(-Xi/(sqrt(Yi+Zi)))*180/pi</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> &#8211; raw X axis accelerometer data</li>
-<li><strong>y</strong> &#8211; raw Y axis accelerometer data</li>
-<li><strong>z</strong> &#8211; raw Z axis accelerometer data</li>
+<li><strong>x</strong> &#8211; LPF X axis accelerometer data</li>
+<li><strong>y</strong> &#8211; LPF Y axis accelerometer data</li>
+<li><strong>z</strong> &#8211; LPF Z axis accelerometer data</li>
 </ul>
 </td>
 </tr>
@@ -336,8 +362,8 @@ Mathematical Notation: atan2(Yi,Zi)*180/pi</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y</strong> &#8211; raw Y axis accelerometer data</li>
-<li><strong>z</strong> &#8211; raw Z axis accelerometer data</li>
+<li><strong>y</strong> &#8211; LPF Y axis accelerometer data</li>
+<li><strong>z</strong> &#8211; LPF Z axis accelerometer data</li>
 </ul>
 </td>
 </tr>

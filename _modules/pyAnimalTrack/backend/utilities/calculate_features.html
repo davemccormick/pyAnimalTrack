@@ -125,6 +125,7 @@
   <h1>Source code for pyAnimalTrack.backend.utilities.calculate_features</h1><div class="highlight"><pre>
 <span></span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.utilities.enums</span> <span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="CalculateFeatures"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures">[docs]</a><span class="k">class</span> <span class="nc">CalculateFeatures</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Utility Class for calculating specific features of the  accelerometer data.</span>
@@ -132,7 +133,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="CalculateFeatures.calculate_sma"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_sma">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_sma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_sma"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_sma">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_sma</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Calculate the Signal Magnitude Area (SMA).</span>
 <span class="sd">            This can be used to distuingish between periods of activity vs rest.</span>
 <span class="sd">            Mathematical Notation: abs(Xi)+abs(Yi)+abs(Zi)</span>
@@ -145,11 +146,11 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">z</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div>
 
 
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="CalculateFeatures.calculate_svm"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_svm">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_svm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_svm"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_svm">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_svm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Calculate the Signal Vector Magnitude (SVM).</span>
 <span class="sd">            This indicates degree of movement intensity.</span>
 <span class="sd">            Mathematical Notation: sqrt(Xi^2+Yi^2+Zi^2)</span>
@@ -166,7 +167,7 @@
 
 
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="CalculateFeatures.calculate_movement_variation"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_movement_variation">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_movement_variation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_movement_variation"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_movement_variation">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_movement_variation</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Calculate the movement_variation.</span>
 <span class="sd">            Mathematical Notation: abs(Xi+1-Xi)+abs(Yi+1-Yi)+abs(Zi+1-Zi)</span>
 
@@ -178,11 +179,11 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">x</span><span class="p">)))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">y</span><span class="p">)))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">z</span><span class="p">))))</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">z</span><span class="p">))</span></div>
 
 
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="CalculateFeatures.calculate_energy"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_energy">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_energy"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_energy">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_energy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Calculate the Energy of the combined axes.</span>
 <span class="sd">            Mathematical Notation: (Xi^2+Yi^2+Zi^2)^2</span>
 
@@ -194,11 +195,11 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">z</span><span class="p">))</span></div>
 
 
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="CalculateFeatures.calculate_entropy"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_entropy">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_entropy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_entropy"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_entropy">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_entropy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Calculate the Entropy of the combined axes.</span>
 <span class="sd">            Mathematical Notation: (1+(Xi+Yi+Zi))2*ln(1+(Xi+Yi+Zi))2</span>
 
@@ -210,42 +211,42 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="p">)))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="p">))))</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="p">)))</span></div>
 
 
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="CalculateFeatures.calculate_pitch"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_pitch">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_pitch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_pitch"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_pitch">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_pitch</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Calculate the pitch in degrees of the combined axes.</span>
 <span class="sd">            Mathematical Notation: tan^-1(-Xi/(sqrt(Yi+Zi)))*180/pi</span>
 
-<span class="sd">            :param x: raw X axis accelerometer data</span>
-<span class="sd">            :param y: raw Y axis accelerometer data</span>
-<span class="sd">            :param z: raw Z axis accelerometer data</span>
+<span class="sd">            :param x: LPF X axis accelerometer data</span>
+<span class="sd">            :param y: LPF Y axis accelerometer data</span>
+<span class="sd">            :param z: LPF Z axis accelerometer data</span>
 
 <span class="sd">            :returns: An Numpy array representing the pitch of the input data. </span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">x</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="n">z</span><span class="p">))</span><span class="o">**</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span></div>
 
     
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="CalculateFeatures.calculate_roll"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_roll">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_roll"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_roll">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_roll</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Calculate the roll in degrees of the combined axes.</span>
 <span class="sd">            Mathematical Notation: atan2(Yi,Zi)*180/pi</span>
 
-<span class="sd">            :param y: raw Y axis accelerometer data</span>
-<span class="sd">            :param z: raw Z axis accelerometer data</span>
+<span class="sd">            :param y: LPF Y axis accelerometer data</span>
+<span class="sd">            :param z: LPF Z axis accelerometer data</span>
 
 <span class="sd">            :returns: An Numpy array representing the roll of the input data. </span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
 
     
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="CalculateFeatures.calculate_inclination"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_inclination">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_inclination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_inclination"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_inclination">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_inclination</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Calculate the inclination in degrees of the combined axes.</span>
 <span class="sd">            Mathematical Notation: tan^-1((sqrt(Xi^2+Yi^2))/Zi)*180/pi</span>
 
@@ -257,7 +258,64 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">/</span> <span class="n">z</span><span class="p">)</span> <span class="o">**</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span></div></div>
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)),</span> <span class="n">z</span><span class="p">)</span> <span class="o">**-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CalculateFeatures.calculate_heading"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calculate_features.CalculateFeatures.calculate_heading">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_heading</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">pitch</span><span class="p">,</span> <span class="n">roll</span><span class="p">,</span> <span class="n">declination</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">Angle</span><span class="o">.</span><span class="n">degree</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate tilt compentated heading. </span>
+
+<span class="sd">            :param x: LPF X axis magnetometer data</span>
+<span class="sd">            :param y: LPF Y axis magnetometer data</span>
+<span class="sd">            :param z: LPF Z axis magnetometer data</span>
+<span class="sd">            :param pitch: pre calculated pitch data</span>
+<span class="sd">            :param roll: pre calculated roll data</span>
+<span class="sd">            :param declination: delclination</span>
+<span class="sd">            :param angle: Angle type, degree or radians</span>
+
+<span class="sd">            :returns: A dictionary of numpy arrays representing heading.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">sinp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">pitch</span><span class="p">)</span>
+        <span class="n">sinr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">roll</span><span class="p">)</span>
+        <span class="n">cosp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pitch</span><span class="p">)</span>
+        <span class="n">cosr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">roll</span><span class="p">)</span>
+
+        <span class="n">xh</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">cosp</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">sinr</span><span class="o">*</span><span class="n">sinp</span> <span class="o">+</span> <span class="n">z</span><span class="o">*</span><span class="n">cosr</span><span class="o">*</span><span class="n">sinp</span>
+        <span class="n">yh</span> <span class="o">=</span> <span class="n">y</span><span class="o">*</span><span class="n">cosr</span> <span class="o">-</span> <span class="n">z</span><span class="o">*</span><span class="n">sinr</span>
+
+        <span class="n">azimuth90</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">yh</span><span class="o">/</span><span class="n">xh</span><span class="p">)</span>
+
+        <span class="n">heading_mag</span> <span class="o">=</span> <span class="n">azimuth90</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">xh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">heading_mag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">azimuth90</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">xh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">yh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">heading_mag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">azimuth90</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">xh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">yh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">heading_mag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">-</span> <span class="n">azimuth90</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">xh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">yh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">heading_mag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span>
+
+            <span class="k">if</span> <span class="n">xh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">yh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">heading_mag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+
+        <span class="k">if</span> <span class="n">angle</span> <span class="o">==</span> <span class="n">Angle</span><span class="o">.</span><span class="n">degree</span><span class="p">:</span>
+            <span class="n">heading_geo</span> <span class="o">=</span> <span class="p">(</span><span class="n">heading_mag</span> <span class="o">+</span> <span class="p">(</span><span class="n">declination</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)))</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">angle</span> <span class="o">==</span> <span class="n">Angle</span><span class="o">.</span><span class="n">radian</span><span class="p">:</span>
+            <span class="n">heading_geo</span> <span class="o">=</span> <span class="p">(</span><span class="n">heading_mag</span> <span class="o">+</span> <span class="n">declination</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+        <span class="n">heading_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">heading_dict</span><span class="p">[</span><span class="s1">&#39;xh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xh</span>
+        <span class="n">heading_dict</span><span class="p">[</span><span class="s1">&#39;yh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">yh</span>
+        <span class="n">heading_dict</span><span class="p">[</span><span class="s1">&#39;heading_mag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">heading_mag</span>
+        <span class="n">heading_dict</span><span class="p">[</span><span class="s1">&#39;heading_geo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">heading_geo</span>
+
+        <span class="k">return</span> <span class="n">heading_dict</span></div></div>
 
 </pre></div>
 

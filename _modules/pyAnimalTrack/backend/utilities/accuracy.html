@@ -142,8 +142,12 @@
 
         <span class="n">accuracy_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+        
         <span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;var&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">])</span>
+        <span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;var2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        
         <span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">])</span> 
+        <span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;std2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">accuracy_dict</span><span class="p">[</span><span class="s1">&#39;var2&#39;</span><span class="p">])</span> 
 
         <span class="k">return</span> <span class="n">accuracy_dict</span></div>
 
@@ -159,26 +163,25 @@
 <span class="sd">            :param y: low pass filtered Y axis accelerometer data</span>
 <span class="sd">            :param z: low pass filtered Z axis accelerometer data</span>
 
-<span class="sd">            :returns: A dictionary of accuracy dictionaries with keys: innput_accuracy and improved_accuracy.</span>
+<span class="sd">            :returns: A dictionary of accuracy dictionaries with keys: input_accuracy and improved_accuracy.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">x2</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">x3</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">print</span> <span class="p">(</span><span class="s2">&quot;Raw&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="n">y1</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
         <span class="n">y2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">/</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
         <span class="n">y3</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
 
         <span class="n">z1</span> <span class="o">=</span> <span class="n">y2</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+
         <span class="n">z2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
         <span class="n">z3</span> <span class="o">=</span> <span class="n">y2</span> <span class="o">*</span> <span class="n">x1</span>
 
         <span class="n">z_estimate</span> <span class="o">=</span> <span class="n">z3</span>
         <span class="n">z_residual</span> <span class="o">=</span> <span class="n">z3</span> <span class="o">-</span> <span class="n">z</span>
-        <span class="n">accuracy_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
-        <span class="n">accuracy_improve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z3</span><span class="p">)</span>
+        <span class="n">accuracy_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_accuracy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">accuracy_improve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_accuracy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z3</span><span class="p">)</span>
 
         <span class="n">accuracies_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">accuracies_dict</span><span class="p">[</span><span class="s1">&#39;input_accuracy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accuracy_input</span>
