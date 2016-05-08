@@ -4,13 +4,11 @@ import PyQt5.uic
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QMainWindow
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-import matplotlib.pyplot as plt
-
 from pyAnimalTrack.backend.filehandlers import sensor_csv, filtered_sensor_data
 from pyAnimalTrack.backend.filters.low_pass_filter import LPF
 from pyAnimalTrack.backend.filters.high_pass_filter import HPF
 
+from pyAnimalTrack.ui.Controller.TableAndGraphView import TableAndGraphView
 from pyAnimalTrack.ui.Controller.LoadCSVDialog import LoadCSVDialog
 from pyAnimalTrack.ui.Controller.FeaturesWindow import FeaturesWindow
 from pyAnimalTrack.ui.Model.TableModel import TableModel
@@ -20,7 +18,7 @@ uiDataImportWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__)
 # TODO: Second table of filtered data? Or show the graph there instead?
 
 
-class DataImportWindow(QMainWindow, uiDataImportWindow):
+class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
     # TODO: Read from config?
     # Default values, used to initialise the model
@@ -43,20 +41,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow):
 
         super(DataImportWindow, self).__init__(*args)
         self.setupUi(self)
-
-        # Programatically create the graph widget, as it is not available in the designer
-        # Also create a separate graph to display the legend without resizing issues
-        self.figure = plt.figure(facecolor='none')
-        self.legendFigure = plt.figure(facecolor='none')
-        self.canvas = FigureCanvas(self.figure)
-        self.legendCanvas = FigureCanvas(self.legendFigure)
-        self.plotFrame.addWidget(self.canvas)
-        self.legendFrame.addWidget(self.legendCanvas)
-        # The plot, used on the graph
-        self.plot = self.figure.add_subplot(111)
-        self.plot.hold(False)
-        self.legendPlot = self.legendFigure.add_axes([-0.2,0,-0.045,0.85])
-        self.legendPlot.hold(False)
+        TableAndGraphView.__init__(self, self.rawTableView, self.currentColumnComboBox, self.plotFrame, self.legendFrame, self.redraw_graph)
 
         self.show()
 
@@ -77,6 +62,8 @@ class DataImportWindow(QMainWindow, uiDataImportWindow):
         if not self.show_load_dialog():
             self.quitTrigger.emit()
         else:
+            TableAndGraphView.after_init(self)
+
             # Connect signals and slots
             self.connect_ui_elements()
 
@@ -90,10 +77,6 @@ class DataImportWindow(QMainWindow, uiDataImportWindow):
             :returns: void
         """
         self.featuresButton.clicked.connect(self.show_features_window)
-
-        self.rawTableView.selectionModel().selectionChanged.connect(self.change_selected_combo_column)
-
-        self.currentColumnComboBox.currentIndexChanged.connect(self.redraw_graph)
 
         # Connect the line edits to a single slot. Pass a second parameter to identify it
         self.refreshLineEdit.textChanged.connect(lambda val: self.parameter_value_changed(val, 'SampleRate'))

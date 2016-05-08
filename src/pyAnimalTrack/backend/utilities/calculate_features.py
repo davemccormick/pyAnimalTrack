@@ -1,5 +1,6 @@
 
 import numpy as np
+from pyAnimalTrack.backend.utilities.enums import *
 
 class CalculateFeatures(object):
     """ Utility Class for calculating specific features of the  accelerometer data.
@@ -20,7 +21,7 @@ class CalculateFeatures(object):
 
         """
 
-        return np.add(np.absolute(x) + np.absolute(y) + np.absolute(z))
+        return np.absolute(x) + np.absolute(y) + np.absolute(z)
 
 
     @staticmethod
@@ -53,7 +54,7 @@ class CalculateFeatures(object):
 
         """
 
-        return np.add(np.absolute(np.add(x, np.subtract(1-x))) + np.absolute(np.add(y, np.subtract(1-y))) + np.absolute(np.add(z, np.subtract(1-z))))
+        return np.absolute(np.diff(x)) + np.absolute(np.diff(y)) + np.absolute(np.diff(z))
 
 
     @staticmethod
@@ -69,7 +70,7 @@ class CalculateFeatures(object):
 
         """
 
-        return np.square(np.add(np.square(x) + np.square(y) + np.square(z)))
+        return np.square(np.square(x) + np.square(y) + np.square(z))
 
 
     @staticmethod
@@ -85,7 +86,7 @@ class CalculateFeatures(object):
 
         """
 
-        return np.square(np.add(1, np.add(x + y + z))) * np.log(np.square(np.add(1, np.add(x + y + z))))
+        return np.square(1 + (x + y + z)) * np.log(np.square(1 + (x + y + z)))
 
 
     @staticmethod
@@ -93,15 +94,15 @@ class CalculateFeatures(object):
         """ Calculate the pitch in degrees of the combined axes.
             Mathematical Notation: tan^-1(-Xi/(sqrt(Yi+Zi)))*180/pi
 
-            :param x: raw X axis accelerometer data
-            :param y: raw Y axis accelerometer data
-            :param z: raw Z axis accelerometer data
+            :param x: LPF X axis accelerometer data
+            :param y: LPF Y axis accelerometer data
+            :param z: LPF Z axis accelerometer data
 
             :returns: An Numpy array representing the pitch of the input data. 
 
         """
 
-        return (np.tan(np.divide((-1 * x), np.sqrt(y+z))**1) * 180 / np.pi)
+        return -np.arctan(x/np.sqrt(y**2 + z**2))
 
     
     @staticmethod
@@ -109,14 +110,14 @@ class CalculateFeatures(object):
         """ Calculate the roll in degrees of the combined axes.
             Mathematical Notation: atan2(Yi,Zi)*180/pi
 
-            :param y: raw Y axis accelerometer data
-            :param z: raw Z axis accelerometer data
+            :param y: LPF Y axis accelerometer data
+            :param z: LPF Z axis accelerometer data
 
             :returns: An Numpy array representing the roll of the input data. 
 
         """
 
-        return np.arctan2(y, z) * 180 / np.pi
+        return np.arctan2(y, z)
 
     
     @staticmethod
@@ -132,5 +133,62 @@ class CalculateFeatures(object):
 
         """
 
-        return (np.tan(np.divide((np.sqrt(np.square(x)+np.square(y)) / z) ** 1) * 180 / np.pi))
+        return (np.tan(np.divide((np.sqrt(x**2 + y**2)), z) **-1)) * 180 / np.pi
+
+    @staticmethod
+    def calculate_heading(x, y, z, pitch, roll, declination=0, angle=Angle.degree):
+        """ Calculate tilt compentated heading. 
+
+            :param x: LPF X axis magnetometer data
+            :param y: LPF Y axis magnetometer data
+            :param z: LPF Z axis magnetometer data
+            :param pitch: pre calculated pitch data
+            :param roll: pre calculated roll data
+            :param declination: delclination
+            :param angle: Angle type, degree or radians
+
+            :returns: A dictionary of numpy arrays representing heading.
+
+        """
+
+        sinp = np.sin(pitch)
+        sinr = np.sin(roll)
+        cosp = np.cos(pitch)
+        cosr = np.cos(roll)
+
+        xh = x*cosp + y*sinr*sinp + z*cosr*sinp
+        yh = y*cosr - z*sinr
+
+        azimuth90 = np.arctan(yh/xh)
+
+        heading_mag = azimuth90
+        for i in range(len(x)):
+            if xh[i] < 0:
+                heading_mag[i] = np.pi - azimuth90[i]
+
+            if xh[i] > 0 and yh[i] < 0:
+                heading_mag[i] = -azimuth90[i]
+
+            if xh[i] > 0 and yh[i] > 0:
+                heading_mag[i] = (2*np.pi) - azimuth90[i]
+
+            if xh[i] == 0 and yh[i] < 0:
+                heading_mag[i] = np.pi/2
+
+            if xh[i] == 0 and yh[i] > 0:
+                heading_mag[i] = (3*np.pi)/2
+
+        if angle == Angle.degree:
+            heading_geo = (heading_mag + (declination*(np.pi/180))) % (2*np.pi)
+
+        if angle == Angle.radian:
+            heading_geo = (heading_mag + declination) % (2*np.pi)
+
+        heading_dict = {}
+        heading_dict['xh'] = xh
+        heading_dict['yh'] = yh
+        heading_dict['heading_mag'] = heading_mag
+        heading_dict['heading_geo'] = heading_geo
+
+        return heading_dict
 

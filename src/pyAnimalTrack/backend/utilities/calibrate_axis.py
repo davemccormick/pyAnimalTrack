@@ -21,7 +21,7 @@ class CalibrateAxis(object):
 
         total = np.absolute(min_ - max_)
         dist = total / 2
-        offset = (min_ + max_) / 2
+        offset = (max_ + min_) / 2
         scaled = ((x - offset ) / dist) * scale
         return scaled
 

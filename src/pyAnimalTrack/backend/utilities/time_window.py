@@ -33,10 +33,9 @@ class TimeWindow(object):
         if self.__isSeconds:
             start = start * self.__sampleRate
             end   = end   * self.__sampleRate
-            step  = step  * self.__sampleRate
 
         # Return copy so as not to have object tied by reference to original time window object.
-        if not start and not end:
+        if (start == 0) and (end == 0):
             return self.__data[::step].copy()
 
         return self.__data[start:end:step].copy()
@@ -50,5 +49,5 @@ class TimeWindow(object):
 
             :returns: A list of arrays.
         """
-        return np.split_array(self.__data, nWindows)
+        return np.array_split(self.__data, nWindows)
 
