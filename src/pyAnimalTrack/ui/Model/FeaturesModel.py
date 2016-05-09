@@ -13,8 +13,8 @@ class FeaturesModel(InputData):
             :returns: void
         """
 
-
         super(FeaturesModel, self).__init__()
+
         self.__dataset = dataset
         self.__df = None
         self.__names = ['axyz', 'sma','svm','movement_variation','energy','entropy','pitch','roll','inclination']
@@ -30,7 +30,8 @@ class FeaturesModel(InputData):
 
         """
 
-        self.__df = pd.DataFrame(self.__dataset)
+        # TODO: ...this is only working with a breakpoint?
+        self.__df = pd.DataFrame(self.__dataset, columns=self.__names)
 
         return self.__df
 

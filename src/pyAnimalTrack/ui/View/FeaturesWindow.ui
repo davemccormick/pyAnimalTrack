@@ -88,6 +88,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="currentIndex">
+           <number>-1</number>
+          </property>
           <property name="sizeAdjustPolicy">
            <enum>QComboBox::AdjustToContents</enum>
           </property>
@@ -215,7 +218,7 @@
          <number>0</number>
         </property>
         <item>
-         <layout class="QGridLayout" name="lowPassPlotFrame">
+         <layout class="QGridLayout" name="plotFrame">
           <property name="sizeConstraint">
            <enum>QLayout::SetDefaultConstraint</enum>
           </property>

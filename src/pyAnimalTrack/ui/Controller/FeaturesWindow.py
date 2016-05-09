@@ -20,30 +20,40 @@ uiFeaturesWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), 
 
 class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
 
+    lowPassData = None
+
     def __init__(self, *args):
+        """ Constructor
+
+            :param args: PyQt program arguments
+            :return: void
+        """
+
         super(FeaturesWindow, self).__init__(*args)
         self.setupUi(self)
-        TableAndGraphView.__init__(self, self.featureTableView, self.currentColumnComboBox, self.lowPassPlotFrame, self.legendFrame, self.redraw_graph)
+        TableAndGraphView.__init__(self, self.featureTableView, self.currentColumnComboBox, self.plotFrame, self.legendFrame, self.redraw_graph)
 
         self.figure = plt.figure()
         # this is the Canvas Widget that displays the `figure`
         # it takes the `figure` instance as a parameter to __init__
         self.canvas = FigureCanvas(self.figure)
 
-        self.lowPassPlotFrame.addWidget(self.canvas)
+        self.plotFrame.addWidget(self.canvas)
 
         self.featureModel = None
         self.tableDataFile = None
 
     def set_data(self, unfiltered_data, low_pass_data, high_pass_data):
-        # create an axis
-        #ax = self.figure.add_subplot(111)
-        # discards the old graph
-        #ax.hold(False)
-        # plot data
-        #ax.plot(unfiltered_data.ax.values[::-1], 'g-', low_pass_data.ax.values[::-1], 'b-', high_pass_data.ax.values[::-1], 'r-')
+        """ Set the datasets for the features window
 
-        #self.canvas.draw()
+            :param unfiltered_data: A pandas dataset, as read from the input stream
+            :param low_pass_data: A pandas dataset, after running through the low-pass filter
+            :param high_pass_data: A pandas dataset, after running through the high-pass filter
+            :return: void
+        """
+
+        # Cache the dataset for the graph
+        self.lowPassData = low_pass_data
 
         features = []
         for row in zip(low_pass_data['ax'], low_pass_data['ay'], low_pass_data['az']):
@@ -62,14 +72,14 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
     def calculate_features(self, x, y, z):
         return [
             ', '.join([str(x), str(y), str(z)]),
-            1,#CalculateFeatures.calculate_sma(x, y, z),
-            2,#CalculateFeatures.calculate_svm(x, y, z),
+            CalculateFeatures.calculate_sma(x, y, z),
+            CalculateFeatures.calculate_svm(x, y, z),
             3,#CalculateFeatures.calculate_movement_variation(x, y, z),
-            4,#CalculateFeatures.calculate_energy(x, y, z),
-            5,#CalculateFeatures.calculate_entropy(x, y, z),
-            6,#CalculateFeatures.calculate_pitch(x, y, z),
-            7,#CalculateFeatures.calculate_roll(y, z),
-            8#CalculateFeatures.calculate_inclination(x, y, z)
+            CalculateFeatures.calculate_energy(x, y, z),
+            CalculateFeatures.calculate_entropy(x, y, z),
+            CalculateFeatures.calculate_pitch(x, y, z),
+            CalculateFeatures.calculate_roll(y, z),
+            CalculateFeatures.calculate_inclination(x, y, z)
         ]
 
     def test(self):
@@ -80,17 +90,28 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
 
             :returns: void
         """
-        #current_column = self.featureModel.getColumns()[self.currentColumnComboBox.currentIndex()]
+        current_column = self.currentColumnComboBox.currentIndex()
 
-        lines = self.plot.plot(
-            self.tableDataFile.get_dataset()[1].values[::-1], 'g-'
-        )
+        if current_column == 0:
+            lines = self.plot.plot(
+                self.lowPassData['ax'], 'r-',
+                self.lowPassData['ay'], 'g-',
+                self.lowPassData['az'], 'b-'
+            )
 
-        lines[0].set_label('Unfiltered')
-        #lines[1].set_label('Low pass')
-        #lines[2].set_label('High pass')
+            lines[0].set_label('X')
+            lines[1].set_label('Y')
+            lines[2].set_label('Z')
 
-        self.legendPlot.legend(bbox_to_anchor=(-4, 0.9, 2., .102), loc=2, handles=lines)
+            self.legendPlot.legend(bbox_to_anchor=(-4, 0.9, 2., .102), loc=2, handles=lines)
+        else:
+            lines = self.plot.plot(
+                self.tableDataFile.get_dataset()[self.featureModel.getColumns()[current_column]].values[::-1], 'g-'
+            )
+
+            lines[0].set_label(self.featureModel.getReadableColumns()[current_column])
+
+            self.legendPlot.legend(bbox_to_anchor=(-4, 0.9, 2., .102), loc=2, handles=lines)
 
         self.canvas.draw()
-        #self.legendCanvas.draw()
+        self.legendCanvas.draw()
