@@ -81,6 +81,49 @@
          </spacer>
         </item>
         <item>
+         <widget class="QComboBox" name="drawModeComboBox">
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QComboBox::AdjustToContents</enum>
+          </property>
+          <item>
+           <property name="text">
+            <string>Seperate</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Combined - Unfiltered</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Combined - Low pass filter</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Combined - High pass filter</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_9">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QComboBox" name="currentColumnComboBox">
           <property name="minimumSize">
            <size>

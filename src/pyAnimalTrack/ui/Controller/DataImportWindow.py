@@ -15,19 +15,25 @@ from pyAnimalTrack.ui.Model.TableModel import TableModel
 
 uiDataImportWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/DataImportWindow.ui'))[0]
 
-# TODO: Second table of filtered data? Or show the graph there instead?
-
 
 class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
-    # TODO: Read from config?
+    # TODO: Read from config
     # Default values, used to initialise the model
     default_filter_parameters = {
         'SampleRate': 10,
         'CutoffFrequency': 2,
         'FilterLength': 59
     }
-    default_column = 1
+
+    default_colours = [
+        'r',
+        'g',
+        'b'
+    ]
+
+    first_graphed_element = 1
+    last_graphed_element = -2
 
     # Needs to be here, otherwise the connection fails
     quitTrigger = pyqtSignal()
@@ -83,6 +89,8 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         self.cutoffLineEdit.textChanged.connect(lambda val: self.parameter_value_changed(val, 'CutoffFrequency'))
         self.filterLineEdit.textChanged.connect(lambda val: self.parameter_value_changed(val, 'FilterLength'))
 
+        self.drawModeComboBox.currentIndexChanged.connect(self.refill_column_combobox)
+
     def show_load_dialog(self):
         """ Show the user a dialog to load a data file(CSV)
 
@@ -102,10 +110,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             self.tableDataFile = TableModel(self.rawDataFile)
             self.rawTableView.setModel(self.tableDataFile)
 
-            # Load filter controlling dropdown
-            self.currentColumnComboBox.clear()
-            self.currentColumnComboBox.addItems(self.rawDataFile.getReadableColumns())
-            self.currentColumnComboBox.setCurrentIndex(self.default_column)
+            self.refill_column_combobox()
 
             return True
         else:
@@ -125,7 +130,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             }
 
     def refilter_datasets(self):
-        """
+        """ Take the filter params that have been specified, and apply them to the models
 
             :returns: void
         """
@@ -136,22 +141,81 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         self.redraw_graph()
 
+    def refill_column_combobox(self):
+        """ Depending on how we want the data presented, the contents of the second combobox will change
+
+        :return:
+        """
+
+        self.currentColumnComboBox.clear()
+        current_type = self.drawModeComboBox.currentIndex()
+        if current_type == 0:
+            self.currentColumnComboBox.addItems(
+                self.rawDataFile.getReadableColumns()[self.first_graphed_element:self.last_graphed_element]
+            )
+        else:
+            self.currentColumnComboBox.addItems([
+                'Accelerometer',
+                'Magnetometer',
+                'Gyroscope'
+            ])
+
+        self.currentColumnComboBox.setCurrentIndex(0)
+
+        self.redraw_graph()
+
+
     def redraw_graph(self):
         """ Redraw the graph
 
             :returns: void
         """
-        current_column = self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex()]
+        # Sanity check, before trying to join
+        if not self.tableDataFile or not self.lowPassData or not self.highPassData:
+            return
 
-        lines = self.plot.plot(
-            self.tableDataFile.get_dataset()[current_column].values[::-1], 'g-',
-            self.lowPassData.get_dataset()[current_column].values[::-1], 'b-',
-            self.highPassData.get_dataset()[current_column].values[::-1], 'r-'
-        )
+        current_type = self.drawModeComboBox.currentIndex()
 
-        lines[0].set_label('Unfiltered')
-        lines[1].set_label('Low pass')
-        lines[2].set_label('High pass')
+        if current_type == 0:  # Separated. TODO: Remove milliseconds from the graph?
+            current_column = self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + 1]
+
+            lines = self.plot.plot(
+                self.tableDataFile.get_dataset()[current_column].values[::-1], self.default_colours[0] + '-',
+                self.lowPassData.get_dataset()[current_column].values[::-1], self.default_colours[1] + '-',
+                self.highPassData.get_dataset()[current_column].values[::-1], self.default_colours[2] + '-'
+            )
+
+            lines[0].set_label('Unfiltered')
+            lines[1].set_label('Low pass')
+            lines[2].set_label('High pass')
+        else:
+            # Choose the dataset based upon the first dropdown
+            current_dataset = None
+            if current_type == 1:
+                current_dataset = self.tableDataFile.get_dataset()
+            elif current_type == 2:
+                current_dataset = self.lowPassData.get_dataset()
+            else:
+                current_dataset = self.highPassData.get_dataset()
+
+            # Accelerometer, Magnetometer or Gyroscope
+            if self.currentColumnComboBox.currentIndex() == 0:
+                current_column = 'a'
+            elif self.currentColumnComboBox.currentIndex() == 1:
+                current_column = 'm'
+            else:
+                current_column = 'g'
+
+            lines = self.plot.plot(
+                current_dataset[current_column + 'x'].values[::-1], self.default_colours[0] + '-',
+                current_dataset[current_column + 'y'].values[::-1], self.default_colours[1] + '-',
+                current_dataset[current_column + 'z'].values[::-1], self.default_colours[2] + '-'
+            )
+
+            lines[0].set_label('X')
+            lines[1].set_label('Y')
+            lines[2].set_label('Z')
+
 
         self.legendPlot.legend(bbox_to_anchor=(-4, 0.9, 2., .102), loc=2, handles=lines)
 
@@ -179,7 +243,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             :param deselected: PyQt5. The cells that were deselected.
             :returns: void
         """
-        self.currentColumnComboBox.setCurrentIndex(selected.indexes()[0].column())
+        #self.currentColumnComboBox.setCurrentIndex(selected.indexes()[0].column())
 
     def parameter_value_changed(self, new_value, parameter):
         """ Update the filter parameters model, redraw the graph
