@@ -1,9 +1,13 @@
+# TODO: Stop the overflow: None of the plot legend
+# TODO: Saving to file with a particular separator.
+# TODO: Saving to file, output folder the same as where we loaded from maybe?
+
 import os
 
 import PyQt5.uic
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QFileDialog
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
@@ -21,6 +25,7 @@ uiFeaturesWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), 
 class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
 
     lowPassData = None
+    saveFormat = 'csv'
 
     def __init__(self, *args):
         """ Constructor
@@ -33,15 +38,10 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
         self.setupUi(self)
         TableAndGraphView.__init__(self, self.featureTableView, self.currentColumnComboBox, self.plotFrame, self.legendFrame, self.redraw_graph)
 
-        self.figure = plt.figure()
-        # this is the Canvas Widget that displays the `figure`
-        # it takes the `figure` instance as a parameter to __init__
-        self.canvas = FigureCanvas(self.figure)
-
-        self.plotFrame.addWidget(self.canvas)
-
         self.featureModel = None
         self.tableDataFile = None
+
+        self.saveToFileButton.clicked.connect(self.save_to_file)
 
     def set_data(self, unfiltered_data, low_pass_data, high_pass_data):
         """ Set the datasets for the features window
@@ -90,6 +90,7 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
 
             :returns: void
         """
+
         current_column = self.currentColumnComboBox.currentIndex()
 
         if current_column == 0:
@@ -106,7 +107,7 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
             self.legendPlot.legend(bbox_to_anchor=(-4, 0.9, 2., .102), loc=2, handles=lines)
         else:
             lines = self.plot.plot(
-                self.tableDataFile.get_dataset()[self.featureModel.getColumns()[current_column]].values[::-1], 'g-'
+                self.tableDataFile.get_dataset()[self.featureModel.getColumns()[current_column]].values[::-1], 'r-'
             )
 
             lines[0].set_label(self.featureModel.getReadableColumns()[current_column])
@@ -115,3 +116,18 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
 
         self.canvas.draw()
         self.legendCanvas.draw()
+
+    def save_to_file(self):
+        filename = QFileDialog.getSaveFileName(filter='*.' + self.saveFormat)[0]
+
+        # No filename, cancelled
+        if filename == '':
+            return
+
+        # If we don't have a extension, add one
+        if not filename.endswith('.' + self.saveFormat):
+            filename += '.' + self.saveFormat
+
+        # Save the pandas dataframe and alert the user
+        self.tableDataFile.get_dataset().to_csv(filename)
+        self.featuresStatusBar.showMessage('Saved to ' + filename, 2000)

@@ -30,7 +30,6 @@ class FeaturesModel(InputData):
 
         """
 
-        # TODO: ...this is only working with a breakpoint?
         self.__df = pd.DataFrame(self.__dataset, columns=self.__names)
 
         return self.__df

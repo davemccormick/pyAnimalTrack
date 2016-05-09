@@ -176,7 +176,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         current_type = self.drawModeComboBox.currentIndex()
 
-        if current_type == 0:  # Separated. TODO: Remove milliseconds from the graph?
+        if current_type == 0:  # Separated.
             current_column = self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + 1]
 
             lines = self.plot.plot(

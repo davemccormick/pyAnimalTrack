@@ -313,7 +313,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="featuresButton">
+         <widget class="QPushButton" name="saveToFileButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -344,6 +344,7 @@
     </item>
    </layout>
   </widget>
+  <widget class="QStatusBar" name="featuresStatusBar"/>
  </widget>
  <resources/>
  <connections/>
