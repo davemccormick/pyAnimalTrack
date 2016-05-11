@@ -1,3 +1,5 @@
+from __future__ import division
+
 from pyAnimalTrack.backend.utilities.enums import *
 from pyAnimalTrack.backend.utilities.exceptions import *
 
@@ -109,7 +111,7 @@ class DeadReckoning(object):
 
 
         if self.angle == Angle.radian:
-            drx = self.speed*np.sin(heading)
+            drx = self.speed*np.sin(self.heading)
             dry = self.speed*np.cos(self.heading)
 
         # Start from 0
