@@ -1,6 +1,7 @@
 # TODO: Stop the overflow: None of the plot legend
 # TODO: Saving to file with a particular separator.
 # TODO: Saving to file, output folder the same as where we loaded from maybe?
+# TODO: Time epochs
 
 import os
 
@@ -56,8 +57,15 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
         self.lowPassData = low_pass_data
 
         features = []
-        for row in zip(low_pass_data['ax'], low_pass_data['ay'], low_pass_data['az']):
-            features.append(self.calculate_features(row[0], row[1], row[2]))
+        for row in zip(
+                unfiltered_data['ax'],
+                unfiltered_data['ay'],
+                unfiltered_data['az'],
+                low_pass_data['ax'],
+                low_pass_data['ay'],
+                low_pass_data['az']
+        ):
+            features.append(self.calculate_features(row[0:3], row[3:]))
 
         self.featureModel = FeaturesModel(features)
         self.tableDataFile = TableModel(self.featureModel)
@@ -69,17 +77,17 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
         self.currentColumnComboBox.clear()
         self.currentColumnComboBox.addItems(self.featureModel.getReadableColumns())
 
-    def calculate_features(self, x, y, z):
+    def calculate_features(self, unfiltered, LPF):
         return [
-            ', '.join([str(x), str(y), str(z)]),
-            CalculateFeatures.calculate_sma(x, y, z),
-            CalculateFeatures.calculate_svm(x, y, z),
-            3,#CalculateFeatures.calculate_movement_variation(x, y, z),
-            CalculateFeatures.calculate_energy(x, y, z),
-            CalculateFeatures.calculate_entropy(x, y, z),
-            CalculateFeatures.calculate_pitch(x, y, z),
-            CalculateFeatures.calculate_roll(y, z),
-            CalculateFeatures.calculate_inclination(x, y, z)
+            ', '.join([str(unfiltered[0]), str(unfiltered[1]), str(unfiltered[2])]),
+            CalculateFeatures.calculate_sma(*unfiltered),
+            CalculateFeatures.calculate_svm(*unfiltered),
+            3,#CalculateFeatures.calculate_movement_variation(unfiltered[0], y, z),
+            CalculateFeatures.calculate_energy(*unfiltered),
+            CalculateFeatures.calculate_entropy(*unfiltered),
+            CalculateFeatures.calculate_pitch(*LPF),
+            CalculateFeatures.calculate_roll(LPF[0], LPF[2]),
+            CalculateFeatures.calculate_inclination(*unfiltered)
         ]
 
     def test(self):
