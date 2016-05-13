@@ -1,3 +1,5 @@
+from __future__ import division
+
 from pyAnimalTrack.backend.utilities.enums import *
 from pyAnimalTrack.backend.utilities.exceptions import *
 

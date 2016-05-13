@@ -1,4 +1,4 @@
-
+from __future__ import division
 import numpy as np
 
 class CalibrateAxis(object):
@@ -18,8 +18,7 @@ class CalibrateAxis(object):
             :returns: A scaled set of axis data.
 
         """
-
-        total = np.absolute(min_ - max_)
+        total = abs(min_ - max_)
         dist = total / 2
         offset = (max_ + min_) / 2
         scaled = ((x - offset ) / dist) * scale
