@@ -11,6 +11,7 @@ from pyAnimalTrack.backend.filters.high_pass_filter import HPF
 from pyAnimalTrack.ui.Controller.TableAndGraphView import TableAndGraphView
 from pyAnimalTrack.ui.Controller.LoadCSVDialog import LoadCSVDialog
 from pyAnimalTrack.ui.Controller.FeaturesWindow import FeaturesWindow
+from pyAnimalTrack.ui.Controller.DeadReckoningWindow import DeadReckoningWindow
 from pyAnimalTrack.ui.Model.TableModel import TableModel
 
 uiDataImportWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/DataImportWindow.ui'))[0]
@@ -60,6 +61,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         self.tableDataFile = None
 
         self.featuresWindow = FeaturesWindow()
+        self.deadReckoningWindow = DeadReckoningWindow()
         self.quitTrigger.connect(QMainWindow.closeEvent)
 
         self.filterParameters = {}
@@ -83,6 +85,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             :returns: void
         """
         self.featuresButton.clicked.connect(self.show_features_window)
+        self.deadReckoningButton.clicked.connect(self.show_dead_reckoning_window)
 
         # Connect the line edits to a single slot. Pass a second parameter to identify it
         self.refreshLineEdit.textChanged.connect(lambda val: self.parameter_value_changed(val, 'SampleRate'))
@@ -90,6 +93,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         self.filterLineEdit.textChanged.connect(lambda val: self.parameter_value_changed(val, 'FilterLength'))
 
         self.drawModeComboBox.currentIndexChanged.connect(self.refill_column_combobox)
+        self.currentColumnComboBox.currentIndexChanged.connect(self.update_filter_params)
 
     def show_load_dialog(self):
         """ Show the user a dialog to load a data file(CSV)
@@ -164,6 +168,10 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         self.redraw_graph()
 
+    def update_filter_params(self):
+        self.refreshLineEdit.setText(str(self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]]['SampleRate']))
+        self.cutoffLineEdit.setText(str(self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]]['CutoffFrequency']))
+        self.filterLineEdit.setText(str(self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]]['FilterLength']))
 
     def redraw_graph(self):
         """ Redraw the graph
@@ -177,7 +185,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         current_type = self.drawModeComboBox.currentIndex()
 
         if current_type == 0:  # Separated.
-            current_column = self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + 1]
+            current_column = self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]
 
             lines = self.plot.plot(
                 self.tableDataFile.get_dataset()[current_column].values[::-1], self.default_colours[0] + '-',
@@ -235,6 +243,10 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         )
         self.featuresWindow.show()
 
+    def show_dead_reckoning_window(self):
+
+        self.deadReckoningWindow.show()
+
     # TODO: Do we want this to happen? Unsure
     def change_selected_combo_column(self, selected, deselected):
         """ When the selected data cell changes, update the combobox that controls the parameters.
@@ -255,5 +267,5 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         if new_value == '':
             return
 
-        self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex()]][parameter] = int(new_value)
+        self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]][parameter] = int(new_value)
         self.refilter_datasets()
