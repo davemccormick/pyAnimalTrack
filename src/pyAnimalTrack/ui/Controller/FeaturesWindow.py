@@ -57,15 +57,29 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
         self.lowPassData = low_pass_data
 
         features = []
-        for row in zip(
-                unfiltered_data['ax'],
-                unfiltered_data['ay'],
-                unfiltered_data['az'],
-                low_pass_data['ax'],
-                low_pass_data['ay'],
-                low_pass_data['az']
-        ):
-            features.append(self.calculate_features(row[0:3], row[3:]))
+
+        out = self.calculate_features([
+            unfiltered_data['ax'],
+            unfiltered_data['ay'],
+            unfiltered_data['az']
+        ], [
+            low_pass_data['ax'],
+            low_pass_data['ay'],
+            low_pass_data['az']
+        ])
+
+        for row in range(0, len(unfiltered_data) - 1):
+            features.append([
+                ', '.join([str(unfiltered_data['ax'][row]), str(unfiltered_data['ay'][row]), str(unfiltered_data['az'][row])]),
+                out[0][row],
+                out[1][row],
+                out[2][row],
+                out[3][row],
+                out[4][row],
+                out[5][row],
+                out[6][row],
+                out[7][row]
+            ])
 
         self.featureModel = FeaturesModel(features)
         self.tableDataFile = TableModel(self.featureModel)
@@ -79,19 +93,15 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
 
     def calculate_features(self, unfiltered, LPF):
         return [
-            ', '.join([str(unfiltered[0]), str(unfiltered[1]), str(unfiltered[2])]),
             CalculateFeatures.calculate_sma(*unfiltered),
             CalculateFeatures.calculate_svm(*unfiltered),
-            3,#CalculateFeatures.calculate_movement_variation(unfiltered[0], y, z),
+            CalculateFeatures.calculate_movement_variation(*unfiltered),
             CalculateFeatures.calculate_energy(*unfiltered),
             CalculateFeatures.calculate_entropy(*unfiltered),
             CalculateFeatures.calculate_pitch(*LPF),
             CalculateFeatures.calculate_roll(LPF[0], LPF[2]),
             CalculateFeatures.calculate_inclination(*unfiltered)
         ]
-
-    def test(self):
-        pass
 
     def redraw_graph(self):
         """ Redraw the graph
