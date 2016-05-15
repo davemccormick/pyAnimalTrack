@@ -1,6 +1,7 @@
-from pyAnimalTrack.backend.filehandlers.input_data import InputData
-
+import numpy as np
 import pandas as pd
+
+from pyAnimalTrack.backend.filehandlers.input_data import InputData
 
 
 class SensorCSV(InputData):
@@ -17,11 +18,25 @@ class SensorCSV(InputData):
 
         self.__filename = filename
         self.__df = None
-        self.__names =['ms','ax','ay','az','mx','my','mz','gx','gy','gz','temp','adjms']
+        self.__fileheadings = ['ms','ay','az','ax','my','mz','mx','gx','gy','gz','temp','adjms']
+        self.__names = ['ms','ax','ay','az','mx','my','mz','gx','gy','gz','temp','adjms']
         self.__readableNames = ['Milliseconds', 'AX', 'AY', 'AZ', 'MX', 'MY', 'MZ', 'GX', 'GY', 'GZ', 'Temperature', 'Adjusted Milliseconds']
+        self.__types = {
+            'ms': np.int64,
+            'ax': np.float64,
+            'ay': np.float64,
+            'az': np.float64,
+            'mx': np.float64,
+            'my': np.float64,
+            'mz': np.float64,
+            'gx': np.float64,
+            'gy': np.float64,
+            'gz': np.float64,
+            'temp': np.float64,
+            'adjms': np.int64
+        }
 
         return
-
 
     def getData(self):
         """ Get an object representation of the sensor CSV.
@@ -30,10 +45,9 @@ class SensorCSV(InputData):
 
         """
 
-        self.__df = pd.read_csv(self.__filename, delimiter=";", names=self.__names)
+        self.__df = pd.read_csv(self.__filename, delimiter=";", names=self.__fileheadings, dtype=np.float64)
 
-        return self.__df
-
+        return self.__df[self.__names]
 
     def getColumn(self, columnName):
         """ Gets a column of data.

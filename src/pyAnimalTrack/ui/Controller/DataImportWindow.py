@@ -1,10 +1,14 @@
 import os
 
+import numpy
+
 import PyQt5.uic
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QMainWindow
 
-from pyAnimalTrack.backend.filehandlers import sensor_csv, filtered_sensor_data
+from pyAnimalTrack.backend.filehandlers import sensor_csv, filtered_sensor_data, sensor_data_clone
+from pyAnimalTrack.backend.utilities.calibrate_axis import CalibrateAxis
+from pyAnimalTrack.backend.utilities.accuracy import Accuracy
 from pyAnimalTrack.backend.filters.low_pass_filter import LPF
 from pyAnimalTrack.backend.filters.high_pass_filter import HPF
 
@@ -28,10 +32,28 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
     }
 
     default_colours = [
-        'r',
+        'b',
         'g',
-        'b'
+        'r'
     ]
+
+    default_mapping = {
+        'x': 'z',
+        'y': 'x',
+        'z': 'y'
+    }
+
+    default_scaling = {
+        'ax': -1,
+        'ay': -1,
+        'az': 1,
+        'mx': 1,
+        'my': 1,
+        'mz': 1,
+        'gx': 1,
+        'gy': 1,
+        'gz': 1,
+    }
 
     first_graphed_element = 1
     last_graphed_element = -2
@@ -54,6 +76,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         # Datasets
         self.rawDataFile = None
+        self.calibratedData = None
         self.lowPassData = None
         self.highPassData = None
 
@@ -75,6 +98,10 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             # Connect signals and slots
             self.connect_ui_elements()
 
+            self.calibrate_axis()
+
+            self.check_accuracy()
+
             self.setup_filter_parameters()
 
             self.refilter_datasets()
@@ -94,6 +121,19 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         self.drawModeComboBox.currentIndexChanged.connect(self.refill_column_combobox)
         self.currentColumnComboBox.currentIndexChanged.connect(self.update_filter_params)
+
+    def check_accuracy(self):
+        ac = Accuracy()
+
+    def calibrate_axis(self):
+        ca = CalibrateAxis()
+
+        dataset = self.tableDataFile.get_dataset()
+
+        for col in enumerate(['ax', 'ay', 'az', 'mx', 'my', 'mz', 'gx', 'gy', 'gz']):
+            changed = ca.calibrate(dataset[col[1]], numpy.min(dataset[col[1]]), numpy.max(dataset[col[1]]), self.default_scaling[col[1]])
+            for i in range(0, len(dataset[col[1]])):
+                self.tableDataFile.get_dataset().iloc[i][col[0] + 1] = changed[i]
 
     def show_load_dialog(self):
         """ Show the user a dialog to load a data file(CSV)
@@ -138,6 +178,8 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
             :returns: void
         """
+        self.calibratedData = TableModel(sensor_data_clone.SensorDataClone(self.tableDataFile.get_dataset()))
+
         self.lowPassData = TableModel(filtered_sensor_data
                                       .FilteredSensorData(LPF, self.tableDataFile.get_dataset(), self.filterParameters))
         self.highPassData = TableModel(filtered_sensor_data
@@ -188,9 +230,9 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             current_column = self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]
 
             lines = self.plot.plot(
-                self.tableDataFile.get_dataset()[current_column].values[::-1], self.default_colours[0] + '-',
-                self.lowPassData.get_dataset()[current_column].values[::-1], self.default_colours[1] + '-',
-                self.highPassData.get_dataset()[current_column].values[::-1], self.default_colours[2] + '-'
+                self.tableDataFile.get_dataset()[current_column].values, self.default_colours[0] + '-',
+                self.lowPassData.get_dataset()[current_column].values, self.default_colours[1] + '-',
+                self.highPassData.get_dataset()[current_column].values, self.default_colours[2] + '-'
             )
 
             lines[0].set_label('Unfiltered')
@@ -244,7 +286,16 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         self.featuresWindow.show()
 
     def show_dead_reckoning_window(self):
+        """ Set the data for the dead reckoning window, and display it
 
+            :returns: void
+        """
+
+        self.deadReckoningWindow.set_data(
+            self.tableDataFile.get_dataset(),
+            self.lowPassData.get_dataset(),
+            self.highPassData.get_dataset()
+        )
         self.deadReckoningWindow.show()
 
     # TODO: Do we want this to happen? Unsure

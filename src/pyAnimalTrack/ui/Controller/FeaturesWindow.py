@@ -14,11 +14,11 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 
 from pyAnimalTrack.backend.filters.low_pass_filter import LPF
-from pyAnimalTrack.backend.utilities.calculate_features import CalculateFeatures
 
 from pyAnimalTrack.ui.Controller.TableAndGraphView import TableAndGraphView
 from pyAnimalTrack.ui.Model.FeaturesModel import FeaturesModel
 from pyAnimalTrack.ui.Model.TableModel import TableModel
+from pyAnimalTrack.ui.Model.FeaturesCalculator import FeaturesCalculator
 
 uiFeaturesWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/FeaturesWindow.ui'))[0]
 
@@ -57,28 +57,20 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
         self.lowPassData = low_pass_data
 
         features = []
-
-        out = self.calculate_features([
-            unfiltered_data['ax'],
-            unfiltered_data['ay'],
-            unfiltered_data['az']
-        ], [
-            low_pass_data['ax'],
-            low_pass_data['ay'],
-            low_pass_data['az']
-        ])
+        out = FeaturesCalculator.calculate(unfiltered_data, low_pass_data)
 
         for row in range(0, len(unfiltered_data) - 1):
             features.append([
-                ', '.join([str(unfiltered_data['ax'][row]), str(unfiltered_data['ay'][row]), str(unfiltered_data['az'][row])]),
-                out[0][row],
-                out[1][row],
-                out[2][row],
-                out[3][row],
-                out[4][row],
-                out[5][row],
-                out[6][row],
-                out[7][row]
+                ', '.join([str(unfiltered_data['ax'][row]), str(unfiltered_data['ay'][row]),
+                           str(unfiltered_data['az'][row])]),
+                out['SMA'][row],
+                out['SVM'][row],
+                out['MOV'][row],
+                out['ENG'][row],
+                out['ENT'][row],
+                out['PIT'][row],
+                out['ROL'][row],
+                out['INC'][row]
             ])
 
         self.featureModel = FeaturesModel(features)
@@ -91,18 +83,6 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
         self.currentColumnComboBox.clear()
         self.currentColumnComboBox.addItems(self.featureModel.getReadableColumns())
 
-    def calculate_features(self, unfiltered, LPF):
-        return [
-            CalculateFeatures.calculate_sma(*unfiltered),
-            CalculateFeatures.calculate_svm(*unfiltered),
-            CalculateFeatures.calculate_movement_variation(*unfiltered),
-            CalculateFeatures.calculate_energy(*unfiltered),
-            CalculateFeatures.calculate_entropy(*unfiltered),
-            CalculateFeatures.calculate_pitch(*LPF),
-            CalculateFeatures.calculate_roll(LPF[0], LPF[2]),
-            CalculateFeatures.calculate_inclination(*unfiltered)
-        ]
-
     def redraw_graph(self):
         """ Redraw the graph
 
@@ -111,6 +91,7 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
 
         current_column = self.currentColumnComboBox.currentIndex()
 
+        # TODO: Read lines from config
         if current_column == 0:
             lines = self.plot.plot(
                 self.lowPassData['ax'], 'r-',
@@ -125,7 +106,7 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
             self.legendPlot.legend(bbox_to_anchor=(-4, 0.9, 2., .102), loc=2, handles=lines)
         else:
             lines = self.plot.plot(
-                self.tableDataFile.get_dataset()[self.featureModel.getColumns()[current_column]].values[::-1], 'r-'
+                self.tableDataFile.get_dataset()[self.featureModel.getColumns()[current_column]].values, 'b-' # TODO: Read from the config
             )
 
             lines[0].set_label(self.featureModel.getReadableColumns()[current_column])

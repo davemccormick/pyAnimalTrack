@@ -26,7 +26,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Dead Reckoning:</string>
+         <string>Course Steered:</string>
         </property>
        </widget>
       </item>
@@ -36,7 +36,7 @@
          <number>0</number>
         </property>
         <item>
-         <layout class="QGridLayout" name="plotFrame">
+         <layout class="QGridLayout" name="mapFrame">
           <property name="sizeConstraint">
            <enum>QLayout::SetDefaultConstraint</enum>
           </property>
@@ -123,12 +123,19 @@
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Time:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <property name="spacing">
          <number>0</number>
         </property>
         <item>
-         <layout class="QGridLayout" name="mapFrame">
+         <layout class="QGridLayout" name="timeFrame">
           <property name="sizeConstraint">
            <enum>QLayout::SetDefaultConstraint</enum>
           </property>
