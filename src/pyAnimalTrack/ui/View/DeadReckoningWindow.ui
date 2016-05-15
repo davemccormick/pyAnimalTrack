@@ -230,7 +230,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="saveToFileButton">
+         <widget class="QPushButton" name="saveToDataFileButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -238,7 +238,14 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Save to file</string>
+           <string>Save data to file</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="saveToGraphFileButton">
+          <property name="text">
+           <string>Save graphs to file</string>
           </property>
          </widget>
         </item>
@@ -261,7 +268,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="savingStatusBar"/>
  </widget>
  <resources/>
  <connections/>

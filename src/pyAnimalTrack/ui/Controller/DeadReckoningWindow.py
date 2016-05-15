@@ -1,31 +1,24 @@
 import os
 
 import PyQt5.uic
-from PyQt5.QtWidgets import QMainWindow
-
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
+import pandas as pd
+from PyQt5.QtWidgets import QMainWindow, QFileDialog
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
-from pyAnimalTrack.backend.utilities.enums import *
-from pyAnimalTrack.backend.utilities.calculate_features import CalculateFeatures
 from pyAnimalTrack.backend.deadreckoning.dead_reckoning import DeadReckoning
+from pyAnimalTrack.backend.utilities.calculate_features import CalculateFeatures
+from pyAnimalTrack.backend.utilities.enums import *
+from pyAnimalTrack.ui.Model.SettingsModel import SettingsModel
 
-from pyAnimalTrack.ui.Model.FeaturesCalculator import FeaturesCalculator
+from pyAnimalTrack.ui.Service.FeaturesCalculator import FeaturesCalculator
+from pyAnimalTrack.ui.Service.SaveDataframe import SaveDataframe
 
 
 uiDeadReckoningWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/DeadReckoningWindow.ui'))[0]
 
 
 class DeadReckoningWindow(QMainWindow, uiDeadReckoningWindow):
-
-    # TODO: Read from config
-    # Default values, used to initialise the model
-
-    default_colours = [
-        'r',
-        'g',
-        'b'
-    ]
 
     def __init__(self, *args):
         """ Constructor - This is actually the main function of the program
@@ -36,6 +29,9 @@ class DeadReckoningWindow(QMainWindow, uiDeadReckoningWindow):
 
         super(DeadReckoningWindow, self).__init__(*args)
         self.setupUi(self)
+
+        self.headings = None
+        self.dead_reckoning = None
 
         # Normal matplotlib graphing components
         self.steeredFigure = plt.figure(facecolor='none')
@@ -53,10 +49,13 @@ class DeadReckoningWindow(QMainWindow, uiDeadReckoningWindow):
         self.steeredPlot.hold(False)
         self.steeredTimePlot.hold(False)
 
+        # PyQt Connections
+        self.saveToDataFileButton.clicked.connect(self.save_to_data_file)
+
     def set_data(self, unfiltered_data, low_pass_data, high_pass_data):
         features = FeaturesCalculator.calculate(unfiltered_data, low_pass_data)
 
-        headings = CalculateFeatures.calculate_heading(
+        self.headings = CalculateFeatures.calculate_heading(
             unfiltered_data['mx'],
             unfiltered_data['my'],
             unfiltered_data['mz'],
@@ -65,14 +64,27 @@ class DeadReckoningWindow(QMainWindow, uiDeadReckoningWindow):
             angle=Angle.radian
         )
 
-        dr = DeadReckoning(features['SVM'], headings['heading_geo'], angle=Angle.radian)
-        dr.courseSteered()
+        self.dead_reckoning = DeadReckoning(features['SVM'], self.headings['heading_geo'], angle=Angle.radian)
+        self.dead_reckoning.courseSteered()
 
-        self.create_graphs(dr)
+        self.create_graphs()
 
-    def create_graphs(self, dead_reckoning):
-        self.steeredPlot.plot(dead_reckoning.cdrx, dead_reckoning.cdry)
+    def create_graphs(self):
+        self.steeredPlot.plot(self.dead_reckoning.cdrx, self.dead_reckoning.cdry)
         self.steeredTimePlot.plot(
-            dead_reckoning.cdrx, self.default_colours[0] + '-',
-            dead_reckoning.cdry, self.default_colours[1] + '-'
+            self.dead_reckoning.cdrx, SettingsModel.get_value('lines')[0],
+            self.dead_reckoning.cdry, SettingsModel.get_value('lines')[1]
         )
+
+    def save_to_data_file(self):
+        filename = SaveDataframe.save(pd.DataFrame(
+            {
+                'x': self.dead_reckoning.cdrx,
+                'y': self.dead_reckoning.cdry,
+                'heading': self.dead_reckoning.heading,
+                'speed': self.dead_reckoning.speed
+            }
+        ))
+
+        if filename:
+            self.savingStatusBar.showMessage('Saved to ' + filename)

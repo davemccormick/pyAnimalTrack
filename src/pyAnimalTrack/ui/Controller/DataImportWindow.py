@@ -17,6 +17,7 @@ from pyAnimalTrack.ui.Controller.LoadCSVDialog import LoadCSVDialog
 from pyAnimalTrack.ui.Controller.FeaturesWindow import FeaturesWindow
 from pyAnimalTrack.ui.Controller.DeadReckoningWindow import DeadReckoningWindow
 from pyAnimalTrack.ui.Model.TableModel import TableModel
+from pyAnimalTrack.ui.Model.SettingsModel import SettingsModel
 
 uiDataImportWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/DataImportWindow.ui'))[0]
 
@@ -30,12 +31,6 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         'CutoffFrequency': 2,
         'FilterLength': 59
     }
-
-    default_colours = [
-        'b',
-        'g',
-        'r'
-    ]
 
     default_mapping = {
         'x': 'z',
@@ -73,6 +68,8 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         TableAndGraphView.__init__(self, self.rawTableView, self.currentColumnComboBox, self.plotFrame, self.legendFrame, self.redraw_graph)
 
         self.show()
+
+        SettingsModel.load_from_config()
 
         # Datasets
         self.rawDataFile = None
@@ -230,9 +227,9 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             current_column = self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]
 
             lines = self.plot.plot(
-                self.tableDataFile.get_dataset()[current_column].values, self.default_colours[0] + '-',
-                self.lowPassData.get_dataset()[current_column].values, self.default_colours[1] + '-',
-                self.highPassData.get_dataset()[current_column].values, self.default_colours[2] + '-'
+                self.tableDataFile.get_dataset()[current_column].values, SettingsModel.get_value('lines')[0],
+                self.lowPassData.get_dataset()[current_column].values, SettingsModel.get_value('lines')[1],
+                self.highPassData.get_dataset()[current_column].values, SettingsModel.get_value('lines')[2]
             )
 
             lines[0].set_label('Unfiltered')
@@ -257,9 +254,9 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
                 current_column = 'g'
 
             lines = self.plot.plot(
-                current_dataset[current_column + 'x'].values[::-1], self.default_colours[0] + '-',
-                current_dataset[current_column + 'y'].values[::-1], self.default_colours[1] + '-',
-                current_dataset[current_column + 'z'].values[::-1], self.default_colours[2] + '-'
+                current_dataset[current_column + 'x'].values[::-1], SettingsModel.get_value('lines')[0],
+                current_dataset[current_column + 'y'].values[::-1], SettingsModel.get_value('lines')[1],
+                current_dataset[current_column + 'z'].values[::-1], SettingsModel.get_value('lines')[2]
             )
 
             lines[0].set_label('X')

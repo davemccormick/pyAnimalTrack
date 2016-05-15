@@ -1,32 +1,23 @@
 # TODO: Stop the overflow: None of the plot legend
-# TODO: Saving to file with a particular separator.
-# TODO: Saving to file, output folder the same as where we loaded from maybe?
 # TODO: Time epochs
 
 import os
 
 import PyQt5.uic
-from PyQt5.QtCore import pyqtSignal, pyqtSlot
-
-from PyQt5.QtWidgets import QMainWindow, QFileDialog
-
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-import matplotlib.pyplot as plt
-
-from pyAnimalTrack.backend.filters.low_pass_filter import LPF
+from PyQt5.QtWidgets import QMainWindow
 
 from pyAnimalTrack.ui.Controller.TableAndGraphView import TableAndGraphView
 from pyAnimalTrack.ui.Model.FeaturesModel import FeaturesModel
+from pyAnimalTrack.ui.Model.SettingsModel import SettingsModel
 from pyAnimalTrack.ui.Model.TableModel import TableModel
-from pyAnimalTrack.ui.Model.FeaturesCalculator import FeaturesCalculator
+
+from pyAnimalTrack.ui.Service.FeaturesCalculator import FeaturesCalculator
+from pyAnimalTrack.ui.Service.SaveDataframe import SaveDataframe
 
 uiFeaturesWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/FeaturesWindow.ui'))[0]
 
 
 class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
-
-    lowPassData = None
-    saveFormat = 'csv'
 
     def __init__(self, *args):
         """ Constructor
@@ -41,6 +32,7 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
 
         self.featureModel = None
         self.tableDataFile = None
+        self.lowPassData = None
 
         self.saveToFileButton.clicked.connect(self.save_to_file)
 
@@ -94,9 +86,9 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
         # TODO: Read lines from config
         if current_column == 0:
             lines = self.plot.plot(
-                self.lowPassData['ax'], 'r-',
-                self.lowPassData['ay'], 'g-',
-                self.lowPassData['az'], 'b-'
+                self.lowPassData['ax'], SettingsModel.get_value('lines')[0],
+                self.lowPassData['ay'], SettingsModel.get_value('lines')[1],
+                self.lowPassData['az'], SettingsModel.get_value('lines')[2]
             )
 
             lines[0].set_label('X')
@@ -106,7 +98,7 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
             self.legendPlot.legend(bbox_to_anchor=(-4, 0.9, 2., .102), loc=2, handles=lines)
         else:
             lines = self.plot.plot(
-                self.tableDataFile.get_dataset()[self.featureModel.getColumns()[current_column]].values, 'b-' # TODO: Read from the config
+                self.tableDataFile.get_dataset()[self.featureModel.getColumns()[current_column]].values, SettingsModel.get_value('lines')[0]
             )
 
             lines[0].set_label(self.featureModel.getReadableColumns()[current_column])
@@ -117,16 +109,7 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
         self.legendCanvas.draw()
 
     def save_to_file(self):
-        filename = QFileDialog.getSaveFileName(filter='*.' + self.saveFormat)[0]
+        filename = SaveDataframe.save(self.tableDataFile.get_dataset())
 
-        # No filename, cancelled
-        if filename == '':
-            return
-
-        # If we don't have a extension, add one
-        if not filename.endswith('.' + self.saveFormat):
-            filename += '.' + self.saveFormat
-
-        # Save the pandas dataframe and alert the user
-        self.tableDataFile.get_dataset().to_csv(filename)
-        self.featuresStatusBar.showMessage('Saved to ' + filename, 2000)
+        if filename:
+            self.featuresStatusBar.showMessage('Saved to ' + filename)
