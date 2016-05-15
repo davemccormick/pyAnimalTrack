@@ -21,7 +21,27 @@ class SettingsModel:
             'png'
         ],
 
-        'csv_separator': ';'
+        'csv_separator': ';',
+
+        # Data manipulation
+
+        'filter_parameters': {
+            'SampleRate': 10,
+            'CutoffFrequency': 2,
+            'FilterLength': 59
+        },
+
+        'scaling': {
+            'ax': -1,
+            'ay': -1,
+            'az': 1,
+            'mx': 1,
+            'my': 1,
+            'mz': 1,
+            'gx': 1,
+            'gy': 1,
+            'gz': 1,
+        }
     }
 
     __settings = {}

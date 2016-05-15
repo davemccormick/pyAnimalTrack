@@ -24,32 +24,6 @@ uiDataImportWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__)
 
 class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
-    # TODO: Read from config
-    # Default values, used to initialise the model
-    default_filter_parameters = {
-        'SampleRate': 10,
-        'CutoffFrequency': 2,
-        'FilterLength': 59
-    }
-
-    default_mapping = {
-        'x': 'z',
-        'y': 'x',
-        'z': 'y'
-    }
-
-    default_scaling = {
-        'ax': -1,
-        'ay': -1,
-        'az': 1,
-        'mx': 1,
-        'my': 1,
-        'mz': 1,
-        'gx': 1,
-        'gy': 1,
-        'gz': 1,
-    }
-
     first_graphed_element = 1
     last_graphed_element = -2
 
@@ -128,7 +102,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         dataset = self.tableDataFile.get_dataset()
 
         for col in enumerate(['ax', 'ay', 'az', 'mx', 'my', 'mz', 'gx', 'gy', 'gz']):
-            changed = ca.calibrate(dataset[col[1]], numpy.min(dataset[col[1]]), numpy.max(dataset[col[1]]), self.default_scaling[col[1]])
+            changed = ca.calibrate(dataset[col[1]], numpy.min(dataset[col[1]]), numpy.max(dataset[col[1]]), SettingsModel.get_value('scaling')[col[1]])
             for i in range(0, len(dataset[col[1]])):
                 self.tableDataFile.get_dataset().iloc[i][col[0] + 1] = changed[i]
 
@@ -165,9 +139,9 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         for key in self.rawDataFile.getColumns():
             self.filterParameters[key] = {
-                'SampleRate':       self.default_filter_parameters['SampleRate'],
-                'CutoffFrequency':  self.default_filter_parameters['CutoffFrequency'],
-                'FilterLength':     self.default_filter_parameters['FilterLength']
+                'SampleRate':       SettingsModel.get_value('filter_parameters')['SampleRate'],
+                'CutoffFrequency':  SettingsModel.get_value('filter_parameters')['CutoffFrequency'],
+                'FilterLength':     SettingsModel.get_value('filter_parameters')['FilterLength']
             }
 
     def refilter_datasets(self):
