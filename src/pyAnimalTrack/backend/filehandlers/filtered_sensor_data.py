@@ -23,7 +23,7 @@ class FilteredSensorData(InputData):
 
         # We need to filter the data, with the provided parameters
         for column in range(len(self.__names)):
-            curr_name = self.__names[1]
+            curr_name = self.__names[column]
 
             # Create a new column of data
             new_values = filter_class(getattr(self.__df, curr_name).values)\
