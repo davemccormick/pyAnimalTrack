@@ -123,7 +123,9 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pyAnimalTrack.backend.deadreckoning.dead_reckoning</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.utilities.enums</span> <span class="kn">import</span> <span class="o">*</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.utilities.enums</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.utilities.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -234,7 +236,7 @@
 
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">==</span> <span class="n">Angle</span><span class="o">.</span><span class="n">radian</span><span class="p">:</span>
-            <span class="n">drx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">heading</span><span class="p">)</span>
+            <span class="n">drx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heading</span><span class="p">)</span>
             <span class="n">dry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heading</span><span class="p">)</span>
 
         <span class="c1"># Start from 0</span>

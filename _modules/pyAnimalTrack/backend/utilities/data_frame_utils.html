@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pyAnimalTrack.backend.utilities.calibrate_axis &mdash; pyAnimalTrack  documentation</title>
+  <title>pyAnimalTrack.backend.utilities.data_frame_utils &mdash; pyAnimalTrack  documentation</title>
   
 
   
@@ -110,7 +110,7 @@
       
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
       
-    <li>pyAnimalTrack.backend.utilities.calibrate_axis</li>
+    <li>pyAnimalTrack.backend.utilities.data_frame_utils</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -122,34 +122,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for pyAnimalTrack.backend.utilities.calibrate_axis</h1><div class="highlight"><pre>
+  <h1>Source code for pyAnimalTrack.backend.utilities.data_frame_utils</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-<div class="viewcode-block" id="CalibrateAxis"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calibrate_axis.CalibrateAxis">[docs]</a><span class="k">class</span> <span class="nc">CalibrateAxis</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Utility Class for calibrating an axis.</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.utilities.enums</span> <span class="kn">import</span> <span class="o">*</span>
+
+<div class="viewcode-block" id="DataFrameUtils"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.data_frame_utils.DataFrameUtils">[docs]</a><span class="k">class</span> <span class="nc">DataFrameUtils</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Utility Class manipulating data frames and np arrays.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CalibrateAxis.calibrate"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.calibrate_axis.CalibrateAxis.calibrate">[docs]</a>    <span class="k">def</span> <span class="nf">calibrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Calibrate the axes of magnetometers/accelerometers and</span>
-<span class="sd">            correct hard-iron distortion. Taken from animalTrackR.</span>
-<span class="sd">            TODO: speak to robin to understand what this is doing.</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="DataFrameUtils.convert_to_NED"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.data_frame_utils.DataFrameUtils.convert_to_NED">[docs]</a>    <span class="k">def</span> <span class="nf">convert_to_NED</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Rotate xyz axis such that:</span>
+<span class="sd">            x = z</span>
+<span class="sd">            y = x</span>
+<span class="sd">            z = y</span>
 
-<span class="sd">            :param x: The data from an axis</span>
-<span class="sd">            :param min_: Minimum value of x</span>
-<span class="sd">            :param max_: Maximum value of x</span>
-<span class="sd">            :param scale: Multiplier for the axis.</span>
+<span class="sd">            :param x: raw X axis accelerometer data</span>
+<span class="sd">            :param y: raw Y axis accelerometer data</span>
+<span class="sd">            :param z: raw Z axis accelerometer data</span>
 
-<span class="sd">            :returns: A scaled set of axis data.</span>
+<span class="sd">            :returns: tuple of rotated arrays</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">total</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">min_</span> <span class="o">-</span> <span class="n">max_</span><span class="p">)</span>
-        <span class="n">dist</span> <span class="o">=</span> <span class="n">total</span> <span class="o">/</span> <span class="mi">2</span>
-        <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_</span> <span class="o">+</span> <span class="n">min_</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-        <span class="n">scaled</span> <span class="o">=</span> <span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">offset</span> <span class="p">)</span> <span class="o">/</span> <span class="n">dist</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span>
-        <span class="k">return</span> <span class="n">scaled</span></div></div>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">z</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">z1</span> <span class="o">=</span> <span class="n">y</span>
 
-
+        <span class="k">return</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="n">z1</span><span class="p">)</span></div>
+        
+    
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="DataFrameUtils.invert_axis"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.utilities.html#pyAnimalTrack.backend.utilities.data_frame_utils.DataFrameUtils.invert_axis">[docs]</a>    <span class="k">def</span> <span class="nf">invert_axis</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Inverts the axis x such that all its positive elements are made negative,</span>
+<span class="sd">            and its negative elements are made positive.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">x</span></div></div>
 </pre></div>
 
            </div>
