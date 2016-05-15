@@ -109,7 +109,7 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
         self.legendCanvas.draw()
 
     def save_to_file(self):
-        filename = SaveDataframe.save(self.tableDataFile.get_dataset())
+        filename = SaveDataframe.save(self.tableDataFile.get_dataset(), 'data')
 
         if filename:
             self.featuresStatusBar.showMessage('Saved to ' + filename)

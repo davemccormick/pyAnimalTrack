@@ -147,7 +147,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             # Get the model back, build the view
 
             # Load the CSV data object into the table
-            self.rawDataFile = sensor_csv.SensorCSV(dialog_result[1])
+            self.rawDataFile = sensor_csv.SensorCSV(dialog_result[1], dialog_result[2])
             self.tableDataFile = TableModel(self.rawDataFile)
             self.rawTableView.setModel(self.tableDataFile)
 

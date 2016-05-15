@@ -9,8 +9,8 @@ from pyAnimalTrack.ui.Model.SettingsModel import SettingsModel
 class SaveDataframe:
 
     @staticmethod
-    def save(df):
-        save_result = QFileDialog.getSaveFileName(filter=SettingsModel.get_value('saveFormatsFilter'))
+    def save(df, format):
+        save_result = QFileDialog.getSaveFileName(filter=SettingsModel.get_value(format + '_SaveFormatsFilter'))
 
         filename = save_result[0]
 
@@ -19,7 +19,7 @@ class SaveDataframe:
             return
 
         # If we don't have a extension, add one
-        if not SettingsModel.get_value('saveFormats').__contains__(filename.split('.')[-1]):
+        if not SettingsModel.get_value(format + '_SaveFormats').__contains__(filename.split('.')[-1]):
             filename += '.' + save_result[1].split('.')[-1]
 
         # Save the pandas dataframe and alert the user

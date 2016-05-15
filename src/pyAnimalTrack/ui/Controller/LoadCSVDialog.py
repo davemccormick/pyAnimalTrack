@@ -5,6 +5,8 @@ import PyQt5.uic
 from PyQt5.QtWidgets import QDialog, QFileDialog
 from PyQt5.QtCore import pyqtSlot
 
+from pyAnimalTrack.ui.Model.SettingsModel import SettingsModel
+
 # TODO: Load path from config
 uiLoadCSVDialog = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/LoadCSVDialog.ui'))[0]
 
@@ -19,6 +21,8 @@ class LoadCSVDialog(QDialog, uiLoadCSVDialog):
 
     def loadCSV(self, parent=None):
         self.dialog = LoadCSVDialog(parent)
+        self.dialog.separator_textbox.setText(SettingsModel.get_value('csv_separator'))
+
         result = self.dialog.exec_()
         return (result == QDialog.Accepted, self.dialog.location_textbox.text(), self.dialog.separator_textbox.text())
 

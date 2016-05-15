@@ -84,7 +84,13 @@ class DeadReckoningWindow(QMainWindow, uiDeadReckoningWindow):
                 'heading': self.dead_reckoning.heading,
                 'speed': self.dead_reckoning.speed
             }
-        ))
+        ), 'data')
 
         if filename:
             self.savingStatusBar.showMessage('Saved to ' + filename)
+
+    def save_movement_graph_to_file(self):
+        pass
+
+    def save_time_graph_to_file(self):
+        pass

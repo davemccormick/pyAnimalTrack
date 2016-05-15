@@ -6,7 +6,7 @@ from pyAnimalTrack.backend.filehandlers.input_data import InputData
 
 class SensorCSV(InputData):
 
-    def __init__(self, filename):
+    def __init__(self, filename, csv_separator):
 
         """ Constructor
         
@@ -17,6 +17,7 @@ class SensorCSV(InputData):
         super(SensorCSV,self).__init__()
 
         self.__filename = filename
+        self.__csv_separator = csv_separator
         self.__df = None
         self.__fileheadings = ['ms','ay','az','ax','my','mz','mx','gx','gy','gz','temp','adjms']
         self.__names = ['ms','ax','ay','az','mx','my','mz','gx','gy','gz','temp','adjms']
@@ -45,7 +46,7 @@ class SensorCSV(InputData):
 
         """
 
-        self.__df = pd.read_csv(self.__filename, delimiter=";", names=self.__fileheadings, dtype=np.float64)
+        self.__df = pd.read_csv(self.__filename, delimiter=self.__csv_separator, names=self.__fileheadings, dtype=np.float64)
 
         return self.__df[self.__names]
 

@@ -12,10 +12,16 @@ class SettingsModel:
             'b-'
         ],
 
-        'saveFormats': [
+        'data_SaveFormats': [
             'csv',
             'txt'
         ],
+
+        'graph_SaveFormats': [
+            'png'
+        ],
+
+        'csv_separator': ';'
     }
 
     __settings = {}
@@ -28,7 +34,7 @@ class SettingsModel:
             file.close()
         else:
             SettingsModel.__settings = SettingsModel.__defaults
-            SettingsModel._save_config()
+            #SettingsModel._save_config() TODO Reenable
 
     @staticmethod
     def _save_config():
@@ -46,5 +52,6 @@ class SettingsModel:
         if SettingsModel.__settings.__contains__(key):
             return SettingsModel.__settings[key]
         else:
-            if key == 'saveFormatsFilter':
-                return '*.' + ';;*.'.join(SettingsModel.__settings['saveFormats'])
+            if key.endswith('SaveFormatsFilter'):
+                format = key.split('_')[0]
+                return '*.' + ';;*.'.join(SettingsModel.__settings[format + '_SaveFormats'])
