@@ -28,6 +28,14 @@ pyAnimalTrack.backend.utilities.calibrate_axis module
     :undoc-members:
     :show-inheritance:
 
+pyAnimalTrack.backend.utilities.data_frame_utils module
+-------------------------------------------------------
+
+.. automodule:: pyAnimalTrack.backend.utilities.data_frame_utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pyAnimalTrack.backend.utilities.enums module
 --------------------------------------------
 
