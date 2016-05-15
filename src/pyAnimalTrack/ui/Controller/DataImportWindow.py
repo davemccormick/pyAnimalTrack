@@ -120,8 +120,14 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         if dialog_result[0]:
             # Get the model back, build the view
 
+            SettingsModel.set_temp_value('ground_reference_frame', dialog_result[3])
+
             # Load the CSV data object into the table
-            self.rawDataFile = sensor_csv.SensorCSV(dialog_result[1], dialog_result[2])
+            self.rawDataFile = sensor_csv.SensorCSV(
+                dialog_result[1],
+                dialog_result[2],
+                dialog_result[3]
+            )
             self.tableDataFile = TableModel(self.rawDataFile)
             self.rawTableView.setModel(self.tableDataFile)
 

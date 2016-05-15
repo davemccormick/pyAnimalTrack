@@ -25,6 +25,8 @@ class SettingsModel:
 
         # Data manipulation
 
+        'ground_reference_frame_options': ['NED', 'ENU'],
+
         'filter_parameters': {
             'SampleRate': 10,
             'CutoffFrequency': 2,
@@ -45,6 +47,10 @@ class SettingsModel:
     }
 
     __settings = {}
+
+    __temporary_settings = {
+        'ground_reference_frame': 'NED'
+    }
 
     @staticmethod
     def load_from_config():
@@ -68,9 +74,15 @@ class SettingsModel:
         SettingsModel._save_config()
 
     @staticmethod
+    def set_temp_value(key, value):
+        SettingsModel.__temporary_settings[key] = value
+
+    @staticmethod
     def get_value(key):
         if SettingsModel.__settings.__contains__(key):
             return SettingsModel.__settings[key]
+        elif SettingsModel.__temporary_settings.__contains__(key):
+            return SettingsModel.__temporary_settings[key]
         else:
             if key.endswith('SaveFormatsFilter'):
                 format = key.split('_')[0]

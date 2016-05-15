@@ -36,18 +36,23 @@ class DeadReckoningWindow(QMainWindow, uiDeadReckoningWindow):
         # Normal matplotlib graphing components
         self.steeredFigure = plt.figure(facecolor='none')
         self.steeredTimeFigure = plt.figure(facecolor='none')
+        self.steeredTimeLegendFigure = plt.figure(facecolor='none')
 
         self.steeredCanvas = FigureCanvas(self.steeredFigure)
         self.steeredTimeCanvas = FigureCanvas(self.steeredTimeFigure)
+        self.steeredTimeLegendCanvas = FigureCanvas(self.steeredTimeLegendFigure)
 
         self.mapFrame.addWidget(self.steeredCanvas)
         self.timeFrame.addWidget(self.steeredTimeCanvas)
+        self.timeLegendFrame.addWidget(self.steeredTimeLegendCanvas)
 
         self.steeredPlot = self.steeredFigure.add_subplot(111)
         self.steeredTimePlot = self.steeredTimeFigure.add_subplot(111)
+        self.steeredTimeLegendPlot = self.steeredTimeLegendFigure.add_axes([-0.2,0,-0.045,0.85])
 
         self.steeredPlot.hold(False)
         self.steeredTimePlot.hold(False)
+        self.steeredTimeLegendPlot.hold(False)
 
         # PyQt Connections
         self.saveToDataFileButton.clicked.connect(self.save_to_data_file)
@@ -71,10 +76,20 @@ class DeadReckoningWindow(QMainWindow, uiDeadReckoningWindow):
 
     def create_graphs(self):
         self.steeredPlot.plot(self.dead_reckoning.cdrx, self.dead_reckoning.cdry)
-        self.steeredTimePlot.plot(
+
+        # TODO: Constant tick values for the graph, so the X and Y coords match (No stretching)
+        # self.steeredPlot.set_xlim((0, 40))
+        # self.steeredPlot.set_ylim((0, 40))
+
+        time_lines = self.steeredTimePlot.plot(
             self.dead_reckoning.cdrx, SettingsModel.get_value('lines')[0],
             self.dead_reckoning.cdry, SettingsModel.get_value('lines')[1]
         )
+
+        time_lines[0].set_label('X')
+        time_lines[1].set_label('Z')
+
+        self.steeredTimeLegendPlot.legend(bbox_to_anchor=(-4, 0.9, 2., .102), loc=2, handles=time_lines)
 
     def save_to_data_file(self):
         filename = SaveDataframe.save(pd.DataFrame(

@@ -21,10 +21,18 @@ class LoadCSVDialog(QDialog, uiLoadCSVDialog):
 
     def loadCSV(self, parent=None):
         self.dialog = LoadCSVDialog(parent)
+
+        # Setup dialog values
         self.dialog.separator_textbox.setText(SettingsModel.get_value('csv_separator'))
+        self.dialog.referenceFrameComboBox.addItems(SettingsModel.get_value('ground_reference_frame_options'))
 
         result = self.dialog.exec_()
-        return (result == QDialog.Accepted, self.dialog.location_textbox.text(), self.dialog.separator_textbox.text())
+        return (
+            result == QDialog.Accepted,
+            self.dialog.location_textbox.text(),
+            self.dialog.separator_textbox.text(),
+            str(self.dialog.referenceFrameComboBox.currentText())
+        )
 
     @pyqtSlot()
     def showReadFile(self):
