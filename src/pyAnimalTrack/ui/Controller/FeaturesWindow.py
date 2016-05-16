@@ -34,7 +34,8 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
         self.tableDataFile = None
         self.lowPassData = None
 
-        self.saveToFileButton.clicked.connect(self.save_to_file)
+        self.saveToDataFileButton.clicked.connect(self.save_data_to_file)
+        self.saveGraphButton.clicked.connect(self.save_graph_to_file)
 
     def set_data(self, unfiltered_data, low_pass_data, high_pass_data):
         """ Set the datasets for the features window
@@ -108,8 +109,14 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
         self.canvas.draw()
         self.legendCanvas.draw()
 
-    def save_to_file(self):
+    def save_data_to_file(self):
         filename = SaveDataframe.save(self.tableDataFile.get_dataset(), 'data')
+
+        if filename:
+            self.featuresStatusBar.showMessage('Saved to ' + filename)
+
+    def save_graph_to_file(self):
+        filename = SaveDataframe.save(self.figure, 'graph')
 
         if filename:
             self.featuresStatusBar.showMessage('Saved to ' + filename)

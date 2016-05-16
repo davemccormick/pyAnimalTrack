@@ -56,6 +56,7 @@ class DeadReckoningWindow(QMainWindow, uiDeadReckoningWindow):
 
         # PyQt Connections
         self.saveToDataFileButton.clicked.connect(self.save_to_data_file)
+        self.saveGraphsButton.clicked.connect(self.save_graphs_to_file)
 
     def set_data(self, unfiltered_data, low_pass_data, high_pass_data):
         features = FeaturesCalculator.calculate(unfiltered_data, low_pass_data)
@@ -104,8 +105,12 @@ class DeadReckoningWindow(QMainWindow, uiDeadReckoningWindow):
         if filename:
             self.savingStatusBar.showMessage('Saved to ' + filename)
 
-    def save_movement_graph_to_file(self):
-        pass
+    def save_graphs_to_file(self):
+        filename = SaveDataframe.save(None, 'graph', False)
+        time_filename = filename.split('.')[0] + '_time.' + filename.split('.')[1]
 
-    def save_time_graph_to_file(self):
-        pass
+        self.steeredFigure.savefig(filename)
+        self.steeredTimeFigure.savefig(time_filename)
+
+        if filename:
+            self.savingStatusBar.showMessage('Saved to ' + filename + ' and ' + time_filename)

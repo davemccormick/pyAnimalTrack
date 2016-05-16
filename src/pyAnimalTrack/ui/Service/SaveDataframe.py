@@ -9,7 +9,7 @@ from pyAnimalTrack.ui.Model.SettingsModel import SettingsModel
 class SaveDataframe:
 
     @staticmethod
-    def save(df, format):
+    def save(data, format, save=True):
         save_result = QFileDialog.getSaveFileName(filter=SettingsModel.get_value(format + '_SaveFormatsFilter'))
 
         filename = save_result[0]
@@ -23,5 +23,13 @@ class SaveDataframe:
             filename += '.' + save_result[1].split('.')[-1]
 
         # Save the pandas dataframe and alert the user
-        df.to_csv(filename)
-        return filename
+        if not save:
+            return filename
+        elif format == 'data':
+            data.to_csv(filename)
+            return filename
+        elif format == 'graph':
+            data.savefig(filename)
+            return filename
+
+        return False
