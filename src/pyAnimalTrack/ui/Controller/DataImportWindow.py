@@ -66,10 +66,12 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         else:
             TableAndGraphView.after_init(self)
 
+            #self.calibratedData = TableModel(sensor_data_clone.SensorDataClone(self.tableDataFile.get_dataset()))
+
             # Connect signals and slots
             self.connect_ui_elements()
 
-            self.calibrate_axis()
+            #self.calibrate_axis()
 
             self.check_accuracy()
 
@@ -99,12 +101,12 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
     def calibrate_axis(self):
         ca = CalibrateAxis()
 
-        dataset = self.tableDataFile.get_dataset()
+        dataset = self.calibratedData.get_dataset()
 
         for col in enumerate(['ax', 'ay', 'az', 'mx', 'my', 'mz', 'gx', 'gy', 'gz']):
             changed = ca.calibrate(dataset[col[1]], numpy.min(dataset[col[1]]), numpy.max(dataset[col[1]]), SettingsModel.get_value('scaling')[col[1]])
             for i in range(0, len(dataset[col[1]])):
-                self.tableDataFile.get_dataset().iloc[i][col[0] + 1] = changed[i]
+                self.calibratedData.get_dataset().iloc[i][col[0] + 1] = changed[i]
 
     def show_load_dialog(self):
         """ Show the user a dialog to load a data file(CSV)
@@ -157,10 +159,12 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         """
         self.calibratedData = TableModel(sensor_data_clone.SensorDataClone(self.tableDataFile.get_dataset()))
 
+        self.calibrate_axis()
+
         self.lowPassData = TableModel(filtered_sensor_data
-                                      .FilteredSensorData(LPF, self.tableDataFile.get_dataset(), self.filterParameters))
+                                      .FilteredSensorData(LPF, self.calibratedData.get_dataset(), self.filterParameters))
         self.highPassData = TableModel(filtered_sensor_data
-                                       .FilteredSensorData(HPF, self.tableDataFile.get_dataset(), self.filterParameters))
+                                       .FilteredSensorData(HPF, self.calibratedData.get_dataset(), self.filterParameters))
 
         self.redraw_graph()
 
@@ -198,7 +202,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             :returns: void
         """
         # Sanity check, before trying to join
-        if not self.tableDataFile or not self.lowPassData or not self.highPassData:
+        if not self.calibratedData or not self.lowPassData or not self.highPassData:
             return
 
         current_type = self.drawModeComboBox.currentIndex()
@@ -207,7 +211,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             current_column = self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]
 
             lines = self.plot.plot(
-                self.tableDataFile.get_dataset()[current_column].values, SettingsModel.get_value('lines')[0],
+                self.calibratedData.get_dataset()[current_column].values, SettingsModel.get_value('lines')[0],
                 self.lowPassData.get_dataset()[current_column].values, SettingsModel.get_value('lines')[1],
                 self.highPassData.get_dataset()[current_column].values, SettingsModel.get_value('lines')[2]
             )
@@ -219,7 +223,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             # Choose the dataset based upon the first dropdown
             current_dataset = None
             if current_type == 1:
-                current_dataset = self.tableDataFile.get_dataset()
+                current_dataset = self.calibratedData.get_dataset()
             elif current_type == 2:
                 current_dataset = self.lowPassData.get_dataset()
             else:
@@ -256,7 +260,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             :returns: void
         """
         self.featuresWindow.set_data(
-            self.tableDataFile.get_dataset(),
+            self.calibratedData.get_dataset(),
             self.lowPassData.get_dataset(),
             self.highPassData.get_dataset()
         )
@@ -269,7 +273,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         """
 
         self.deadReckoningWindow.set_data(
-            self.tableDataFile.get_dataset(),
+            self.calibratedData.get_dataset(),
             self.lowPassData.get_dataset(),
             self.highPassData.get_dataset()
         )
