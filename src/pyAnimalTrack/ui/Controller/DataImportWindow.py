@@ -48,6 +48,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         # Datasets
         self.rawDataFile = None
         self.calibratedData = None
+        self.accuracyData = None
         self.lowPassData = None
         self.highPassData = None
 
@@ -71,10 +72,6 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             # Connect signals and slots
             self.connect_ui_elements()
 
-            #self.calibrate_axis()
-
-            self.check_accuracy()
-
             self.setup_filter_parameters()
 
             self.refilter_datasets()
@@ -97,6 +94,12 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
     def check_accuracy(self):
         ac = Accuracy()
+
+        dataset = self.accuracyData.get_dataset()
+        #dataset = self.calibratedData.get_dataset()
+
+        for i in range(0, len(dataset)):
+            print(ac.improve_accuracy(dataset['ax'][i], dataset['ay'][i], dataset['az'][i]))
 
     def calibrate_axis(self):
         ca = CalibrateAxis()
@@ -165,6 +168,10 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
                                       .FilteredSensorData(LPF, self.calibratedData.get_dataset(), self.filterParameters))
         self.highPassData = TableModel(filtered_sensor_data
                                        .FilteredSensorData(HPF, self.calibratedData.get_dataset(), self.filterParameters))
+
+        self.accuracyData = TableModel(sensor_data_clone.SensorDataClone(self.lowPassData.get_dataset()))
+
+        self.check_accuracy()
 
         self.redraw_graph()
 
