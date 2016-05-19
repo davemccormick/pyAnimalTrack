@@ -47,13 +47,17 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         # Datasets
         self.rawDataFile = None
-        self.calibratedData = None
-        self.accuracyData = None
-        self.lowPassData = None
-        self.highPassData = None
-
+        # This one remains pristine, so we can reset
+        self.untouchedDataFile = None
         # The datafile used by tableview
         self.tableDataFile = None
+        # Calibrated to between two given values. Currently hardcoded to -1 <> 1
+        self.calibratedData = None
+
+        self.accuracyData = None
+        # Filtered sets
+        self.lowPassData = None
+        self.highPassData = None
 
         self.featuresWindow = FeaturesWindow()
         self.deadReckoningWindow = DeadReckoningWindow()
@@ -66,8 +70,6 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             self.quitTrigger.emit()
         else:
             TableAndGraphView.after_init(self)
-
-            #self.calibratedData = TableModel(sensor_data_clone.SensorDataClone(self.tableDataFile.get_dataset()))
 
             # Connect signals and slots
             self.connect_ui_elements()
@@ -92,6 +94,12 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         self.drawModeComboBox.currentIndexChanged.connect(self.refill_column_combobox)
         self.currentColumnComboBox.currentIndexChanged.connect(self.update_filter_params)
 
+        # If we change any epoch settings, we need to refilter
+        self.refreshLineEdit.textChanged.connect(self.refilter_datasets)
+        self.startRow.textChanged.connect(self.refilter_datasets)
+        self.endRow.textChanged.connect(self.refilter_datasets)
+        self.epochComboBox.currentIndexChanged.connect(self.refilter_datasets)
+
     def check_accuracy(self):
         ac = Accuracy()
 
@@ -99,9 +107,14 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         #dataset = self.calibratedData.get_dataset()
 
         for i in range(0, len(dataset)):
-            print(ac.improve_accuracy(dataset['ax'][i], dataset['ay'][i], dataset['az'][i]))
+            #print(ac.improve_accuracy(dataset['ax'][i], dataset['ay'][i], dataset['az'][i]))
+            pass
 
     def calibrate_axis(self):
+        """ Calibrate the dataset to between whatever is specified in the settings
+
+            :returns: void
+        """
         ca = CalibrateAxis()
 
         dataset = self.calibratedData.get_dataset()
@@ -133,7 +146,10 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
                 dialog_result[2],
                 dialog_result[3]
             )
-            self.tableDataFile = TableModel(self.rawDataFile)
+
+            self.untouchedDataFile = TableModel(self.rawDataFile)
+
+            self.tableDataFile = TableModel(sensor_data_clone.SensorDataClone(self.untouchedDataFile.get_dataset()))
             self.rawTableView.setModel(self.tableDataFile)
 
             self.refill_column_combobox()
@@ -156,10 +172,20 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             }
 
     def refilter_datasets(self):
-        """ Take the filter params that have been specified, and apply them to the models
+        """ Recreate the datasets, using all provided parameters
 
             :returns: void
         """
+        # Leave the conversion to the get_epoch_dataset method, it has sanity checks
+        self.tableDataFile = TableModel(sensor_data_clone.SensorDataClone(self.untouchedDataFile.get_epoch_dataset(
+            start=self.startRow.text() if self.startRow.text() else 0,
+            end=self.endRow.text() if self.endRow.text() else 0,
+            step=1, # TODO: Controllable step length?
+            isMilliseconds=self.epochComboBox.currentIndex() == 1,
+            sampleRatePerSecond=self.refreshLineEdit.text() if self.refreshLineEdit.text() else 10
+        )))
+        self.rawTableView.setModel(self.tableDataFile)
+
         self.calibratedData = TableModel(sensor_data_clone.SensorDataClone(self.tableDataFile.get_dataset()))
 
         self.calibrate_axis()
@@ -199,6 +225,8 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         self.redraw_graph()
 
     def update_filter_params(self):
+        """ Read in any changes of the filter parameters, and set them to the current model
+        """
         self.refreshLineEdit.setText(str(self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]]['SampleRate']))
         self.cutoffLineEdit.setText(str(self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]]['CutoffFrequency']))
         self.filterLineEdit.setText(str(self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]]['FilterLength']))

@@ -66,4 +66,64 @@ class TableModel(QAbstractTableModel):
             return QVariant()
 
     def get_dataset(self):
+        """ Retrieve the entire dataset
+
+        :return: A pandas dataframe of the entire dataset
+        """
         return self.__dataSet
+
+    def get_epoch_dataset(self, start=0, end=0, step=1, isMilliseconds=False, sampleRatePerSecond=10):
+        """ Retrieve a subset of the dataset, by rows or milliseconds
+
+        :param start: The first row (or millisecond) to get
+        :param end: The last row (or millisecond) to get
+        :param step: How far between each row to return
+        :param isMilliseconds: To go by row, or by time
+        :param sampleRatePerSecond: If working in milliseconds, how many samples per second were taken
+        :return: A pandas dataframe, sliced to the requested rows
+        """
+
+        # Make sure we are working with integer values for the numerical parameters
+        try:
+            start = int(start)
+        except:
+            start = 0
+
+        try:
+            end = int(end)
+        except:
+            end = 0
+
+        try:
+            step = int(step)
+        except:
+            step = 1
+
+        try:
+            sampleRatePerSecond = int(sampleRatePerSecond)
+        except:
+            sampleRatePerSecond = 10
+
+        # If working time based, we need a conversion
+        if isMilliseconds:
+            start = int((start / 1000.0) * sampleRatePerSecond)
+            end = int((end / 1000.0) * sampleRatePerSecond)
+
+        # Sanity checks
+        if end > len(self.__dataSet):
+            end = len(self.__dataSet)
+        elif end < 0:
+            end = 0
+
+        # Correct the end first, so the start doesn't get left incorrect if modified
+        if start > end:
+            start = end
+        elif start < 0:
+            start = 0
+
+        # If the given end is 0, we actually want everything
+        if end == 0:
+            end = -1
+
+        return self.__dataSet[start:end:step]
+
