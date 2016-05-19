@@ -1,10 +1,14 @@
 # pyAnimalTrack
 
-TODO:
-	Disable data form when using the feature form.
-	Focus on the data form when closing the feature form.
+This is the project repository for a group project for COSC591 / COSC391 between David McCormick and Thomas Roberts. Our goal is to create a user interface to streamline the process of preparing and analysing data used for livestock movement.
 
-	Settings JSON?
+API Doco can be found here:
+http://davemccormick.github.io/pyAnimalTrack/
 
-	Questions:
-		"Features will need to be saved to file." - does this include the graphs?
+The UI Doco can be found here:
+Thomas TODO.
+
+
+
+
+
