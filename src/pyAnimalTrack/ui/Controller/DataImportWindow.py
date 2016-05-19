@@ -102,13 +102,42 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         self.endRow.textChanged.connect(self.refilter_datasets)
         self.epochComboBox.currentIndexChanged.connect(self.refilter_datasets)
 
+        self.dataToUseComboBox.currentIndexChanged.connect(self.refilter_datasets)
+
         self.tableSourceComboBox.currentIndexChanged.connect(self.changeTableDataSource)
 
     def check_accuracy(self):
         ac = Accuracy()
 
-        dataset = self.accuracyData.get_dataset()
-        improved_acc = ac.improve_accuracy(dataset['ax'], dataset['ay'], dataset['az'])
+        dataset = getattr(self, self.currentTableData).get_dataset()
+        improved_accel = ac.improve_accuracy(dataset['ax'], dataset['ay'], dataset['az'])
+        improved_magnet = ac.improve_accuracy(dataset['mx'], dataset['my'], dataset['mz'])
+
+        valuesToUse = 'input_accuracy'
+        self.accInputTypeLabel.setText('Input')
+        self.magInputTypeLabel.setText('Input')
+
+        if self.dataToUseComboBox.currentIndex() == 1:
+            dataset['az'] = improved_accel['improved_accuracy']['acc']
+            dataset['mz'] = improved_magnet['improved_accuracy']['acc']
+
+            valuesToUse = 'improved_accuracy'
+
+            self.accInputTypeLabel.setText('Improved')
+            self.magInputTypeLabel.setText('Improved')
+
+        self.accVarLabel.setText("%.2f" % (improved_accel[valuesToUse]['var']))
+        self.accStdLabel.setText("%.2f" % (improved_accel[valuesToUse]['std']))
+        self.accVar2Label.setText("%.2f" % (improved_accel[valuesToUse]['var2']))
+        self.accStd2Label.setText("%.2f" % (improved_accel[valuesToUse]['std2']))
+
+        self.magVarLabel.setText("%.2f" % (improved_magnet[valuesToUse]['var']))
+        self.magStdLabel.setText("%.2f" % (improved_magnet[valuesToUse]['std']))
+        self.magVar2Label.setText("%.2f" % (improved_magnet[valuesToUse]['var2']))
+        self.magStd2Label.setText("%.2f" % (improved_magnet[valuesToUse]['std2']))
+
+
+
 
     def calibrate_axis(self):
         """ Calibrate the dataset to between whatever is specified in the settings
@@ -184,7 +213,6 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             isMilliseconds=self.epochComboBox.currentIndex() == 1,
             sampleRatePerSecond=self.refreshLineEdit.text() if self.refreshLineEdit.text() else 10
         )))
-        self.rawTableView.setModel(getattr(self, self.currentTableData))
 
         self.calibratedData = TableModel(sensor_data_clone.SensorDataClone(self.defaultDataFile.get_dataset()))
 
@@ -195,9 +223,8 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         self.highPassData = TableModel(filtered_sensor_data
                                        .FilteredSensorData(HPF, self.calibratedData.get_dataset(), self.filterParameters))
 
-        self.accuracyData = TableModel(sensor_data_clone.SensorDataClone(self.lowPassData.get_dataset()))
-
         self.check_accuracy()
+        self.rawTableView.setModel(getattr(self, self.currentTableData))
 
         self.redraw_graph()
 
@@ -334,8 +361,13 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         if new_value == '':
             return
 
-        self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]][parameter] = int(new_value)
-        self.refilter_datasets()
+        try:
+            new_value = float(new_value)
+
+            self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]][parameter] = int(new_value)
+            self.refilter_datasets()
+        except:
+            pass
 
     def changeTableDataSource(self, index):
         if index == 0:
@@ -348,4 +380,5 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             self.currentTableData = 'highPassData'
 
 
+        self.check_accuracy()
         self.rawTableView.setModel(getattr(self, self.currentTableData))

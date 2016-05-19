@@ -41,7 +41,6 @@ class Accuracy(object):
             :returns: A dictionary of accuracy dictionaries with keys: input_accuracy and improved_accuracy.
 
         """
-        print ("Raw",x)
         x1 = np.sqrt(1-x**2)
 
         y1 = (y / np.sqrt(1 - np.square(x))) * (-1 * x)
