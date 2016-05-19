@@ -21,9 +21,11 @@ class FilteredSensorData(InputData):
         self.__names =['ms','ax','ay','az','mx','my','mz','gx','gy','gz','temp','adjms']
         self.__readableNames = ['Milliseconds', 'AX', 'AY', 'AZ', 'MX', 'MY', 'MZ', 'GX', 'GY', 'GZ', 'Temperature', 'Adjusted Milliseconds']
 
+        filtered_names = self.__names[1:-2]
+
         # We need to filter the data, with the provided parameters
-        for column in range(len(self.__names)):
-            curr_name = self.__names[column]
+        for column in range(1, len(filtered_names)):
+            curr_name = filtered_names[column]
 
             # Create a new column of data
             new_values = filter_class(getattr(self.__df, curr_name).values)\

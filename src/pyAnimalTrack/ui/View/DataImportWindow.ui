@@ -18,19 +18,6 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QLabel" name="label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Raw data:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QTableView" name="rawTableView">
         <property name="enabled">
          <bool>true</bool>
@@ -59,57 +46,7 @@
        </widget>
       </item>
       <item>
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <spacer name="horizontalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QComboBox" name="drawModeComboBox">
-          <property name="editable">
-           <bool>false</bool>
-          </property>
-          <property name="sizeAdjustPolicy">
-           <enum>QComboBox::AdjustToContents</enum>
-          </property>
-          <item>
-           <property name="text">
-            <string>Seperate</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Combined - Unfiltered</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Combined - Low pass filter</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Combined - High pass filter</string>
-           </property>
-          </item>
-         </widget>
-        </item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
          <spacer name="horizontalSpacer_9">
           <property name="orientation">
@@ -124,20 +61,44 @@
          </spacer>
         </item>
         <item>
-         <widget class="QComboBox" name="currentColumnComboBox">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="sizeAdjustPolicy">
-           <enum>QComboBox::AdjustToContents</enum>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Table data format:</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_6">
+         <widget class="QComboBox" name="tableSourceComboBox">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QComboBox::AdjustToContents</enum>
+          </property>
+          <item>
+           <property name="text">
+            <string>Raw</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Calibrated</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Low pass filter</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>High pass filter</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_10">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -458,6 +419,79 @@
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QComboBox" name="drawModeComboBox">
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QComboBox::AdjustToContents</enum>
+          </property>
+          <item>
+           <property name="text">
+            <string>Seperate</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Combined - Unfiltered</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Combined - Low pass filter</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Combined - High pass filter</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="currentColumnComboBox">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QComboBox::AdjustToContents</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">

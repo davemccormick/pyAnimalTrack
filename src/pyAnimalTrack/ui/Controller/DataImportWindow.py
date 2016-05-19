@@ -45,12 +45,14 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         SettingsModel.load_from_config()
 
+        self.currentTableData = 'defaultDataFile'
+
         # Datasets
         self.rawDataFile = None
         # This one remains pristine, so we can reset
         self.untouchedDataFile = None
         # The datafile used by tableview
-        self.tableDataFile = None
+        self.defaultDataFile = None
         # Calibrated to between two given values. Currently hardcoded to -1 <> 1
         self.calibratedData = None
 
@@ -100,15 +102,13 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         self.endRow.textChanged.connect(self.refilter_datasets)
         self.epochComboBox.currentIndexChanged.connect(self.refilter_datasets)
 
+        self.tableSourceComboBox.currentIndexChanged.connect(self.changeTableDataSource)
+
     def check_accuracy(self):
         ac = Accuracy()
 
         dataset = self.accuracyData.get_dataset()
-        #dataset = self.calibratedData.get_dataset()
-
-        for i in range(0, len(dataset)):
-            #print(ac.improve_accuracy(dataset['ax'][i], dataset['ay'][i], dataset['az'][i]))
-            pass
+        improved_acc = ac.improve_accuracy(dataset['ax'], dataset['ay'], dataset['az'])
 
     def calibrate_axis(self):
         """ Calibrate the dataset to between whatever is specified in the settings
@@ -149,8 +149,8 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
             self.untouchedDataFile = TableModel(self.rawDataFile)
 
-            self.tableDataFile = TableModel(sensor_data_clone.SensorDataClone(self.untouchedDataFile.get_dataset()))
-            self.rawTableView.setModel(self.tableDataFile)
+            self.defaultDataFile = TableModel(sensor_data_clone.SensorDataClone(self.untouchedDataFile.get_dataset()))
+            self.rawTableView.setModel(self.defaultDataFile)
 
             self.refill_column_combobox()
 
@@ -177,16 +177,16 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             :returns: void
         """
         # Leave the conversion to the get_epoch_dataset method, it has sanity checks
-        self.tableDataFile = TableModel(sensor_data_clone.SensorDataClone(self.untouchedDataFile.get_epoch_dataset(
+        self.defaultDataFile = TableModel(sensor_data_clone.SensorDataClone(self.untouchedDataFile.get_epoch_dataset(
             start=self.startRow.text() if self.startRow.text() else 0,
             end=self.endRow.text() if self.endRow.text() else 0,
             step=1, # TODO: Controllable step length?
             isMilliseconds=self.epochComboBox.currentIndex() == 1,
             sampleRatePerSecond=self.refreshLineEdit.text() if self.refreshLineEdit.text() else 10
         )))
-        self.rawTableView.setModel(self.tableDataFile)
+        self.rawTableView.setModel(getattr(self, self.currentTableData))
 
-        self.calibratedData = TableModel(sensor_data_clone.SensorDataClone(self.tableDataFile.get_dataset()))
+        self.calibratedData = TableModel(sensor_data_clone.SensorDataClone(self.defaultDataFile.get_dataset()))
 
         self.calibrate_axis()
 
@@ -336,3 +336,16 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]][parameter] = int(new_value)
         self.refilter_datasets()
+
+    def changeTableDataSource(self, index):
+        if index == 0:
+            self.currentTableData = 'defaultDataFile'
+        elif index == 1:
+            self.currentTableData = 'calibratedData'
+        elif index == 2:
+            self.currentTableData = 'lowPassData'
+        elif index == 3:
+            self.currentTableData = 'highPassData'
+
+
+        self.rawTableView.setModel(getattr(self, self.currentTableData))
