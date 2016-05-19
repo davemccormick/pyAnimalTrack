@@ -70,7 +70,7 @@ class SettingsModel:
             file.close()
         else:
             SettingsModel.__settings = SettingsModel.__defaults
-            #SettingsModel._save_config() TODO Reenable
+            SettingsModel._save_config()
 
     @staticmethod
     def _save_config():
