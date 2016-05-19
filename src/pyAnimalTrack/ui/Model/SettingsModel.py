@@ -6,10 +6,20 @@ class SettingsModel:
     __settings_filename = 'settings.json'
 
     __defaults = {
+        # Choices:
+        # b: blue
+        # g: green
+        # r: red
+        # c: cyan
+        # m: magenta
+        # y: yellow
+        # k: black
+        # w: white
+
         'lines': [
-            'r-',
-            'g-',
-            'b-'
+            'k',
+            'b',
+            'm'
         ],
 
         'data_SaveFormats': [

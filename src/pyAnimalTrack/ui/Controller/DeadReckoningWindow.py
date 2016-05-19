@@ -76,7 +76,7 @@ class DeadReckoningWindow(QMainWindow, uiDeadReckoningWindow):
         self.create_graphs()
 
     def create_graphs(self):
-        self.steeredPlot.plot(self.dead_reckoning.cdrx, self.dead_reckoning.cdry)
+        self.steeredPlot.plot(self.dead_reckoning.cdrx, self.dead_reckoning.cdry, SettingsModel.get_value('lines')[0])
 
         # TODO: Constant tick values for the graph, so the X and Y coords match (No stretching)
         # self.steeredPlot.set_xlim((0, 40))
