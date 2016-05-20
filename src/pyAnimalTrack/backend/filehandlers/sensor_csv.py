@@ -36,10 +36,10 @@ class SensorCSV(InputData):
             'adjms': np.int64
         }
 
+        self.__NED = False
+
         if reference_frame == 'NED':
-            self.__fileheadings = ['ms', 'ay', 'az', 'ax', 'my', 'mz', 'mx', 'gx', 'gy', 'gz', 'temp', 'adjms']
-        else:
-            self.__fileheadings = self.__names
+            self.__NED = True
 
         return
 
@@ -50,7 +50,30 @@ class SensorCSV(InputData):
 
         """
 
-        self.__df = pd.read_csv(self.__filename, delimiter=self.__csv_separator, names=self.__fileheadings, dtype=np.float64)
+        self.__df = pd.read_csv(self.__filename, delimiter=self.__csv_separator, names=self.__names, dtype=np.float64)
+
+
+        if self.__NED:
+            self.__df['ax1'] = self.__df['az']
+            self.__df['ay1'] = self.__df['ax']
+            self.__df['az1'] = self.__df['ay']
+            self.__df['mx1'] = self.__df['mz']
+            self.__df['my1'] = self.__df['mx']
+            self.__df['mz1'] = self.__df['my']
+
+            self.__df['ax'] = self.__df['ax1']
+            self.__df['ay'] = self.__df['ay1']
+            self.__df['az'] = self.__df['az1']
+            self.__df['mx'] = self.__df['mx1']
+            self.__df['my'] = self.__df['my1']
+            self.__df['mz'] = self.__df['mz1']
+
+            self.__df = self.__df.drop('ax1', 1)
+            self.__df = self.__df.drop('ay1', 1)
+            self.__df = self.__df.drop('az1', 1)
+            self.__df = self.__df.drop('mx1', 1)
+            self.__df = self.__df.drop('my1', 1)
+            self.__df = self.__df.drop('mz1', 1)
 
         return self.__df[self.__names]
 
@@ -70,7 +93,7 @@ class SensorCSV(InputData):
             :returns: A list of strings representing the available column names.
         """
 
-        return self.__names
+        return list(self.__df)
 
     def getReadableColumns(self):
         """ Get a list of (human readable) column names from the CSV

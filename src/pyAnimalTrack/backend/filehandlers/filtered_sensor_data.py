@@ -24,7 +24,7 @@ class FilteredSensorData(InputData):
         filtered_names = self.__names[1:-2]
 
         # We need to filter the data, with the provided parameters
-        for column in range(1, len(filtered_names)):
+        for column in range(0, len(filtered_names)):
             curr_name = filtered_names[column]
 
             # Create a new column of data
@@ -37,7 +37,8 @@ class FilteredSensorData(InputData):
 
             # Replace each value in the column
             for row in range(len(self.__df.index)):
-                self.__df.iloc[row][column] = new_values[row]
+                # Account for slicing off the first column
+                self.__df.iloc[row][column+1] = new_values[row]
 
     def getData(self):
         return self.__df
