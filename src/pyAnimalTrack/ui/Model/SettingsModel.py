@@ -75,7 +75,7 @@ class SettingsModel:
     @staticmethod
     def _save_config():
         file = open(SettingsModel.__settings_filename, 'w')
-        file.write(json.dumps(SettingsModel.__settings))
+        file.write(json.dumps(SettingsModel.__settings, indent=2))
         file.close()
 
     @staticmethod

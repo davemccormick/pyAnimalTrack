@@ -102,9 +102,9 @@ class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
                 self.tableDataFile.get_dataset()[self.featureModel.getColumns()[current_column]].values, SettingsModel.get_value('lines')[0]
             )
 
-            lines[0].set_label(self.featureModel.getReadableColumns()[current_column])
+            lines[0].set_label(self.featureModel.getReadableColumns()[current_column].replace(' ', '\n'))
 
-            self.legendPlot.legend(bbox_to_anchor=(-4, 0.9, 2., .102), loc=2, handles=lines)
+            self.legendPlot.legend(bbox_to_anchor=(-3.5, 0.9, 2., .102), loc=2, handles=lines)
 
         self.canvas.draw()
         self.legendCanvas.draw()
