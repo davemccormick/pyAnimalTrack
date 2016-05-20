@@ -22,7 +22,7 @@ class TableModel(QAbstractTableModel):
         :param QModelIndex_parent: -
         :param args: -
         :param kwargs: -
-        :return: The number of data rows
+        :returns: The number of data rows
         """
         return len(self.__dataSet.index)
 
@@ -32,7 +32,7 @@ class TableModel(QAbstractTableModel):
         :param QModelIndex_parent: -
         :param args: -
         :param kwargs: -
-        :return: The number of columns for the dataset
+        :returns: The number of columns for the dataset
         """
         return len(self.__dataSet.columns)
 
@@ -57,7 +57,7 @@ class TableModel(QAbstractTableModel):
 
         :param QModelIndex: An object with a row() and column() function, used to determine the correct cell
         :param role:
-        :return: A string representation of the cell's value
+        :returns: A string representation of the cell's value
         """
 
         if role == Qt.DisplayRole:
@@ -68,7 +68,7 @@ class TableModel(QAbstractTableModel):
     def get_dataset(self):
         """ Retrieve the entire dataset
 
-        :return: A pandas dataframe of the entire dataset
+        :returns: A pandas dataframe of the entire dataset
         """
         return self.__dataSet
 
@@ -80,7 +80,7 @@ class TableModel(QAbstractTableModel):
         :param step: How far between each row to return
         :param isMilliseconds: To go by row, or by time
         :param sampleRatePerSecond: If working in milliseconds, how many samples per second were taken
-        :return: A pandas dataframe, sliced to the requested rows
+        :returns: A pandas dataframe, sliced to the requested rows
         """
 
         # Make sure we are working with integer values for the numerical parameters
