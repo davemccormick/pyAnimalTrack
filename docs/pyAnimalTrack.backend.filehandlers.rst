@@ -28,6 +28,14 @@ pyAnimalTrack.backend.filehandlers.sensor_csv module
     :undoc-members:
     :show-inheritance:
 
+pyAnimalTrack.backend.filehandlers.sensor_data_clone module
+-----------------------------------------------------------
+
+.. automodule:: pyAnimalTrack.backend.filehandlers.sensor_data_clone
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
