@@ -55,7 +55,7 @@
        <item>
         <widget class="QLineEdit" name="location_textbox">
          <property name="text">
-          <string>D:/Drive/Uni/Year 4/Project/log_sn1a___20151123_101945.csv</string>
+          <string>example.csv</string>
          </property>
          <property name="placeholderText">
           <string>CSV file location...</string>
