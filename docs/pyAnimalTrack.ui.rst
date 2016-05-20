@@ -8,6 +8,7 @@ Subpackages
 
     pyAnimalTrack.ui.Controller
     pyAnimalTrack.ui.Model
+    pyAnimalTrack.ui.Service
 
 Submodules
 ----------
