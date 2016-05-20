@@ -63,7 +63,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         self.featuresWindow = FeaturesWindow()
         self.deadReckoningWindow = DeadReckoningWindow()
-        self.quitTrigger.connect(QMainWindow.closeEvent)
+        self.quitTrigger.connect(QMainWindow.close)
 
         self.filterParameters = {}
 
@@ -123,8 +123,8 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
             valuesToUse = 'improved_accuracy'
 
-            self.accInputTypeLabel.setText('Improved')
-            self.magInputTypeLabel.setText('Improved')
+            self.accInputTypeLabel.setText('Estimated')
+            self.magInputTypeLabel.setText('Estimated')
 
         self.accVarLabel.setText("%.2f" % (improved_accel[valuesToUse]['var']))
         self.accStdLabel.setText("%.2f" % (improved_accel[valuesToUse]['std']))
@@ -135,9 +135,6 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         self.magStdLabel.setText("%.2f" % (improved_magnet[valuesToUse]['std']))
         self.magVar2Label.setText("%.2f" % (improved_magnet[valuesToUse]['var2']))
         self.magStd2Label.setText("%.2f" % (improved_magnet[valuesToUse]['std2']))
-
-
-
 
     def calibrate_axis(self):
         """ Calibrate the dataset to between whatever is specified in the settings
@@ -364,7 +361,22 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
         try:
             new_value = float(new_value)
 
-            self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]][parameter] = int(new_value)
+            if self.drawModeComboBox.currentIndex() == 0:
+                # Separate, only update the filter parameter for this col
+                self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]][parameter] = int(new_value)
+            else:
+                # Combined, update for X, Y and Z
+                if self.currentColumnComboBox.currentIndex() == 0:
+                    first_index = self.rawDataFile.getColumns().index('ax')
+                elif self.currentColumnComboBox.currentIndex() == 1:
+                    first_index = self.rawDataFile.getColumns().index('mx')
+                else:
+                    first_index = self.rawDataFile.getColumns().index('gx')
+
+                self.filterParameters[self.rawDataFile.getColumns()[first_index]][parameter] = int(new_value)
+                self.filterParameters[self.rawDataFile.getColumns()[first_index + 1]][parameter] = int(new_value)
+                self.filterParameters[self.rawDataFile.getColumns()[first_index + 2]][parameter] = int(new_value)
+
             self.refilter_datasets()
         except:
             pass

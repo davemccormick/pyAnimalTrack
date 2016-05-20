@@ -88,7 +88,7 @@ class DeadReckoningWindow(QMainWindow, uiDeadReckoningWindow):
         )
 
         time_lines[0].set_label('X')
-        time_lines[1].set_label('Z')
+        time_lines[1].set_label('Y')
 
         self.steeredTimeLegendPlot.legend(bbox_to_anchor=(-4, 0.9, 2., .102), loc=2, handles=time_lines)
 
