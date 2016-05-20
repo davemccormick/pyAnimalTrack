@@ -1,0 +1,570 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pyAnimalTrack.ui.Controller.DataImportWindow &mdash; pyAnimalTrack  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="pyAnimalTrack  documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pyAnimalTrack
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pyAnimalTrack.html">pyAnimalTrack package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">pyAnimalTrack</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>pyAnimalTrack.ui.Controller.DataImportWindow</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyAnimalTrack.ui.Controller.DataImportWindow</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">PyQt5.uic</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">pyqtSignal</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QMainWindow</span>
+
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.filehandlers</span> <span class="kn">import</span> <span class="n">sensor_csv</span><span class="p">,</span> <span class="n">filtered_sensor_data</span><span class="p">,</span> <span class="n">sensor_data_clone</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.utilities.calibrate_axis</span> <span class="kn">import</span> <span class="n">CalibrateAxis</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.utilities.accuracy</span> <span class="kn">import</span> <span class="n">Accuracy</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.filters.low_pass_filter</span> <span class="kn">import</span> <span class="n">LPF</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.filters.high_pass_filter</span> <span class="kn">import</span> <span class="n">HPF</span>
+
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.ui.Controller.TableAndGraphView</span> <span class="kn">import</span> <span class="n">TableAndGraphView</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.ui.Controller.LoadCSVDialog</span> <span class="kn">import</span> <span class="n">LoadCSVDialog</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.ui.Controller.FeaturesWindow</span> <span class="kn">import</span> <span class="n">FeaturesWindow</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.ui.Controller.DeadReckoningWindow</span> <span class="kn">import</span> <span class="n">DeadReckoningWindow</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.ui.Model.TableModel</span> <span class="kn">import</span> <span class="n">TableModel</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.ui.Model.SettingsModel</span> <span class="kn">import</span> <span class="n">SettingsModel</span>
+
+<span class="n">uiDataImportWindow</span> <span class="o">=</span> <span class="n">PyQt5</span><span class="o">.</span><span class="n">uic</span><span class="o">.</span><span class="n">loadUiType</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s1">&#39;../View/DataImportWindow.ui&#39;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="DataImportWindow"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow">[docs]</a><span class="k">class</span> <span class="nc">DataImportWindow</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">,</span> <span class="n">uiDataImportWindow</span><span class="p">,</span> <span class="n">TableAndGraphView</span><span class="p">):</span>
+
+    <span class="n">first_graphed_element</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">last_graphed_element</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+
+    <span class="c1"># Needs to be here, otherwise the connection fails</span>
+    <span class="n">quitTrigger</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructor - This is actually the main function of the program</span>
+
+<span class="sd">            :param args: -</span>
+<span class="sd">            :returns: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">DataImportWindow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">TableAndGraphView</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rawTableView</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentColumnComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotFrame</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">legendFrame</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_graph</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="n">SettingsModel</span><span class="o">.</span><span class="n">load_from_config</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentTableData</span> <span class="o">=</span> <span class="s1">&#39;defaultDataFile&#39;</span>
+
+        <span class="c1"># Datasets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rawDataFile</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c1"># This one remains pristine, so we can reset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">untouchedDataFile</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c1"># The datafile used by tableview</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defaultDataFile</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c1"># Calibrated to between two given values. Currently hardcoded to -1 &lt;&gt; 1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calibratedData</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">accuracyData</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c1"># Filtered sets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lowPassData</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highPassData</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">featuresWindow</span> <span class="o">=</span> <span class="n">FeaturesWindow</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deadReckoningWindow</span> <span class="o">=</span> <span class="n">DeadReckoningWindow</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quitTrigger</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">QMainWindow</span><span class="o">.</span><span class="n">closeEvent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterParameters</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># If the user cancels, quit</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_load_dialog</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quitTrigger</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">TableAndGraphView</span><span class="o">.</span><span class="n">after_init</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+            <span class="c1"># Connect signals and slots</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connect_ui_elements</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">setup_filter_parameters</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">refilter_datasets</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DataImportWindow.connect_ui_elements"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.connect_ui_elements">[docs]</a>    <span class="k">def</span> <span class="nf">connect_ui_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Connect each UI element to it&#39;s functionality</span>
+
+<span class="sd">            :returns: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">featuresButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_features_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deadReckoningButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_dead_reckoning_window</span><span class="p">)</span>
+
+        <span class="c1"># Connect the line edits to a single slot. Pass a second parameter to identify it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refreshLineEdit</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_value_changed</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;SampleRate&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cutoffLineEdit</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_value_changed</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;CutoffFrequency&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterLineEdit</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_value_changed</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;FilterLength&#39;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">drawModeComboBox</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refill_column_combobox</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentColumnComboBox</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_filter_params</span><span class="p">)</span>
+
+        <span class="c1"># If we change any epoch settings, we need to refilter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refreshLineEdit</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refilter_datasets</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startRow</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refilter_datasets</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endRow</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refilter_datasets</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epochComboBox</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refilter_datasets</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataToUseComboBox</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refilter_datasets</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableSourceComboBox</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeTableDataSource</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataImportWindow.check_accuracy"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.check_accuracy">[docs]</a>    <span class="k">def</span> <span class="nf">check_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ac</span> <span class="o">=</span> <span class="n">Accuracy</span><span class="p">()</span>
+
+        <span class="n">dataset</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentTableData</span><span class="p">)</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()</span>
+        <span class="n">improved_accel</span> <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">improve_accuracy</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;ax&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;ay&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;az&#39;</span><span class="p">])</span>
+        <span class="n">improved_magnet</span> <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">improve_accuracy</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;mx&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;my&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;mz&#39;</span><span class="p">])</span>
+
+        <span class="n">valuesToUse</span> <span class="o">=</span> <span class="s1">&#39;input_accuracy&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accInputTypeLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Input&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">magInputTypeLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Input&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataToUseComboBox</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;az&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">improved_accel</span><span class="p">[</span><span class="s1">&#39;improved_accuracy&#39;</span><span class="p">][</span><span class="s1">&#39;acc&#39;</span><span class="p">]</span>
+            <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;mz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">improved_magnet</span><span class="p">[</span><span class="s1">&#39;improved_accuracy&#39;</span><span class="p">][</span><span class="s1">&#39;acc&#39;</span><span class="p">]</span>
+
+            <span class="n">valuesToUse</span> <span class="o">=</span> <span class="s1">&#39;improved_accuracy&#39;</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">accInputTypeLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Improved&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">magInputTypeLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Improved&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">accVarLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">improved_accel</span><span class="p">[</span><span class="n">valuesToUse</span><span class="p">][</span><span class="s1">&#39;var&#39;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accStdLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">improved_accel</span><span class="p">[</span><span class="n">valuesToUse</span><span class="p">][</span><span class="s1">&#39;std&#39;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accVar2Label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">improved_accel</span><span class="p">[</span><span class="n">valuesToUse</span><span class="p">][</span><span class="s1">&#39;var2&#39;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accStd2Label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">improved_accel</span><span class="p">[</span><span class="n">valuesToUse</span><span class="p">][</span><span class="s1">&#39;std2&#39;</span><span class="p">]))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">magVarLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">improved_magnet</span><span class="p">[</span><span class="n">valuesToUse</span><span class="p">][</span><span class="s1">&#39;var&#39;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">magStdLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">improved_magnet</span><span class="p">[</span><span class="n">valuesToUse</span><span class="p">][</span><span class="s1">&#39;std&#39;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">magVar2Label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">improved_magnet</span><span class="p">[</span><span class="n">valuesToUse</span><span class="p">][</span><span class="s1">&#39;var2&#39;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">magStd2Label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">improved_magnet</span><span class="p">[</span><span class="n">valuesToUse</span><span class="p">][</span><span class="s1">&#39;std2&#39;</span><span class="p">]))</span></div>
+
+
+
+
+<div class="viewcode-block" id="DataImportWindow.calibrate_axis"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.calibrate_axis">[docs]</a>    <span class="k">def</span> <span class="nf">calibrate_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calibrate the dataset to between whatever is specified in the settings</span>
+
+<span class="sd">            :returns: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ca</span> <span class="o">=</span> <span class="n">CalibrateAxis</span><span class="p">()</span>
+
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calibratedData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s1">&#39;ax&#39;</span><span class="p">,</span> <span class="s1">&#39;ay&#39;</span><span class="p">,</span> <span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="s1">&#39;mx&#39;</span><span class="p">,</span> <span class="s1">&#39;my&#39;</span><span class="p">,</span> <span class="s1">&#39;mz&#39;</span><span class="p">,</span> <span class="s1">&#39;gx&#39;</span><span class="p">,</span> <span class="s1">&#39;gy&#39;</span><span class="p">,</span> <span class="s1">&#39;gz&#39;</span><span class="p">]):</span>
+            <span class="n">changed</span> <span class="o">=</span> <span class="n">ca</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="n">col</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="n">col</span><span class="p">[</span><span class="mi">1</span><span class="p">]]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="n">col</span><span class="p">[</span><span class="mi">1</span><span class="p">]]),</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;scaling&#39;</span><span class="p">)[</span><span class="n">col</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="n">col</span><span class="p">[</span><span class="mi">1</span><span class="p">]])):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">calibratedData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">changed</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DataImportWindow.show_load_dialog"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.show_load_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">show_load_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Show the user a dialog to load a data file(CSV)</span>
+
+<span class="sd">            :returns: True if a file has been loaded, false otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># TODO: Don&#39;t clear the existing path on cancel</span>
+
+        <span class="n">file_loader_dialog</span> <span class="o">=</span> <span class="n">LoadCSVDialog</span><span class="p">()</span>
+        <span class="n">dialog_result</span> <span class="o">=</span> <span class="n">file_loader_dialog</span><span class="o">.</span><span class="n">loadCSV</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dialog_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="c1"># Get the model back, build the view</span>
+
+            <span class="n">SettingsModel</span><span class="o">.</span><span class="n">set_temp_value</span><span class="p">(</span><span class="s1">&#39;ground_reference_frame&#39;</span><span class="p">,</span> <span class="n">dialog_result</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+            <span class="c1"># Load the CSV data object into the table</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rawDataFile</span> <span class="o">=</span> <span class="n">sensor_csv</span><span class="o">.</span><span class="n">SensorCSV</span><span class="p">(</span>
+                <span class="n">dialog_result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">dialog_result</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                <span class="n">dialog_result</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">untouchedDataFile</span> <span class="o">=</span> <span class="n">TableModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rawDataFile</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">defaultDataFile</span> <span class="o">=</span> <span class="n">TableModel</span><span class="p">(</span><span class="n">sensor_data_clone</span><span class="o">.</span><span class="n">SensorDataClone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">untouchedDataFile</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rawTableView</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">defaultDataFile</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">refill_column_combobox</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span></div>
+
+<div class="viewcode-block" id="DataImportWindow.setup_filter_parameters"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.setup_filter_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">setup_filter_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Initialise the model behind the textboxes</span>
+
+<span class="sd">            :returns: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rawDataFile</span><span class="o">.</span><span class="n">getColumns</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filterParameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;SampleRate&#39;</span><span class="p">:</span>       <span class="n">SettingsModel</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;filter_parameters&#39;</span><span class="p">)[</span><span class="s1">&#39;SampleRate&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;CutoffFrequency&#39;</span><span class="p">:</span>  <span class="n">SettingsModel</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;filter_parameters&#39;</span><span class="p">)[</span><span class="s1">&#39;CutoffFrequency&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;FilterLength&#39;</span><span class="p">:</span>     <span class="n">SettingsModel</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;filter_parameters&#39;</span><span class="p">)[</span><span class="s1">&#39;FilterLength&#39;</span><span class="p">]</span>
+            <span class="p">}</span></div>
+
+<div class="viewcode-block" id="DataImportWindow.refilter_datasets"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.refilter_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">refilter_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Recreate the datasets, using all provided parameters</span>
+
+<span class="sd">            :returns: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Leave the conversion to the get_epoch_dataset method, it has sanity checks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defaultDataFile</span> <span class="o">=</span> <span class="n">TableModel</span><span class="p">(</span><span class="n">sensor_data_clone</span><span class="o">.</span><span class="n">SensorDataClone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">untouchedDataFile</span><span class="o">.</span><span class="n">get_epoch_dataset</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">startRow</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">startRow</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">end</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endRow</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">endRow</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1"># TODO: Controllable step length?</span>
+            <span class="n">isMilliseconds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">epochComboBox</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">sampleRatePerSecond</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refreshLineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">refreshLineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="k">else</span> <span class="mi">10</span>
+        <span class="p">)))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">calibratedData</span> <span class="o">=</span> <span class="n">TableModel</span><span class="p">(</span><span class="n">sensor_data_clone</span><span class="o">.</span><span class="n">SensorDataClone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">defaultDataFile</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">calibrate_axis</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lowPassData</span> <span class="o">=</span> <span class="n">TableModel</span><span class="p">(</span><span class="n">filtered_sensor_data</span>
+                                      <span class="o">.</span><span class="n">FilteredSensorData</span><span class="p">(</span><span class="n">LPF</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">calibratedData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">filterParameters</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highPassData</span> <span class="o">=</span> <span class="n">TableModel</span><span class="p">(</span><span class="n">filtered_sensor_data</span>
+                                       <span class="o">.</span><span class="n">FilteredSensorData</span><span class="p">(</span><span class="n">HPF</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">calibratedData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">filterParameters</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_accuracy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rawTableView</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentTableData</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_graph</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DataImportWindow.refill_column_combobox"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.refill_column_combobox">[docs]</a>    <span class="k">def</span> <span class="nf">refill_column_combobox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Depending on how we want the data presented, the contents of the second combobox will change</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentColumnComboBox</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">current_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">drawModeComboBox</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">current_type</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentColumnComboBox</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rawDataFile</span><span class="o">.</span><span class="n">getReadableColumns</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">first_graphed_element</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">last_graphed_element</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentColumnComboBox</span><span class="o">.</span><span class="n">addItems</span><span class="p">([</span>
+                <span class="s1">&#39;Accelerometer&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Magnetometer&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Gyroscope&#39;</span>
+            <span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentColumnComboBox</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_graph</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DataImportWindow.update_filter_params"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.update_filter_params">[docs]</a>    <span class="k">def</span> <span class="nf">update_filter_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Read in any changes of the filter parameters, and set them to the current model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refreshLineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filterParameters</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rawDataFile</span><span class="o">.</span><span class="n">getColumns</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">currentColumnComboBox</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_graphed_element</span><span class="p">]][</span><span class="s1">&#39;SampleRate&#39;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cutoffLineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filterParameters</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rawDataFile</span><span class="o">.</span><span class="n">getColumns</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">currentColumnComboBox</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_graphed_element</span><span class="p">]][</span><span class="s1">&#39;CutoffFrequency&#39;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterLineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filterParameters</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rawDataFile</span><span class="o">.</span><span class="n">getColumns</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">currentColumnComboBox</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_graphed_element</span><span class="p">]][</span><span class="s1">&#39;FilterLength&#39;</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="DataImportWindow.redraw_graph"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.redraw_graph">[docs]</a>    <span class="k">def</span> <span class="nf">redraw_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Redraw the graph</span>
+
+<span class="sd">            :returns: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Sanity check, before trying to join</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">calibratedData</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">lowPassData</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">highPassData</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">current_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">drawModeComboBox</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">current_type</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># Separated.</span>
+            <span class="n">current_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rawDataFile</span><span class="o">.</span><span class="n">getColumns</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">currentColumnComboBox</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_graphed_element</span><span class="p">]</span>
+
+            <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">calibratedData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()[</span><span class="n">current_column</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;lines&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lowPassData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()[</span><span class="n">current_column</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;lines&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">highPassData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()[</span><span class="n">current_column</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;lines&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Unfiltered&#39;</span><span class="p">)</span>
+            <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Low pass&#39;</span><span class="p">)</span>
+            <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;High pass&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Choose the dataset based upon the first dropdown</span>
+            <span class="n">current_dataset</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">if</span> <span class="n">current_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">current_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calibratedData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">current_type</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">current_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lowPassData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">current_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">highPassData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()</span>
+
+            <span class="c1"># Accelerometer, Magnetometer or Gyroscope</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentColumnComboBox</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">current_column</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentColumnComboBox</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">current_column</span> <span class="o">=</span> <span class="s1">&#39;m&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">current_column</span> <span class="o">=</span> <span class="s1">&#39;g&#39;</span>
+
+            <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="n">current_dataset</span><span class="p">[</span><span class="n">current_column</span> <span class="o">+</span> <span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;lines&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">current_dataset</span><span class="p">[</span><span class="n">current_column</span> <span class="o">+</span> <span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;lines&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">current_dataset</span><span class="p">[</span><span class="n">current_column</span> <span class="o">+</span> <span class="s1">&#39;z&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;lines&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+            <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span>
+            <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="p">)</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">legendPlot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="o">.</span><span class="mi">102</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">handles</span><span class="o">=</span><span class="n">lines</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">legendCanvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span></div>
+
+    <span class="c1"># PyQt5 Slots</span>
+<div class="viewcode-block" id="DataImportWindow.show_features_window"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.show_features_window">[docs]</a>    <span class="k">def</span> <span class="nf">show_features_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set the data for the feature window, and display it</span>
+
+<span class="sd">            :returns: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">featuresWindow</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">calibratedData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lowPassData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">highPassData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">featuresWindow</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DataImportWindow.show_dead_reckoning_window"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.show_dead_reckoning_window">[docs]</a>    <span class="k">def</span> <span class="nf">show_dead_reckoning_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set the data for the dead reckoning window, and display it</span>
+
+<span class="sd">            :returns: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">deadReckoningWindow</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">calibratedData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lowPassData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">highPassData</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deadReckoningWindow</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+    <span class="c1"># TODO: Do we want this to happen? Unsure</span>
+<div class="viewcode-block" id="DataImportWindow.change_selected_combo_column"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.change_selected_combo_column">[docs]</a>    <span class="k">def</span> <span class="nf">change_selected_combo_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selected</span><span class="p">,</span> <span class="n">deselected</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; When the selected data cell changes, update the combobox that controls the parameters.</span>
+
+<span class="sd">            :param selected: PyQt5. The cells that were selected.</span>
+<span class="sd">            :param deselected: PyQt5. The cells that were deselected.</span>
+<span class="sd">            :returns: void</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="c1">#self.currentColumnComboBox.setCurrentIndex(selected.indexes()[0].column())</span>
+
+<div class="viewcode-block" id="DataImportWindow.parameter_value_changed"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.parameter_value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">parameter_value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">,</span> <span class="n">parameter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Update the filter parameters model, redraw the graph</span>
+
+<span class="sd">            :param new_value: PyQt5. The new filter parameter version</span>
+<span class="sd">            :param parameter: Which filter parameter has changed</span>
+<span class="sd">            :returns: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_value</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">new_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">filterParameters</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rawDataFile</span><span class="o">.</span><span class="n">getColumns</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">currentColumnComboBox</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_graphed_element</span><span class="p">]][</span><span class="n">parameter</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refilter_datasets</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="DataImportWindow.changeTableDataSource"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DataImportWindow.DataImportWindow.changeTableDataSource">[docs]</a>    <span class="k">def</span> <span class="nf">changeTableDataSource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentTableData</span> <span class="o">=</span> <span class="s1">&#39;defaultDataFile&#39;</span>
+        <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentTableData</span> <span class="o">=</span> <span class="s1">&#39;calibratedData&#39;</span>
+        <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentTableData</span> <span class="o">=</span> <span class="s1">&#39;lowPassData&#39;</span>
+        <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentTableData</span> <span class="o">=</span> <span class="s1">&#39;highPassData&#39;</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_accuracy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rawTableView</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentTableData</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, David McCormick.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

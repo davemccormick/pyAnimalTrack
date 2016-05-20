@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pyAnimalTrack.ui.Controller.DeadReckoningWindow &mdash; pyAnimalTrack  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="pyAnimalTrack  documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pyAnimalTrack
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pyAnimalTrack.html">pyAnimalTrack package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">pyAnimalTrack</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>pyAnimalTrack.ui.Controller.DeadReckoningWindow</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyAnimalTrack.ui.Controller.DeadReckoningWindow</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">PyQt5.uic</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QMainWindow</span><span class="p">,</span> <span class="n">QFileDialog</span>
+<span class="kn">from</span> <span class="nn">matplotlib.backends.backend_qt5agg</span> <span class="kn">import</span> <span class="n">FigureCanvasQTAgg</span> <span class="k">as</span> <span class="n">FigureCanvas</span>
+
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.deadreckoning.dead_reckoning</span> <span class="kn">import</span> <span class="n">DeadReckoning</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.utilities.calculate_features</span> <span class="kn">import</span> <span class="n">CalculateFeatures</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.utilities.enums</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.ui.Model.SettingsModel</span> <span class="kn">import</span> <span class="n">SettingsModel</span>
+
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.ui.Service.FeaturesCalculator</span> <span class="kn">import</span> <span class="n">FeaturesCalculator</span>
+<span class="kn">from</span> <span class="nn">pyAnimalTrack.ui.Service.SaveDataframe</span> <span class="kn">import</span> <span class="n">SaveDataframe</span>
+
+
+<span class="n">uiDeadReckoningWindow</span> <span class="o">=</span> <span class="n">PyQt5</span><span class="o">.</span><span class="n">uic</span><span class="o">.</span><span class="n">loadUiType</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s1">&#39;../View/DeadReckoningWindow.ui&#39;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="DeadReckoningWindow"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DeadReckoningWindow.DeadReckoningWindow">[docs]</a><span class="k">class</span> <span class="nc">DeadReckoningWindow</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">,</span> <span class="n">uiDeadReckoningWindow</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructor - This is actually the main function of the program</span>
+
+<span class="sd">            :param args: -</span>
+<span class="sd">            :returns: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">DeadReckoningWindow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">headings</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="c1"># Normal matplotlib graphing components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredFigure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeFigure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeLegendFigure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredCanvas</span> <span class="o">=</span> <span class="n">FigureCanvas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steeredFigure</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeCanvas</span> <span class="o">=</span> <span class="n">FigureCanvas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeFigure</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeLegendCanvas</span> <span class="o">=</span> <span class="n">FigureCanvas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeLegendFigure</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mapFrame</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steeredCanvas</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeFrame</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeCanvas</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLegendFrame</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeLegendCanvas</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredPlot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">steeredFigure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredTimePlot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeFigure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeLegendPlot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeLegendFigure</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mf">0.045</span><span class="p">,</span><span class="mf">0.85</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredPlot</span><span class="o">.</span><span class="n">hold</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredTimePlot</span><span class="o">.</span><span class="n">hold</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeLegendPlot</span><span class="o">.</span><span class="n">hold</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+        <span class="c1"># PyQt Connections</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveToDataFileButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_to_data_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveGraphsButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_graphs_to_file</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DeadReckoningWindow.set_data"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DeadReckoningWindow.DeadReckoningWindow.set_data">[docs]</a>    <span class="k">def</span> <span class="nf">set_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unfiltered_data</span><span class="p">,</span> <span class="n">low_pass_data</span><span class="p">,</span> <span class="n">high_pass_data</span><span class="p">):</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">FeaturesCalculator</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">unfiltered_data</span><span class="p">,</span> <span class="n">unfiltered_data</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">headings</span> <span class="o">=</span> <span class="n">CalculateFeatures</span><span class="o">.</span><span class="n">calculate_heading</span><span class="p">(</span>
+            <span class="n">unfiltered_data</span><span class="p">[</span><span class="s1">&#39;mx&#39;</span><span class="p">],</span>
+            <span class="n">unfiltered_data</span><span class="p">[</span><span class="s1">&#39;my&#39;</span><span class="p">],</span>
+            <span class="n">unfiltered_data</span><span class="p">[</span><span class="s1">&#39;mz&#39;</span><span class="p">],</span>
+            <span class="n">features</span><span class="p">[</span><span class="s1">&#39;PIT&#39;</span><span class="p">],</span>
+            <span class="n">features</span><span class="p">[</span><span class="s1">&#39;ROL&#39;</span><span class="p">],</span>
+            <span class="n">angle</span><span class="o">=</span><span class="n">Angle</span><span class="o">.</span><span class="n">radian</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning</span> <span class="o">=</span> <span class="n">DeadReckoning</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;SVM&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">headings</span><span class="p">[</span><span class="s1">&#39;heading_geo&#39;</span><span class="p">],</span> <span class="n">angle</span><span class="o">=</span><span class="n">Angle</span><span class="o">.</span><span class="n">radian</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning</span><span class="o">.</span><span class="n">courseSteered</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_graphs</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DeadReckoningWindow.create_graphs"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DeadReckoningWindow.DeadReckoningWindow.create_graphs">[docs]</a>    <span class="k">def</span> <span class="nf">create_graphs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredPlot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning</span><span class="o">.</span><span class="n">cdrx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning</span><span class="o">.</span><span class="n">cdry</span><span class="p">,</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;lines&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># TODO: Constant tick values for the graph, so the X and Y coords match (No stretching)</span>
+        <span class="c1"># self.steeredPlot.set_xlim((0, 40))</span>
+        <span class="c1"># self.steeredPlot.set_ylim((0, 40))</span>
+
+        <span class="n">time_lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">steeredTimePlot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning</span><span class="o">.</span><span class="n">cdrx</span><span class="p">,</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;lines&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning</span><span class="o">.</span><span class="n">cdry</span><span class="p">,</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">&#39;lines&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="n">time_lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+        <span class="n">time_lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeLegendPlot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="o">.</span><span class="mi">102</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">handles</span><span class="o">=</span><span class="n">time_lines</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DeadReckoningWindow.save_to_data_file"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DeadReckoningWindow.DeadReckoningWindow.save_to_data_file">[docs]</a>    <span class="k">def</span> <span class="nf">save_to_data_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">SaveDataframe</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning</span><span class="o">.</span><span class="n">cdrx</span><span class="p">,</span>
+                <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning</span><span class="o">.</span><span class="n">cdry</span><span class="p">,</span>
+                <span class="s1">&#39;heading&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning</span><span class="o">.</span><span class="n">heading</span><span class="p">,</span>
+                <span class="s1">&#39;speed&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning</span><span class="o">.</span><span class="n">speed</span>
+            <span class="p">}</span>
+        <span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">savingStatusBar</span><span class="o">.</span><span class="n">showMessage</span><span class="p">(</span><span class="s1">&#39;Saved to &#39;</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DeadReckoningWindow.save_graphs_to_file"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Controller.html#pyAnimalTrack.ui.Controller.DeadReckoningWindow.DeadReckoningWindow.save_graphs_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">save_graphs_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">SaveDataframe</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;graph&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="n">time_filename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_time.&#39;</span> <span class="o">+</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredFigure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steeredTimeFigure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">time_filename</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">savingStatusBar</span><span class="o">.</span><span class="n">showMessage</span><span class="p">(</span><span class="s1">&#39;Saved to &#39;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s1">&#39; and &#39;</span> <span class="o">+</span> <span class="n">time_filename</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, David McCormick.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

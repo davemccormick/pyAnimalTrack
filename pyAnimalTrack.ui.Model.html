@@ -243,8 +243,158 @@
 </dd></dl>
 
 </div>
-<div class="section" id="pyanimaltrack-ui-model-tablemodel-module">
-<h2>pyAnimalTrack.ui.Model.TableModel module<a class="headerlink" href="#pyanimaltrack-ui-model-tablemodel-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pyAnimalTrack.ui.Model.TableModel">
+<span id="pyanimaltrack-ui-model-tablemodel-module"></span><h2>pyAnimalTrack.ui.Model.TableModel module<a class="headerlink" href="#module-pyAnimalTrack.ui.Model.TableModel" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyAnimalTrack.ui.Model.TableModel.TableModel">
+<em class="property">class </em><code class="descclassname">pyAnimalTrack.ui.Model.TableModel.</code><code class="descname">TableModel</code><span class="sig-paren">(</span><em>input_data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/TableModel.html#TableModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.TableModel.TableModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt5.QtCore.QAbstractTableModel</span></code></p>
+<dl class="method">
+<dt id="pyAnimalTrack.ui.Model.TableModel.TableModel.columnCount">
+<code class="descname">columnCount</code><span class="sig-paren">(</span><em>QModelIndex_parent=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/TableModel.html#TableModel.columnCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.TableModel.TableModel.columnCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the number of columns used in the dataset Used by PyQt.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>QModelIndex_parent</strong> &#8211; <ul>
+<li></li>
+</ul>
+</li>
+<li><strong>args</strong> &#8211; <ul>
+<li></li>
+</ul>
+</li>
+<li><strong>kwargs</strong> &#8211; <ul>
+<li></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The number of columns for the dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.ui.Model.TableModel.TableModel.data">
+<code class="descname">data</code><span class="sig-paren">(</span><em>QModelIndex</em>, <em>role=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/TableModel.html#TableModel.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.TableModel.TableModel.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets an individual cell&#8217;s value. Used by PyQt.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>QModelIndex</strong> &#8211; An object with a row() and column() function, used to determine the correct cell</li>
+<li><strong>role</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A string representation of the cell&#8217;s value</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.ui.Model.TableModel.TableModel.get_dataset">
+<code class="descname">get_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/TableModel.html#TableModel.get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.TableModel.TableModel.get_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the entire dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A pandas dataframe of the entire dataset</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.ui.Model.TableModel.TableModel.get_epoch_dataset">
+<code class="descname">get_epoch_dataset</code><span class="sig-paren">(</span><em>start=0</em>, <em>end=0</em>, <em>step=1</em>, <em>isMilliseconds=False</em>, <em>sampleRatePerSecond=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/TableModel.html#TableModel.get_epoch_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.TableModel.TableModel.get_epoch_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a subset of the dataset, by rows or milliseconds</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>start</strong> &#8211; The first row (or millisecond) to get</li>
+<li><strong>end</strong> &#8211; The last row (or millisecond) to get</li>
+<li><strong>step</strong> &#8211; How far between each row to return</li>
+<li><strong>isMilliseconds</strong> &#8211; To go by row, or by time</li>
+<li><strong>sampleRatePerSecond</strong> &#8211; If working in milliseconds, how many samples per second were taken</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A pandas dataframe, sliced to the requested rows</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.ui.Model.TableModel.TableModel.headerData">
+<code class="descname">headerData</code><span class="sig-paren">(</span><em>index</em>, <em>Qt_Orientation</em>, <em>role=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/TableModel.html#TableModel.headerData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.TableModel.TableModel.headerData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a header for a row/column of data. Used by PyQt.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>index</strong> &#8211; The column/row index</li>
+<li><strong>Qt_Orientation</strong> &#8211; The alignment of the header, Qt.Horizontal or Qt.Vertical</li>
+<li><strong>role</strong> &#8211; <p>?</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A string containing the text to show as the header</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.ui.Model.TableModel.TableModel.rowCount">
+<code class="descname">rowCount</code><span class="sig-paren">(</span><em>QModelIndex_parent=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/TableModel.html#TableModel.rowCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.TableModel.TableModel.rowCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the number of data rows. Used by PyQt.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>QModelIndex_parent</strong> &#8211; <ul>
+<li></li>
+</ul>
+</li>
+<li><strong>args</strong> &#8211; <ul>
+<li></li>
+</ul>
+</li>
+<li><strong>kwargs</strong> &#8211; <ul>
+<li></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The number of data rows</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-pyAnimalTrack.ui.Model">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyAnimalTrack.ui.Model" title="Permalink to this headline">¶</a></h2>
