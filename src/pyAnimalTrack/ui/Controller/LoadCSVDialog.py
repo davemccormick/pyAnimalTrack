@@ -40,7 +40,15 @@ class LoadCSVDialog(QDialog, uiLoadCSVDialog):
                 str(self.dialog.referenceFrameComboBox.currentText())
             )
         else:
-            return self.loadCSV(retry=True)
+            if result == QDialog.Accepted:
+                return self.loadCSV(retry=True)
+            else:
+                return (
+                    result == QDialog.Accepted,
+                    self.dialog.location_textbox.text(),
+                    self.dialog.separator_textbox.text(),
+                    str(self.dialog.referenceFrameComboBox.currentText())
+                )
 
     @pyqtSlot()
     def showReadFile(self):
