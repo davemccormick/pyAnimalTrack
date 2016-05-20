@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pyAnimalTrack.backend.filehandlers.filtered_sensor_data &mdash; pyAnimalTrack  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="pyAnimalTrack  documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pyAnimalTrack
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pyAnimalTrack.html">pyAnimalTrack package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">pyAnimalTrack</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>pyAnimalTrack.backend.filehandlers.filtered_sensor_data</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyAnimalTrack.backend.filehandlers.filtered_sensor_data</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.filehandlers.input_data</span> <span class="kn">import</span> <span class="n">InputData</span>
+
+
+<div class="viewcode-block" id="FilteredSensorData"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.filtered_sensor_data.FilteredSensorData">[docs]</a><span class="k">class</span> <span class="nc">FilteredSensorData</span><span class="p">(</span><span class="n">InputData</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_class</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">filter_parameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructor</span>
+
+<span class="sd">            :param filter_class: The filter to use</span>
+<span class="sd">            :param df: The Pandas dataframe to filter</span>
+<span class="sd">            :param sample_rate: The sample rate of the data, in Hz</span>
+<span class="sd">            :param cutoff_frequency: ???</span>
+<span class="sd">            :param filter_length: ???</span>
+<span class="sd">            :returns: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">FilteredSensorData</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># TODO: Remove this duplication of names - potentially into input_data, or a new parent class?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__names</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;ms&#39;</span><span class="p">,</span><span class="s1">&#39;ax&#39;</span><span class="p">,</span><span class="s1">&#39;ay&#39;</span><span class="p">,</span><span class="s1">&#39;az&#39;</span><span class="p">,</span><span class="s1">&#39;mx&#39;</span><span class="p">,</span><span class="s1">&#39;my&#39;</span><span class="p">,</span><span class="s1">&#39;mz&#39;</span><span class="p">,</span><span class="s1">&#39;gx&#39;</span><span class="p">,</span><span class="s1">&#39;gy&#39;</span><span class="p">,</span><span class="s1">&#39;gz&#39;</span><span class="p">,</span><span class="s1">&#39;temp&#39;</span><span class="p">,</span><span class="s1">&#39;adjms&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__readableNames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Milliseconds&#39;</span><span class="p">,</span> <span class="s1">&#39;AX&#39;</span><span class="p">,</span> <span class="s1">&#39;AY&#39;</span><span class="p">,</span> <span class="s1">&#39;AZ&#39;</span><span class="p">,</span> <span class="s1">&#39;MX&#39;</span><span class="p">,</span> <span class="s1">&#39;MY&#39;</span><span class="p">,</span> <span class="s1">&#39;MZ&#39;</span><span class="p">,</span> <span class="s1">&#39;GX&#39;</span><span class="p">,</span> <span class="s1">&#39;GY&#39;</span><span class="p">,</span> <span class="s1">&#39;GZ&#39;</span><span class="p">,</span> <span class="s1">&#39;Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;Adjusted Milliseconds&#39;</span><span class="p">]</span>
+
+        <span class="n">filtered_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__names</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="c1"># We need to filter the data, with the provided parameters</span>
+        <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">filtered_names</span><span class="p">)):</span>
+            <span class="n">curr_name</span> <span class="o">=</span> <span class="n">filtered_names</span><span class="p">[</span><span class="n">column</span><span class="p">]</span>
+
+            <span class="c1"># Create a new column of data</span>
+            <span class="n">new_values</span> <span class="o">=</span> <span class="n">filter_class</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__df</span><span class="p">,</span> <span class="n">curr_name</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>\
+                <span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                <span class="n">filter_parameters</span><span class="p">[</span><span class="n">curr_name</span><span class="p">][</span><span class="s1">&#39;SampleRate&#39;</span><span class="p">],</span>
+                <span class="n">filter_parameters</span><span class="p">[</span><span class="n">curr_name</span><span class="p">][</span><span class="s1">&#39;CutoffFrequency&#39;</span><span class="p">],</span>
+                <span class="n">filter_parameters</span><span class="p">[</span><span class="n">curr_name</span><span class="p">][</span><span class="s1">&#39;FilterLength&#39;</span><span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Replace each value in the column</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__df</span><span class="o">.</span><span class="n">index</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_values</span><span class="p">[</span><span class="n">row</span><span class="p">]</span>
+
+<div class="viewcode-block" id="FilteredSensorData.getData"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.filtered_sensor_data.FilteredSensorData.getData">[docs]</a>    <span class="k">def</span> <span class="nf">getData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__df</span></div>
+
+<div class="viewcode-block" id="FilteredSensorData.getColumns"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.filtered_sensor_data.FilteredSensorData.getColumns">[docs]</a>    <span class="k">def</span> <span class="nf">getColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__names</span></div>
+
+<div class="viewcode-block" id="FilteredSensorData.getReadableColumns"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.filtered_sensor_data.FilteredSensorData.getReadableColumns">[docs]</a>    <span class="k">def</span> <span class="nf">getReadableColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__readableNames</span></div></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, David McCormick.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

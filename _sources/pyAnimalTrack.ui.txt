@@ -8,6 +8,7 @@ Subpackages
 
     pyAnimalTrack.ui.Controller
     pyAnimalTrack.ui.Model
+    pyAnimalTrack.ui.Service
 
 Submodules
 ----------
@@ -16,14 +17,6 @@ pyAnimalTrack.ui.UIMain module
 ------------------------------
 
 .. automodule:: pyAnimalTrack.ui.UIMain
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-pyAnimalTrack.ui.exampleUIForDocs module
-----------------------------------------
-
-.. automodule:: pyAnimalTrack.ui.exampleUIForDocs
     :members:
     :undoc-members:
     :show-inheritance:

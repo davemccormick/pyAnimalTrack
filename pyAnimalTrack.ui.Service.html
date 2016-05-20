@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pyAnimalTrack.ui.Controller package &mdash; pyAnimalTrack  documentation</title>
+  <title>pyAnimalTrack.ui.Service package &mdash; pyAnimalTrack  documentation</title>
   
 
   
@@ -32,8 +32,7 @@
   
     <link rel="top" title="pyAnimalTrack  documentation" href="index.html"/>
         <link rel="up" title="pyAnimalTrack.ui package" href="pyAnimalTrack.ui.html"/>
-        <link rel="next" title="pyAnimalTrack.ui.Model package" href="pyAnimalTrack.ui.Model.html"/>
-        <link rel="prev" title="pyAnimalTrack.ui package" href="pyAnimalTrack.ui.html"/> 
+        <link rel="prev" title="pyAnimalTrack.ui.Model package" href="pyAnimalTrack.ui.Model.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -128,11 +127,11 @@
       
           <li><a href="pyAnimalTrack.ui.html">pyAnimalTrack.ui package</a> &raquo;</li>
       
-    <li>pyAnimalTrack.ui.Controller package</li>
+    <li>pyAnimalTrack.ui.Service package</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/pyAnimalTrack.ui.Controller.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/pyAnimalTrack.ui.Service.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -142,60 +141,30 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="pyanimaltrack-ui-controller-package">
-<h1>pyAnimalTrack.ui.Controller package<a class="headerlink" href="#pyanimaltrack-ui-controller-package" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pyanimaltrack-ui-service-package">
+<h1>pyAnimalTrack.ui.Service package<a class="headerlink" href="#pyanimaltrack-ui-service-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="pyanimaltrack-ui-controller-dataimportwindow-module">
-<h2>pyAnimalTrack.ui.Controller.DataImportWindow module<a class="headerlink" href="#pyanimaltrack-ui-controller-dataimportwindow-module" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="pyanimaltrack-ui-controller-deadreckoningwindow-module">
-<h2>pyAnimalTrack.ui.Controller.DeadReckoningWindow module<a class="headerlink" href="#pyanimaltrack-ui-controller-deadreckoningwindow-module" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="pyanimaltrack-ui-controller-featureswindow-module">
-<h2>pyAnimalTrack.ui.Controller.FeaturesWindow module<a class="headerlink" href="#pyanimaltrack-ui-controller-featureswindow-module" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="pyanimaltrack-ui-controller-loadcsvdialog-module">
-<h2>pyAnimalTrack.ui.Controller.LoadCSVDialog module<a class="headerlink" href="#pyanimaltrack-ui-controller-loadcsvdialog-module" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-pyAnimalTrack.ui.Controller.TableAndGraphView">
-<span id="pyanimaltrack-ui-controller-tableandgraphview-module"></span><h2>pyAnimalTrack.ui.Controller.TableAndGraphView module<a class="headerlink" href="#module-pyAnimalTrack.ui.Controller.TableAndGraphView" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pyAnimalTrack.ui.Service.FeaturesCalculator">
+<span id="pyanimaltrack-ui-service-featurescalculator-module"></span><h2>pyAnimalTrack.ui.Service.FeaturesCalculator module<a class="headerlink" href="#module-pyAnimalTrack.ui.Service.FeaturesCalculator" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="pyAnimalTrack.ui.Controller.TableAndGraphView.TableAndGraphView">
-<em class="property">class </em><code class="descclassname">pyAnimalTrack.ui.Controller.TableAndGraphView.</code><code class="descname">TableAndGraphView</code><span class="sig-paren">(</span><em>table_view</em>, <em>selection_dropdown</em>, <em>graph_frame</em>, <em>graph_key_frame</em>, <em>draw_graph</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Controller/TableAndGraphView.html#TableAndGraphView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Controller.TableAndGraphView.TableAndGraphView" title="Permalink to this definition">¶</a></dt>
+<dt id="pyAnimalTrack.ui.Service.FeaturesCalculator.FeaturesCalculator">
+<em class="property">class </em><code class="descclassname">pyAnimalTrack.ui.Service.FeaturesCalculator.</code><code class="descname">FeaturesCalculator</code><a class="reference internal" href="_modules/pyAnimalTrack/ui/Service/FeaturesCalculator.html#FeaturesCalculator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Service.FeaturesCalculator.FeaturesCalculator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<dl class="method">
-<dt id="pyAnimalTrack.ui.Controller.TableAndGraphView.TableAndGraphView.after_init">
-<code class="descname">after_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Controller/TableAndGraphView.html#TableAndGraphView.after_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Controller.TableAndGraphView.TableAndGraphView.after_init" title="Permalink to this definition">¶</a></dt>
+<dl class="staticmethod">
+<dt id="pyAnimalTrack.ui.Service.FeaturesCalculator.FeaturesCalculator.calculate">
+<em class="property">static </em><code class="descname">calculate</code><span class="sig-paren">(</span><em>unfiltered_data</em>, <em>low_pass_data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Service/FeaturesCalculator.html#FeaturesCalculator.calculate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Service.FeaturesCalculator.FeaturesCalculator.calculate" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="pyAnimalTrack.ui.Controller.TableAndGraphView.TableAndGraphView.change_selected_combo_column">
-<code class="descname">change_selected_combo_column</code><span class="sig-paren">(</span><em>selected</em>, <em>deselected</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Controller/TableAndGraphView.html#TableAndGraphView.change_selected_combo_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Controller.TableAndGraphView.TableAndGraphView.change_selected_combo_column" title="Permalink to this definition">¶</a></dt>
-<dd><p>When the selected data cell changes, update the combobox that controls the parameters.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>selected</strong> &#8211; PyQt5. The cells that were selected.</li>
-<li><strong>deselected</strong> &#8211; PyQt5. The cells that were deselected.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">void</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 </dd></dl>
 
 </div>
-<div class="section" id="module-pyAnimalTrack.ui.Controller">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyAnimalTrack.ui.Controller" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pyanimaltrack-ui-service-savedataframe-module">
+<h2>pyAnimalTrack.ui.Service.SaveDataframe module<a class="headerlink" href="#pyanimaltrack-ui-service-savedataframe-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyAnimalTrack.ui.Service">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyAnimalTrack.ui.Service" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -206,10 +175,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pyAnimalTrack.ui.Model.html" class="btn btn-neutral float-right" title="pyAnimalTrack.ui.Model package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="pyAnimalTrack.ui.html" class="btn btn-neutral" title="pyAnimalTrack.ui package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pyAnimalTrack.ui.Model.html" class="btn btn-neutral" title="pyAnimalTrack.ui.Model package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

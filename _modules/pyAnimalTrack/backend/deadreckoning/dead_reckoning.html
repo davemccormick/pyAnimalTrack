@@ -218,9 +218,9 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speedhorizontal</span> <span class="o">==</span> <span class="n">SpeedHorizontal</span><span class="o">.</span><span class="n">pitch</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pitch</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pitch</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span>
-            <span class="k">print</span> <span class="s2">&quot;Horizontal speed is calculated as cos(pitch)*speed&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speedhorizontal</span> <span class="o">==</span> <span class="n">SpeedHorizontal</span><span class="o">.</span><span class="n">pitch</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pitch</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pitch</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Horizontal speed is calculated as cos(pitch)*speed&quot;</span><span class="p">)</span>
 
         <span class="k">return</span></div>
 
@@ -254,7 +254,7 @@
         <span class="sd">&quot;&quot;&quot; Determine course made good. Must be called after courseSteered is calculated.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">courseSteeredCalculated</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">courseSteeredCalculated</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">CourseSteeredNotCalculatedException</span><span class="p">(</span><span class="s2">&quot;Course Steered not yet calculated.&quot;</span><span class="p">)</span>
 
 
@@ -292,8 +292,6 @@
         <span class="n">drdict</span><span class="p">[</span><span class="s1">&#39;Set_&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">set_</span>
 
         <span class="k">return</span> <span class="n">drdict</span></div></div>
-
-
 </pre></div>
 
            </div>

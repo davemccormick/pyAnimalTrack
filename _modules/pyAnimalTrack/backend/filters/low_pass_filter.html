@@ -123,7 +123,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pyAnimalTrack.backend.filters.low_pass_filter</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">base_filter</span> <span class="kn">import</span> <span class="n">BaseFilter</span>
+<span></span><span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.filters.base_filter</span> <span class="kn">import</span> <span class="n">BaseFilter</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <div class="viewcode-block" id="LPF"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filters.html#pyAnimalTrack.backend.filters.low_pass_filter.LPF">[docs]</a><span class="k">class</span> <span class="nc">LPF</span><span class="p">(</span><span class="n">BaseFilter</span><span class="p">):</span>
@@ -142,7 +142,7 @@
         <span class="k">return</span>
 
 
-<div class="viewcode-block" id="LPF.low_pass_filter"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filters.html#pyAnimalTrack.backend.filters.low_pass_filter.LPF.low_pass_filter">[docs]</a>    <span class="k">def</span> <span class="nf">low_pass_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samplingRate</span><span class="p">,</span> <span class="n">cutoffFrequency</span><span class="p">,</span> <span class="n">filterLength</span><span class="p">):</span>
+<div class="viewcode-block" id="LPF.filter"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filters.html#pyAnimalTrack.backend.filters.low_pass_filter.LPF.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samplingRate</span><span class="p">,</span> <span class="n">cutoffFrequency</span><span class="p">,</span> <span class="n">filterLength</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Applies filter to signal.</span>
 
 <span class="sd">        :param samplingRate: Rate at which the signal should be sampled in Hz</span>
@@ -151,7 +151,7 @@
 
 <span class="sd">        :returns: A low pass filtered signal as NP array.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">samplingRate</span><span class="p">,</span> <span class="n">cutoffFrequency</span><span class="p">,</span> <span class="n">filterLength</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">samplingRate</span><span class="p">,</span> <span class="n">cutoffFrequency</span><span class="p">,</span> <span class="n">filterLength</span><span class="p">)</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">s</span></div></div>

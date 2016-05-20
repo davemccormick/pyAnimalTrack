@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pyAnimalTrack.backend.filehandlers.sensor_csv &mdash; pyAnimalTrack  documentation</title>
+  <title>pyAnimalTrack.backend.filehandlers.sensor_data_clone &mdash; pyAnimalTrack  documentation</title>
   
 
   
@@ -110,7 +110,7 @@
       
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
       
-    <li>pyAnimalTrack.backend.filehandlers.sensor_csv</li>
+    <li>pyAnimalTrack.backend.filehandlers.sensor_data_clone</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -122,28 +122,26 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for pyAnimalTrack.backend.filehandlers.sensor_csv</h1><div class="highlight"><pre>
+  <h1>Source code for pyAnimalTrack.backend.filehandlers.sensor_data_clone</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 
 <span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.filehandlers.input_data</span> <span class="kn">import</span> <span class="n">InputData</span>
 
 
-<div class="viewcode-block" id="SensorCSV"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.sensor_csv.SensorCSV">[docs]</a><span class="k">class</span> <span class="nc">SensorCSV</span><span class="p">(</span><span class="n">InputData</span><span class="p">):</span>
+<div class="viewcode-block" id="SensorDataClone"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone">[docs]</a><span class="k">class</span> <span class="nc">SensorDataClone</span><span class="p">(</span><span class="n">InputData</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">csv_separator</span><span class="p">,</span> <span class="n">reference_frame</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot; Constructor</span>
-<span class="sd">        </span>
+
 <span class="sd">            :param data: Initial input data</span>
 <span class="sd">            :returns: void</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">SensorCSV</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SensorDataClone</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__filename</span> <span class="o">=</span> <span class="n">filename</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__csv_separator</span> <span class="o">=</span> <span class="n">csv_separator</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__df</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ms&#39;</span><span class="p">,</span><span class="s1">&#39;ax&#39;</span><span class="p">,</span><span class="s1">&#39;ay&#39;</span><span class="p">,</span><span class="s1">&#39;az&#39;</span><span class="p">,</span><span class="s1">&#39;mx&#39;</span><span class="p">,</span><span class="s1">&#39;my&#39;</span><span class="p">,</span><span class="s1">&#39;mz&#39;</span><span class="p">,</span><span class="s1">&#39;gx&#39;</span><span class="p">,</span><span class="s1">&#39;gy&#39;</span><span class="p">,</span><span class="s1">&#39;gz&#39;</span><span class="p">,</span><span class="s1">&#39;temp&#39;</span><span class="p">,</span><span class="s1">&#39;adjms&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__readableNames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Milliseconds&#39;</span><span class="p">,</span> <span class="s1">&#39;AX&#39;</span><span class="p">,</span> <span class="s1">&#39;AY&#39;</span><span class="p">,</span> <span class="s1">&#39;AZ&#39;</span><span class="p">,</span> <span class="s1">&#39;MX&#39;</span><span class="p">,</span> <span class="s1">&#39;MY&#39;</span><span class="p">,</span> <span class="s1">&#39;MZ&#39;</span><span class="p">,</span> <span class="s1">&#39;GX&#39;</span><span class="p">,</span> <span class="s1">&#39;GY&#39;</span><span class="p">,</span> <span class="s1">&#39;GZ&#39;</span><span class="p">,</span> <span class="s1">&#39;Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;Adjusted Milliseconds&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__types</span> <span class="o">=</span> <span class="p">{</span>
@@ -161,43 +159,38 @@
             <span class="s1">&#39;adjms&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="n">reference_frame</span> <span class="o">==</span> <span class="s1">&#39;NED&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__fileheadings</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ms&#39;</span><span class="p">,</span> <span class="s1">&#39;ay&#39;</span><span class="p">,</span> <span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="s1">&#39;ax&#39;</span><span class="p">,</span> <span class="s1">&#39;my&#39;</span><span class="p">,</span> <span class="s1">&#39;mz&#39;</span><span class="p">,</span> <span class="s1">&#39;mx&#39;</span><span class="p">,</span> <span class="s1">&#39;gx&#39;</span><span class="p">,</span> <span class="s1">&#39;gy&#39;</span><span class="p">,</span> <span class="s1">&#39;gz&#39;</span><span class="p">,</span> <span class="s1">&#39;temp&#39;</span><span class="p">,</span> <span class="s1">&#39;adjms&#39;</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__fileheadings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__names</span>
-
         <span class="k">return</span>
 
-<div class="viewcode-block" id="SensorCSV.getData"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.sensor_csv.SensorCSV.getData">[docs]</a>    <span class="k">def</span> <span class="nf">getData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SensorDataClone.getData"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone.getData">[docs]</a>    <span class="k">def</span> <span class="nf">getData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get an object representation of the sensor CSV.</span>
 
 <span class="sd">            :returns: A Pandas dataframe object.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__filename</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__csv_separator</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__fileheadings</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__df</span></div>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__names</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="SensorCSV.getColumn"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.sensor_csv.SensorCSV.getColumn">[docs]</a>    <span class="k">def</span> <span class="nf">getColumn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columnName</span><span class="p">):</span>
+<div class="viewcode-block" id="SensorDataClone.getColumn"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone.getColumn">[docs]</a>    <span class="k">def</span> <span class="nf">getColumn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columnName</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Gets a column of data.</span>
 
-<span class="sd">            </span>
+
 <span class="sd">            :param columnName: The name of the column to retrieve.</span>
 <span class="sd">            :returns: A numpy array of data for processing.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__df</span><span class="p">,</span><span class="n">columnName</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="SensorCSV.getColumns"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.sensor_csv.SensorCSV.getColumns">[docs]</a>    <span class="k">def</span> <span class="nf">getColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SensorDataClone.getColumns"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone.getColumns">[docs]</a>    <span class="k">def</span> <span class="nf">getColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Lists all available column names.</span>
-<span class="sd">            </span>
+
 <span class="sd">            :returns: A list of strings representing the available column names.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__names</span></div>
 
-<div class="viewcode-block" id="SensorCSV.getReadableColumns"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.sensor_csv.SensorCSV.getReadableColumns">[docs]</a>    <span class="k">def</span> <span class="nf">getReadableColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SensorDataClone.getReadableColumns"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone.getReadableColumns">[docs]</a>    <span class="k">def</span> <span class="nf">getReadableColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get a list of (human readable) column names from the CSV</span>
 
 <span class="sd">            :returns: An array of names</span>

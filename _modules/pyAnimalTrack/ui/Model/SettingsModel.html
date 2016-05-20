@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pyAnimalTrack.ui.Model.SettingsModel &mdash; pyAnimalTrack  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="pyAnimalTrack  documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pyAnimalTrack
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pyAnimalTrack.html">pyAnimalTrack package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">pyAnimalTrack</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>pyAnimalTrack.ui.Model.SettingsModel</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyAnimalTrack.ui.Model.SettingsModel</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+
+<div class="viewcode-block" id="SettingsModel"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Model.html#pyAnimalTrack.ui.Model.SettingsModel.SettingsModel">[docs]</a><span class="k">class</span> <span class="nc">SettingsModel</span><span class="p">:</span>
+    <span class="n">__settings_filename</span> <span class="o">=</span> <span class="s1">&#39;settings.json&#39;</span>
+
+    <span class="n">__defaults</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># Choices:</span>
+        <span class="c1"># b: blue</span>
+        <span class="c1"># g: green</span>
+        <span class="c1"># r: red</span>
+        <span class="c1"># c: cyan</span>
+        <span class="c1"># m: magenta</span>
+        <span class="c1"># y: yellow</span>
+        <span class="c1"># k: black</span>
+        <span class="c1"># w: white</span>
+
+        <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s1">&#39;k&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;b&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;m&#39;</span>
+        <span class="p">],</span>
+
+        <span class="s1">&#39;data_SaveFormats&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s1">&#39;csv&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;txt&#39;</span>
+        <span class="p">],</span>
+
+        <span class="s1">&#39;graph_SaveFormats&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s1">&#39;png&#39;</span>
+        <span class="p">],</span>
+
+        <span class="s1">&#39;csv_separator&#39;</span><span class="p">:</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span>
+
+        <span class="c1"># Data manipulation</span>
+
+        <span class="s1">&#39;ground_reference_frame_options&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;NED&#39;</span><span class="p">,</span> <span class="s1">&#39;ENU&#39;</span><span class="p">],</span>
+
+        <span class="s1">&#39;filter_parameters&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;SampleRate&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s1">&#39;CutoffFrequency&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s1">&#39;FilterLength&#39;</span><span class="p">:</span> <span class="mi">59</span>
+        <span class="p">},</span>
+
+        <span class="s1">&#39;scaling&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;ax&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;ay&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;az&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;mx&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;my&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;mz&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;gx&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;gy&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;gz&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">__settings</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">__temporary_settings</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;ground_reference_frame&#39;</span><span class="p">:</span> <span class="s1">&#39;NED&#39;</span>
+    <span class="p">}</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="SettingsModel.load_from_config"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Model.html#pyAnimalTrack.ui.Model.SettingsModel.SettingsModel.load_from_config">[docs]</a>    <span class="k">def</span> <span class="nf">load_from_config</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">SettingsModel</span><span class="o">.</span><span class="n">__settings_filename</span><span class="p">):</span>
+            <span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">SettingsModel</span><span class="o">.</span><span class="n">__settings_filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+            <span class="n">SettingsModel</span><span class="o">.</span><span class="n">__settings</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SettingsModel</span><span class="o">.</span><span class="n">__settings</span> <span class="o">=</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">__defaults</span>
+            <span class="n">SettingsModel</span><span class="o">.</span><span class="n">_save_config</span><span class="p">()</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_save_config</span><span class="p">():</span>
+        <span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">SettingsModel</span><span class="o">.</span><span class="n">__settings_filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="nb">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">SettingsModel</span><span class="o">.</span><span class="n">__settings</span><span class="p">))</span>
+        <span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="SettingsModel.set_value"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Model.html#pyAnimalTrack.ui.Model.SettingsModel.SettingsModel.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">SettingsModel</span><span class="o">.</span><span class="n">__settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">SettingsModel</span><span class="o">.</span><span class="n">_save_config</span><span class="p">()</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="SettingsModel.set_temp_value"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Model.html#pyAnimalTrack.ui.Model.SettingsModel.SettingsModel.set_temp_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_temp_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">SettingsModel</span><span class="o">.</span><span class="n">__temporary_settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="SettingsModel.get_value"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Model.html#pyAnimalTrack.ui.Model.SettingsModel.SettingsModel.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">__settings</span><span class="o">.</span><span class="n">__contains__</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">__settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">__temporary_settings</span><span class="o">.</span><span class="n">__contains__</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">SettingsModel</span><span class="o">.</span><span class="n">__temporary_settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;SaveFormatsFilter&#39;</span><span class="p">):</span>
+                <span class="n">format</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">return</span> <span class="s1">&#39;*.&#39;</span> <span class="o">+</span> <span class="s1">&#39;;;*.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SettingsModel</span><span class="o">.</span><span class="n">__settings</span><span class="p">[</span><span class="n">format</span> <span class="o">+</span> <span class="s1">&#39;_SaveFormats&#39;</span><span class="p">])</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, David McCormick.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

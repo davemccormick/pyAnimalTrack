@@ -145,6 +145,30 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pyAnimalTrack.backend.filehandlers.filtered_sensor_data">
+<span id="pyanimaltrack-backend-filehandlers-filtered-sensor-data-module"></span><h2>pyAnimalTrack.backend.filehandlers.filtered_sensor_data module<a class="headerlink" href="#module-pyAnimalTrack.backend.filehandlers.filtered_sensor_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyAnimalTrack.backend.filehandlers.filtered_sensor_data.FilteredSensorData">
+<em class="property">class </em><code class="descclassname">pyAnimalTrack.backend.filehandlers.filtered_sensor_data.</code><code class="descname">FilteredSensorData</code><span class="sig-paren">(</span><em>filter_class</em>, <em>df</em>, <em>filter_parameters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/filtered_sensor_data.html#FilteredSensorData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.filtered_sensor_data.FilteredSensorData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyAnimalTrack.backend.filehandlers.input_data.InputData" title="pyAnimalTrack.backend.filehandlers.input_data.InputData"><code class="xref py py-class docutils literal"><span class="pre">pyAnimalTrack.backend.filehandlers.input_data.InputData</span></code></a></p>
+<dl class="method">
+<dt id="pyAnimalTrack.backend.filehandlers.filtered_sensor_data.FilteredSensorData.getColumns">
+<code class="descname">getColumns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/filtered_sensor_data.html#FilteredSensorData.getColumns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.filtered_sensor_data.FilteredSensorData.getColumns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.backend.filehandlers.filtered_sensor_data.FilteredSensorData.getData">
+<code class="descname">getData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/filtered_sensor_data.html#FilteredSensorData.getData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.filtered_sensor_data.FilteredSensorData.getData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.backend.filehandlers.filtered_sensor_data.FilteredSensorData.getReadableColumns">
+<code class="descname">getReadableColumns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/filtered_sensor_data.html#FilteredSensorData.getReadableColumns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.filtered_sensor_data.FilteredSensorData.getReadableColumns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-pyAnimalTrack.backend.filehandlers.input_data">
 <span id="pyanimaltrack-backend-filehandlers-input-data-module"></span><h2>pyAnimalTrack.backend.filehandlers.input_data module<a class="headerlink" href="#module-pyAnimalTrack.backend.filehandlers.input_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -160,9 +184,21 @@ Object should be able to access a columnName of data as an attribute.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pyAnimalTrack.backend.filehandlers.input_data.InputData.getColumns">
+<code class="descname">getColumns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/input_data.html#InputData.getColumns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.input_data.InputData.getColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of column names used in the dataset</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pyAnimalTrack.backend.filehandlers.input_data.InputData.getData">
 <code class="descname">getData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/input_data.html#InputData.getData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.input_data.InputData.getData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Source the data and return an object with accessible attributes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.backend.filehandlers.input_data.InputData.getReadableColumns">
+<code class="descname">getReadableColumns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/input_data.html#InputData.getReadableColumns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.input_data.InputData.getReadableColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of human readable column names from the dataset</p>
 </dd></dl>
 
 </dd></dl>
@@ -172,7 +208,7 @@ Object should be able to access a columnName of data as an attribute.</p>
 <span id="pyanimaltrack-backend-filehandlers-sensor-csv-module"></span><h2>pyAnimalTrack.backend.filehandlers.sensor_csv module<a class="headerlink" href="#module-pyAnimalTrack.backend.filehandlers.sensor_csv" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pyAnimalTrack.backend.filehandlers.sensor_csv.SensorCSV">
-<em class="property">class </em><code class="descclassname">pyAnimalTrack.backend.filehandlers.sensor_csv.</code><code class="descname">SensorCSV</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/sensor_csv.html#SensorCSV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.sensor_csv.SensorCSV" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pyAnimalTrack.backend.filehandlers.sensor_csv.</code><code class="descname">SensorCSV</code><span class="sig-paren">(</span><em>filename</em>, <em>csv_separator</em>, <em>reference_frame</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/sensor_csv.html#SensorCSV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.sensor_csv.SensorCSV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyAnimalTrack.backend.filehandlers.input_data.InputData" title="pyAnimalTrack.backend.filehandlers.input_data.InputData"><code class="xref py py-class docutils literal"><span class="pre">pyAnimalTrack.backend.filehandlers.input_data.InputData</span></code></a></p>
 <dl class="method">
 <dt id="pyAnimalTrack.backend.filehandlers.sensor_csv.SensorCSV.getColumn">
@@ -182,7 +218,7 @@ Object should be able to access a columnName of data as an attribute.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>columnName</strong> &#8211; The name of the column to retreive.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>columnName</strong> &#8211; The name of the column to retrieve.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A numpy array of data for processing.</td>
 </tr>
@@ -207,12 +243,93 @@ Object should be able to access a columnName of data as an attribute.</p>
 <dl class="method">
 <dt id="pyAnimalTrack.backend.filehandlers.sensor_csv.SensorCSV.getData">
 <code class="descname">getData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/sensor_csv.html#SensorCSV.getData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.sensor_csv.SensorCSV.getData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get an object representation of the censor CSV.</p>
+<dd><p>Get an object representation of the sensor CSV.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A Pandas dataframe object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.backend.filehandlers.sensor_csv.SensorCSV.getReadableColumns">
+<code class="descname">getReadableColumns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/sensor_csv.html#SensorCSV.getReadableColumns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.sensor_csv.SensorCSV.getReadableColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of (human readable) column names from the CSV</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array of names</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyAnimalTrack.backend.filehandlers.sensor_data_clone">
+<span id="pyanimaltrack-backend-filehandlers-sensor-data-clone-module"></span><h2>pyAnimalTrack.backend.filehandlers.sensor_data_clone module<a class="headerlink" href="#module-pyAnimalTrack.backend.filehandlers.sensor_data_clone" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone">
+<em class="property">class </em><code class="descclassname">pyAnimalTrack.backend.filehandlers.sensor_data_clone.</code><code class="descname">SensorDataClone</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/sensor_data_clone.html#SensorDataClone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyAnimalTrack.backend.filehandlers.input_data.InputData" title="pyAnimalTrack.backend.filehandlers.input_data.InputData"><code class="xref py py-class docutils literal"><span class="pre">pyAnimalTrack.backend.filehandlers.input_data.InputData</span></code></a></p>
+<dl class="method">
+<dt id="pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone.getColumn">
+<code class="descname">getColumn</code><span class="sig-paren">(</span><em>columnName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/sensor_data_clone.html#SensorDataClone.getColumn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone.getColumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a column of data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>columnName</strong> &#8211; The name of the column to retrieve.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A numpy array of data for processing.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone.getColumns">
+<code class="descname">getColumns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/sensor_data_clone.html#SensorDataClone.getColumns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone.getColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all available column names.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of strings representing the available column names.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone.getData">
+<code class="descname">getData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/sensor_data_clone.html#SensorDataClone.getData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone.getData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an object representation of the sensor CSV.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A Pandas dataframe object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone.getReadableColumns">
+<code class="descname">getReadableColumns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/backend/filehandlers/sensor_data_clone.html#SensorDataClone.getReadableColumns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.backend.filehandlers.sensor_data_clone.SensorDataClone.getReadableColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of (human readable) column names from the CSV</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array of names</td>
 </tr>
 </tbody>
 </table>

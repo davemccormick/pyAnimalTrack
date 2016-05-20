@@ -32,6 +32,7 @@
   
     <link rel="top" title="pyAnimalTrack  documentation" href="index.html"/>
         <link rel="up" title="pyAnimalTrack.ui package" href="pyAnimalTrack.ui.html"/>
+        <link rel="next" title="pyAnimalTrack.ui.Service package" href="pyAnimalTrack.ui.Service.html"/>
         <link rel="prev" title="pyAnimalTrack.ui.Controller package" href="pyAnimalTrack.ui.Controller.html"/> 
 
   
@@ -85,7 +86,6 @@
 <li class="toctree-l4 current"><a class="reference internal" href="pyAnimalTrack.ui.html#subpackages">Subpackages</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyAnimalTrack.ui.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyAnimalTrack.ui.html#pyanimaltrack-ui-uimain-module">pyAnimalTrack.ui.UIMain module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyAnimalTrack.ui.html#module-pyAnimalTrack.ui.exampleUIForDocs">pyAnimalTrack.ui.exampleUIForDocs module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyAnimalTrack.ui.html#module-pyAnimalTrack.ui">Module contents</a></li>
 </ul>
 </li>
@@ -147,8 +147,104 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="pyanimaltrack-ui-model-csvfile-module">
-<h2>pyAnimalTrack.ui.Model.CSVFile module<a class="headerlink" href="#pyanimaltrack-ui-model-csvfile-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pyAnimalTrack.ui.Model.FeaturesModel">
+<span id="pyanimaltrack-ui-model-featuresmodel-module"></span><h2>pyAnimalTrack.ui.Model.FeaturesModel module<a class="headerlink" href="#module-pyAnimalTrack.ui.Model.FeaturesModel" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel">
+<em class="property">class </em><code class="descclassname">pyAnimalTrack.ui.Model.FeaturesModel.</code><code class="descname">FeaturesModel</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/FeaturesModel.html#FeaturesModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyAnimalTrack.backend.filehandlers.html#pyAnimalTrack.backend.filehandlers.input_data.InputData" title="pyAnimalTrack.backend.filehandlers.input_data.InputData"><code class="xref py py-class docutils literal"><span class="pre">pyAnimalTrack.backend.filehandlers.input_data.InputData</span></code></a></p>
+<dl class="method">
+<dt id="pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel.getColumn">
+<code class="descname">getColumn</code><span class="sig-paren">(</span><em>columnName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/FeaturesModel.html#FeaturesModel.getColumn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel.getColumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a column of data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>columnName</strong> &#8211; The name of the column to retrieve.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A numpy array of data for processing.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel.getColumns">
+<code class="descname">getColumns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/FeaturesModel.html#FeaturesModel.getColumns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel.getColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all available column names.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of strings representing the available column names.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel.getData">
+<code class="descname">getData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/FeaturesModel.html#FeaturesModel.getData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel.getData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an object representation of the sensor CSV.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A Pandas dataframe object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel.getReadableColumns">
+<code class="descname">getReadableColumns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/FeaturesModel.html#FeaturesModel.getReadableColumns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel.getReadableColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of (human readable) column names from the CSV</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array of names</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyAnimalTrack.ui.Model.SettingsModel">
+<span id="pyanimaltrack-ui-model-settingsmodel-module"></span><h2>pyAnimalTrack.ui.Model.SettingsModel module<a class="headerlink" href="#module-pyAnimalTrack.ui.Model.SettingsModel" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyAnimalTrack.ui.Model.SettingsModel.SettingsModel">
+<em class="property">class </em><code class="descclassname">pyAnimalTrack.ui.Model.SettingsModel.</code><code class="descname">SettingsModel</code><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/SettingsModel.html#SettingsModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.SettingsModel.SettingsModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="staticmethod">
+<dt id="pyAnimalTrack.ui.Model.SettingsModel.SettingsModel.get_value">
+<em class="property">static </em><code class="descname">get_value</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/SettingsModel.html#SettingsModel.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.SettingsModel.SettingsModel.get_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyAnimalTrack.ui.Model.SettingsModel.SettingsModel.load_from_config">
+<em class="property">static </em><code class="descname">load_from_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/SettingsModel.html#SettingsModel.load_from_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.SettingsModel.SettingsModel.load_from_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyAnimalTrack.ui.Model.SettingsModel.SettingsModel.set_temp_value">
+<em class="property">static </em><code class="descname">set_temp_value</code><span class="sig-paren">(</span><em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/SettingsModel.html#SettingsModel.set_temp_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.SettingsModel.SettingsModel.set_temp_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyAnimalTrack.ui.Model.SettingsModel.SettingsModel.set_value">
+<em class="property">static </em><code class="descname">set_value</code><span class="sig-paren">(</span><em>key</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAnimalTrack/ui/Model/SettingsModel.html#SettingsModel.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyAnimalTrack.ui.Model.SettingsModel.SettingsModel.set_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyanimaltrack-ui-model-tablemodel-module">
+<h2>pyAnimalTrack.ui.Model.TableModel module<a class="headerlink" href="#pyanimaltrack-ui-model-tablemodel-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-pyAnimalTrack.ui.Model">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyAnimalTrack.ui.Model" title="Permalink to this headline">¶</a></h2>
@@ -161,6 +257,8 @@
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pyAnimalTrack.ui.Service.html" class="btn btn-neutral float-right" title="pyAnimalTrack.ui.Service package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="pyAnimalTrack.ui.Controller.html" class="btn btn-neutral" title="pyAnimalTrack.ui.Controller package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>

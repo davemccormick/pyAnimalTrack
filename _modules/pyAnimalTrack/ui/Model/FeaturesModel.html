@@ -1,0 +1,248 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pyAnimalTrack.ui.Model.FeaturesModel &mdash; pyAnimalTrack  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="pyAnimalTrack  documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pyAnimalTrack
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pyAnimalTrack.html">pyAnimalTrack package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">pyAnimalTrack</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>pyAnimalTrack.ui.Model.FeaturesModel</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyAnimalTrack.ui.Model.FeaturesModel</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.filehandlers.input_data</span> <span class="kn">import</span> <span class="n">InputData</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="FeaturesModel"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Model.html#pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel">[docs]</a><span class="k">class</span> <span class="nc">FeaturesModel</span><span class="p">(</span><span class="n">InputData</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Constructor</span>
+
+<span class="sd">            :param data: Initial input data</span>
+<span class="sd">            :returns: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">FeaturesModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__df</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;axyz&#39;</span><span class="p">,</span> <span class="s1">&#39;sma&#39;</span><span class="p">,</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span><span class="s1">&#39;movement_variation&#39;</span><span class="p">,</span><span class="s1">&#39;energy&#39;</span><span class="p">,</span><span class="s1">&#39;entropy&#39;</span><span class="p">,</span><span class="s1">&#39;pitch&#39;</span><span class="p">,</span><span class="s1">&#39;roll&#39;</span><span class="p">,</span><span class="s1">&#39;inclination&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__readableNames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Accelerometer (X, Y, Z)&#39;</span><span class="p">,</span> <span class="s1">&#39;SMA&#39;</span><span class="p">,</span> <span class="s1">&#39;SVM&#39;</span><span class="p">,</span> <span class="s1">&#39;Movement Variation&#39;</span><span class="p">,</span> <span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="s1">&#39;Entropy&#39;</span><span class="p">,</span> <span class="s1">&#39;Pitch (Degrees)&#39;</span><span class="p">,</span> <span class="s1">&#39;Roll (Degrees)&#39;</span><span class="p">,</span> <span class="s1">&#39;Inclination (Degrees)&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span>
+
+
+<div class="viewcode-block" id="FeaturesModel.getData"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Model.html#pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel.getData">[docs]</a>    <span class="k">def</span> <span class="nf">getData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get an object representation of the sensor CSV.</span>
+
+<span class="sd">            :returns: A Pandas dataframe object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataset</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__names</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__df</span></div>
+
+
+<div class="viewcode-block" id="FeaturesModel.getColumn"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Model.html#pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel.getColumn">[docs]</a>    <span class="k">def</span> <span class="nf">getColumn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columnName</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Gets a column of data.</span>
+
+
+<span class="sd">            :param columnName: The name of the column to retrieve.</span>
+<span class="sd">            :returns: A numpy array of data for processing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__df</span><span class="p">,</span><span class="n">columnName</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="FeaturesModel.getColumns"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Model.html#pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel.getColumns">[docs]</a>    <span class="k">def</span> <span class="nf">getColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Lists all available column names.</span>
+
+<span class="sd">            :returns: A list of strings representing the available column names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__names</span></div>
+
+<div class="viewcode-block" id="FeaturesModel.getReadableColumns"><a class="viewcode-back" href="../../../../pyAnimalTrack.ui.Model.html#pyAnimalTrack.ui.Model.FeaturesModel.FeaturesModel.getReadableColumns">[docs]</a>    <span class="k">def</span> <span class="nf">getReadableColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get a list of (human readable) column names from the CSV</span>
+
+<span class="sd">            :returns: An array of names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__readableNames</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, David McCormick.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

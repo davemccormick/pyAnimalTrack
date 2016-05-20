@@ -123,7 +123,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pyAnimalTrack.backend.filters.high_pass_filter</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">base_filter</span> <span class="kn">import</span> <span class="n">BaseFilter</span>
+<span></span><span class="kn">from</span> <span class="nn">pyAnimalTrack.backend.filters.base_filter</span> <span class="kn">import</span> <span class="n">BaseFilter</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <div class="viewcode-block" id="HPF"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filters.html#pyAnimalTrack.backend.filters.high_pass_filter.HPF">[docs]</a><span class="k">class</span> <span class="nc">HPF</span><span class="p">(</span><span class="n">BaseFilter</span><span class="p">):</span>
@@ -136,13 +136,13 @@
 <span class="sd">            :param data: Initial input data</span>
 <span class="sd">            :returns: void</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">HPF</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">HPF</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">signal</span> <span class="o">=</span> <span class="n">signal</span>
         <span class="k">return</span>
 
 
-<div class="viewcode-block" id="HPF.high_pass_filter"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filters.html#pyAnimalTrack.backend.filters.high_pass_filter.HPF.high_pass_filter">[docs]</a>    <span class="k">def</span> <span class="nf">high_pass_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samplingRate</span><span class="p">,</span> <span class="n">cutoffFrequency</span><span class="p">,</span> <span class="n">filterLength</span><span class="p">):</span>
+<div class="viewcode-block" id="HPF.filter"><a class="viewcode-back" href="../../../../pyAnimalTrack.backend.filters.html#pyAnimalTrack.backend.filters.high_pass_filter.HPF.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">samplingRate</span><span class="p">,</span> <span class="n">cutoffFrequency</span><span class="p">,</span> <span class="n">filterLength</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Applies filter to signal.</span>
 
 <span class="sd">        :param samplingRate: Rate at which the signal should be sampled in Hz</span>
@@ -151,7 +151,7 @@
 
 <span class="sd">        :returns: A low pass filtered signal as NP array.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">samplingRate</span><span class="p">,</span> <span class="n">cutoffFrequency</span><span class="p">,</span> <span class="n">filterLength</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">samplingRate</span><span class="p">,</span> <span class="n">cutoffFrequency</span><span class="p">,</span> <span class="n">filterLength</span><span class="p">)</span>
 
         <span class="c1"># Use spectral inverse to turn this into high pass filter.</span>
         <span class="n">h</span> <span class="o">=</span> <span class="o">-</span><span class="n">h</span>
