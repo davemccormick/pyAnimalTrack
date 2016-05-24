@@ -1,5 +1,8 @@
 import sys
 
+import matplotlib
+matplotlib.use('Qt5Agg')
+
 from PyQt5.QtWidgets import QApplication
 
 from pyAnimalTrack.ui import UIMain

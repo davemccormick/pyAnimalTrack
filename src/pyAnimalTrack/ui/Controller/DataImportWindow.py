@@ -2,7 +2,7 @@ import os
 
 import numpy
 
-import PyQt5.uic
+from PyQt5 import uic
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QMainWindow
 
@@ -19,7 +19,7 @@ from pyAnimalTrack.ui.Controller.DeadReckoningWindow import DeadReckoningWindow
 from pyAnimalTrack.ui.Model.TableModel import TableModel
 from pyAnimalTrack.ui.Model.SettingsModel import SettingsModel
 
-uiDataImportWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/DataImportWindow.ui'))[0]
+uiDataImportWindow = uic.loadUiType(os.path.join(os.path.dirname(__file__), '../../../../View/DataImportWindow.ui'))[0]
 
 
 class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):

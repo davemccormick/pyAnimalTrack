@@ -3,7 +3,7 @@
 
 import os
 
-import PyQt5.uic
+from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow
 
 from pyAnimalTrack.ui.Controller.TableAndGraphView import TableAndGraphView
@@ -14,7 +14,7 @@ from pyAnimalTrack.ui.Model.TableModel import TableModel
 from pyAnimalTrack.ui.Service.FeaturesCalculator import FeaturesCalculator
 from pyAnimalTrack.ui.Service.SaveDataframe import SaveDataframe
 
-uiFeaturesWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/FeaturesWindow.ui'))[0]
+uiFeaturesWindow = uic.loadUiType(os.path.join(os.path.dirname(__file__), '../../../../View/FeaturesWindow.ui'))[0]
 
 
 class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):
