@@ -723,6 +723,11 @@
             <string>Combined - High pass filter</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>Combined - Uncalibrated</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item>

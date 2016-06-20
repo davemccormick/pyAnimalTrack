@@ -145,10 +145,12 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         dataset = self.calibratedData.get_dataset()
 
-        for col in enumerate(['ax', 'ay', 'az', 'mx', 'my', 'mz', 'gx', 'gy', 'gz']):
-            changed = ca.calibrate(dataset[col[1]], numpy.min(dataset[col[1]]), numpy.max(dataset[col[1]]), SettingsModel.get_value('scaling')[col[1]])
-            for i in range(0, len(dataset[col[1]])):
-                self.calibratedData.get_dataset().iloc[i][col[0] + 1] = changed[i]
+        for col in ['ax', 'ay', 'az', 'mx', 'my', 'mz', 'gx', 'gy', 'gz']:
+            changed = ca.calibrate(dataset[col], numpy.min(dataset[col]), numpy.max(dataset[col]), SettingsModel.get_value('scaling')[col])
+            self.calibratedData.get_dataset()[col] = changed
+
+            #for i in range(0, len(dataset[col[1]])):
+                #self.calibratedData.get_dataset().iloc[i][col[0] + 1] = changed[i]
 
     def show_load_dialog(self):
         """ Show the user a dialog to load a data file(CSV)
@@ -285,8 +287,10 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
                 current_dataset = self.calibratedData.get_dataset()
             elif current_type == 2:
                 current_dataset = self.lowPassData.get_dataset()
-            else:
+            elif current_type == 3:
                 current_dataset = self.highPassData.get_dataset()
+            else:
+                current_dataset = self.defaultDataFile.get_dataset()
 
             # Accelerometer, Magnetometer or Gyroscope
             if self.currentColumnComboBox.currentIndex() == 0:
@@ -297,9 +301,9 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
                 current_column = 'g'
 
             lines = self.plot.plot(
-                current_dataset[current_column + 'x'].values[::-1], SettingsModel.get_value('lines')[0],
-                current_dataset[current_column + 'y'].values[::-1], SettingsModel.get_value('lines')[1],
-                current_dataset[current_column + 'z'].values[::-1], SettingsModel.get_value('lines')[2]
+                current_dataset[current_column + 'x'].values, SettingsModel.get_value('lines')[0],
+                current_dataset[current_column + 'y'].values, SettingsModel.get_value('lines')[1],
+                current_dataset[current_column + 'z'].values, SettingsModel.get_value('lines')[2]
             )
 
             lines[0].set_label('X')
@@ -372,6 +376,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
                     first_index = self.rawDataFile.getColumns().index('mx')
                 else:
                     first_index = self.rawDataFile.getColumns().index('gx')
+
 
                 self.filterParameters[self.rawDataFile.getColumns()[first_index]][parameter] = int(new_value)
                 self.filterParameters[self.rawDataFile.getColumns()[first_index + 1]][parameter] = int(new_value)

@@ -3,6 +3,16 @@ import pandas as pd
 
 from pyAnimalTrack.backend.filehandlers.input_data import InputData
 
+global_count = 0
+
+def get_secs(s):
+    
+    try:
+        return np.float(s)
+    except:
+        global global_count
+        global_count += 1
+        return np.float(global_count)
 
 class SensorCSV(InputData):
 
@@ -22,7 +32,7 @@ class SensorCSV(InputData):
         self.__names = ['ms','ax','ay','az','mx','my','mz','gx','gy','gz','temp','adjms']
         self.__readableNames = ['Milliseconds', 'AX', 'AY', 'AZ', 'MX', 'MY', 'MZ', 'GX', 'GY', 'GZ', 'Temperature', 'Adjusted Milliseconds']
         self.__types = {
-            'ms': np.int64,
+            'ms': str,
             'ax': np.float64,
             'ay': np.float64,
             'az': np.float64,
@@ -33,7 +43,7 @@ class SensorCSV(InputData):
             'gy': np.float64,
             'gz': np.float64,
             'temp': np.float64,
-            'adjms': np.int64
+            'adjms': np.float64
         }
 
         self.__NED = False
@@ -50,8 +60,9 @@ class SensorCSV(InputData):
 
         """
 
-        self.__df = pd.read_csv(self.__filename, delimiter=self.__csv_separator, names=self.__names, dtype=np.float64)
+        self.__df = pd.read_csv(self.__filename, delimiter=self.__csv_separator, names=self.__names, dtype=self.__types, converters={'ms':get_secs})
 
+        self.__df.fillna(inplace=True, method='ffill')
 
         if self.__NED:
             self.__df['ax1'] = self.__df['az']
