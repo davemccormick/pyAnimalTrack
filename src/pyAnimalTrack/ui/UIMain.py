@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use('Qt5Agg')
+
 import pyAnimalTrack.ui.Controller.DataImportWindow
 
 

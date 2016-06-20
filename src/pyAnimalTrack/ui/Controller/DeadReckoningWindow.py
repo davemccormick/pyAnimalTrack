@@ -1,6 +1,6 @@
 import os
 
-import PyQt5.uic
+from PyQt5 import uic
 import matplotlib.pyplot as plt
 import pandas as pd
 from PyQt5.QtWidgets import QMainWindow, QFileDialog
@@ -15,7 +15,7 @@ from pyAnimalTrack.ui.Service.FeaturesCalculator import FeaturesCalculator
 from pyAnimalTrack.ui.Service.SaveDataframe import SaveDataframe
 
 
-uiDeadReckoningWindow = PyQt5.uic.loadUiType(os.path.join(os.path.dirname(__file__), '../View/DeadReckoningWindow.ui'))[0]
+uiDeadReckoningWindow = uic.loadUiType(os.path.join(os.path.dirname(__file__), '../../../../View/DeadReckoningWindow.ui'))[0]
 
 
 class DeadReckoningWindow(QMainWindow, uiDeadReckoningWindow):
