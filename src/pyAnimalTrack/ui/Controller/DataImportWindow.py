@@ -111,6 +111,9 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         self.tableSourceComboBox.currentIndexChanged.connect(self.changeTableDataSource)
 
+        self.actionLoad.triggered.connect(self.menu_load_click)
+        self.actionQuit.triggered.connect(self.menu_quit_click)
+
     def check_accuracy(self):
         ac = Accuracy()
 
@@ -392,6 +395,10 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             pass
 
     def changeTableDataSource(self, index):
+        """ Change the data source that is displayed in the table
+
+            :returns: void
+        """
         if index == 0:
             self.currentTableData = 'defaultDataFile'
         elif index == 1:
@@ -404,3 +411,19 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         self.check_accuracy()
         self.rawTableView.setModel(getattr(self, self.currentTableData))
+
+    def menu_load_click(self):
+        """ Load a new CSV file (Menu item)
+
+            :returns: void
+        """
+        if self.show_load_dialog():
+            self.setup_filter_parameters()
+            self.refilter_datasets()
+
+    def menu_quit_click(self):
+        """ Quit the program (Menu item)
+
+            :returns: void
+        """
+        self.quitTrigger.emit()
