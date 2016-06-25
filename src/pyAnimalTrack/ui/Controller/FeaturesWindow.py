@@ -14,7 +14,11 @@ from pyAnimalTrack.ui.Model.TableModel import TableModel
 from pyAnimalTrack.ui.Service.FeaturesCalculator import FeaturesCalculator
 from pyAnimalTrack.ui.Service.SaveDataframe import SaveDataframe
 
-uiFeaturesWindow = uic.loadUiType(os.path.join(os.path.dirname(__file__), '../../../../View/FeaturesWindow.ui'))[0]
+viewFilePath = os.path.join(os.path.dirname(__file__), '../../../../View/')
+if not os.path.exists(viewFilePath):
+    viewFilePath = os.path.join(os.path.dirname(__file__), '../View/')
+
+uiFeaturesWindow = uic.loadUiType(os.path.join(viewFilePath, 'FeaturesWindow.ui'))[0]
 
 
 class FeaturesWindow(QMainWindow, uiFeaturesWindow, TableAndGraphView):

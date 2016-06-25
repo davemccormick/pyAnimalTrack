@@ -7,9 +7,12 @@ from PyQt5.QtCore import pyqtSlot
 
 from pyAnimalTrack.ui.Model.SettingsModel import SettingsModel
 
-# TODO: Load path from config
-uiLoadCSVDialog = uic.loadUiType(os.path.join(os.path.dirname(__file__), '../../../../View/LoadCSVDialog.ui'))[0]
 
+viewFilePath = os.path.join(os.path.dirname(__file__), '../../../../View/')
+if not os.path.exists(viewFilePath):
+    viewFilePath = os.path.join(os.path.dirname(__file__), '../View/')
+
+uiLoadCSVDialog = uic.loadUiType(os.path.join(viewFilePath, 'LoadCSVDialog.ui'))[0]
 
 class LoadCSVDialog(QDialog, uiLoadCSVDialog):
 

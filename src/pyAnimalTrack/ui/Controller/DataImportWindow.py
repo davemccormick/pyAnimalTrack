@@ -19,7 +19,12 @@ from pyAnimalTrack.ui.Controller.DeadReckoningWindow import DeadReckoningWindow
 from pyAnimalTrack.ui.Model.TableModel import TableModel
 from pyAnimalTrack.ui.Model.SettingsModel import SettingsModel
 
-uiDataImportWindow = uic.loadUiType(os.path.join(os.path.dirname(__file__), '../../../../View/DataImportWindow.ui'))[0]
+
+viewFilePath = os.path.join(os.path.dirname(__file__), '../../../../View/')
+if not os.path.exists(viewFilePath):
+    viewFilePath = os.path.join(os.path.dirname(__file__), '../View/')
+
+uiDataImportWindow = uic.loadUiType(os.path.join(viewFilePath, 'DataImportWindow.ui'))[0]
 
 
 class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):

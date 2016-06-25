@@ -15,7 +15,11 @@ from pyAnimalTrack.ui.Service.FeaturesCalculator import FeaturesCalculator
 from pyAnimalTrack.ui.Service.SaveDataframe import SaveDataframe
 
 
-uiDeadReckoningWindow = uic.loadUiType(os.path.join(os.path.dirname(__file__), '../../../../View/DeadReckoningWindow.ui'))[0]
+viewFilePath = os.path.join(os.path.dirname(__file__), '../../../../View/')
+if not os.path.exists(viewFilePath):
+    viewFilePath = os.path.join(os.path.dirname(__file__), '../View/')
+
+uiDeadReckoningWindow = uic.loadUiType(os.path.join(viewFilePath, 'DeadReckoningWindow.ui'))[0]
 
 
 class DeadReckoningWindow(QMainWindow, uiDeadReckoningWindow):
