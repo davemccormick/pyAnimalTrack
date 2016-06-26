@@ -51,7 +51,8 @@ class SensorCSV(InputData):
         if reference_frame == 'NED':
             self.__NED = True
 
-        return
+        self.__df = pd.read_csv(self.__filename, delimiter=self.__csv_separator, names=self.__names, dtype=self.__types, converters={'ms':get_secs})
+
 
     def getData(self):
         """ Get an object representation of the sensor CSV.
@@ -59,8 +60,6 @@ class SensorCSV(InputData):
             :returns: A Pandas dataframe object.
 
         """
-
-        self.__df = pd.read_csv(self.__filename, delimiter=self.__csv_separator, names=self.__names, dtype=self.__types, converters={'ms':get_secs})
 
         self.__df.fillna(inplace=True, method='ffill')
 

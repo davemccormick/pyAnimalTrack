@@ -14,6 +14,7 @@ from pyAnimalTrack.backend.filters.high_pass_filter import HPF
 
 from pyAnimalTrack.ui.Controller.TableAndGraphView import TableAndGraphView
 from pyAnimalTrack.ui.Controller.LoadCSVDialog import LoadCSVDialog
+from pyAnimalTrack.ui.Controller.LoadingProgressDialog import LoadingProgressDialog
 from pyAnimalTrack.ui.Controller.FeaturesWindow import FeaturesWindow
 from pyAnimalTrack.ui.Controller.DeadReckoningWindow import DeadReckoningWindow
 from pyAnimalTrack.ui.Model.TableModel import TableModel
@@ -173,7 +174,6 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         if dialog_result[0]:
             # Get the model back, build the view
-
             SettingsModel.set_temp_value('ground_reference_frame', dialog_result[3])
 
             # Load the CSV data object into the table
@@ -212,6 +212,10 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
             :returns: void
         """
+
+        filter_progress_dialog = LoadingProgressDialog()
+        filter_progress_dialog.show_loading(self)
+
         # Leave the conversion to the get_epoch_dataset method, it has sanity checks
         self.defaultDataFile = TableModel(sensor_data_clone.SensorDataClone(self.untouchedDataFile.get_epoch_dataset(
             start=self.startRow.text() if self.startRow.text() else 0,
@@ -225,15 +229,24 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         self.calibrate_axis()
 
+        filter_progress_dialog.update_progress(10)
+
         self.lowPassData = TableModel(filtered_sensor_data
                                       .FilteredSensorData(LPF, self.calibratedData.get_dataset(), self.filterParameters))
+
+        filter_progress_dialog.update_progress(50)
+
         self.highPassData = TableModel(filtered_sensor_data
                                        .FilteredSensorData(HPF, self.calibratedData.get_dataset(), self.filterParameters))
+
+        filter_progress_dialog.update_progress(90)
 
         self.check_accuracy()
         self.rawTableView.setModel(getattr(self, self.currentTableData))
 
         self.redraw_graph()
+
+        filter_progress_dialog.update_progress(100)
 
     def refill_column_combobox(self):
         """ Depending on how we want the data presented, the contents of the second combobox will change

@@ -1,3 +1,5 @@
+import pandas as pd
+
 from pyAnimalTrack.backend.filehandlers.input_data import InputData
 
 
@@ -23,22 +25,26 @@ class FilteredSensorData(InputData):
 
         filtered_names = self.__names[1:-2]
 
+        new_values = {}
+
         # We need to filter the data, with the provided parameters
-        for column in range(0, len(filtered_names)):
-            curr_name = filtered_names[column]
+        for column in range(0, len(self.__names)):
+            curr_name = self.__names[column]
 
-            # Create a new column of data
-            new_values = filter_class(getattr(self.__df, curr_name).values)\
-                .filter(
-                filter_parameters[curr_name]['SampleRate'],
-                filter_parameters[curr_name]['CutoffFrequency'],
-                filter_parameters[curr_name]['FilterLength']
-            )
+            # Only run the filter on the columns that require it
+            if curr_name in filtered_names:
+                # Create a new column of data
+                new_values[curr_name] = filter_class(getattr(self.__df, curr_name).values)\
+                    .filter(
+                    filter_parameters[curr_name]['SampleRate'],
+                    filter_parameters[curr_name]['CutoffFrequency'],
+                    filter_parameters[curr_name]['FilterLength']
+                )
+            else:
+                # Otherwise, just copy the value
+                new_values[curr_name] = getattr(self.__df, curr_name).values
 
-            # Replace each value in the column
-            for row in range(len(self.__df.index)):
-                # Account for slicing off the first column
-                self.__df.iloc[row][column+1] = new_values[row]
+        self.__df = pd.DataFrame(new_values)
 
     def getData(self):
         return self.__df
