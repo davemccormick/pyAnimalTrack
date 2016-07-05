@@ -1,10 +1,12 @@
 import os
+from multiprocessing import Queue
+import threading
 
 import numpy
 
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow
 
 from pyAnimalTrack.backend.filehandlers import sensor_csv, filtered_sensor_data, sensor_data_clone
 from pyAnimalTrack.backend.utilities.calibrate_axis import CalibrateAxis
@@ -208,7 +210,7 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
             }
 
     def refilter_datasets(self):
-        """ Recreate the datasets, using all provided parameters
+        """ Recreate the datasets, using all provided parameters. Starts a new thread to do so, to prevent UI lockup.
 
             :returns: void
         """
@@ -231,13 +233,29 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         filter_progress_dialog.update_progress(10)
 
-        self.lowPassData = TableModel(filtered_sensor_data
-                                      .FilteredSensorData(LPF, self.calibratedData.get_dataset(), self.filterParameters))
+        low_pass_queue = Queue()
+        high_pass_queue = Queue()
+
+        low_pass_thread = threading.Thread(
+            target=self.create_threaded_filter,
+            args=(low_pass_queue, LPF)
+        )
+
+        high_pass_thread = threading.Thread(
+            target=self.create_threaded_filter,
+            args=(high_pass_queue, HPF)
+        )
+
+        low_pass_thread.run()
+        high_pass_thread.run()
 
         filter_progress_dialog.update_progress(50)
 
-        self.highPassData = TableModel(filtered_sensor_data
-                                       .FilteredSensorData(HPF, self.calibratedData.get_dataset(), self.filterParameters))
+        self.lowPassData = TableModel(low_pass_queue.get())
+
+        filter_progress_dialog.update_progress(70)
+
+        self.highPassData = TableModel(high_pass_queue.get())
 
         filter_progress_dialog.update_progress(90)
 
@@ -248,10 +266,19 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
         filter_progress_dialog.update_progress(100)
 
+    def create_threaded_filter(self, queue, filter):
+        """ On a separate thread, run the filter. Also up the GUI, to prevent a lockup.
+
+            :returns: void
+        """
+
+        QApplication.processEvents()
+        queue.put(filtered_sensor_data.FilteredSensorData(filter, self.calibratedData.get_dataset(), self.filterParameters))
+
     def refill_column_combobox(self):
         """ Depending on how we want the data presented, the contents of the second combobox will change
 
-        :return:
+            :returns: void
         """
 
         self.currentColumnComboBox.clear()
@@ -273,6 +300,8 @@ class DataImportWindow(QMainWindow, uiDataImportWindow, TableAndGraphView):
 
     def update_filter_params(self):
         """ Read in any changes of the filter parameters, and set them to the current model
+
+            :returns: void
         """
         self.refreshLineEdit.setText(str(self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]]['SampleRate']))
         self.cutoffLineEdit.setText(str(self.filterParameters[self.rawDataFile.getColumns()[self.currentColumnComboBox.currentIndex() + self.first_graphed_element]]['CutoffFrequency']))
